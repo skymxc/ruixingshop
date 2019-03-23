@@ -1,0 +1,41 @@
+<!--
+会员中心
+层次结构
+container{
+  userinfo{
+    image
+    name
+  }
+  order{
+    {我的订单,我的所有订单}
+    {待发货，待收货，退换货}
+  }
+  coupon{
+    我的优惠卷
+    领取优惠卷
+  }
+  attention{
+    我的关注
+  }
+  receiveAddress{
+    收货地址管理
+  }
+  manager{
+    商品管理
+    订单管理
+    优惠卷管理
+  }
+}
+-->
+<view class='container'>
+  <view class='container-userinfo container-interval-vertical box'></view>
+  <view class='container-order  container-interval-vertical box'></view>
+  <view class='container-coupon  container-interval-vertical box'></view>
+  <view class='container-attention  container-interval-vertical box'></view>
+  <view class='container-address  container-interval-vertical box'></view>
+  <view wx:if="{{manager}}"  class='container-manager  container-interval-vertical box'>
+    <view bindtap='tapManagerGoods' class='container-landscape-white contianer-box-center container-underline'>商品管理</view>
+    <view  bindtap='tapManagerOrder' class=' contianer-box-center container-underline container-landscape-white'>订单管理</view>
+    <view bindtap='tapManagerCoupon'  class=' contianer-box-center container-landscape-white'>优惠卷管理</view>
+  </view>
+</view>

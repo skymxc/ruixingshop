@@ -1,6 +1,9 @@
 {
-  "cloud":true,
+  "cloud": true,
   "pages": [
+    "pages/authorize/authorize",
+    "pages/memberCenter/memberCenter",
+    
     "pages/index/index",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",

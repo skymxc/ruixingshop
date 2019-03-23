@@ -1,0 +1,12 @@
+<view class='container'>
+  <view class='container-image'>
+    <image src='../../images/shop.png' class='image-icon'></image>
+  </view>
+  <view class='line'></view>
+  <view class='container-text'>
+    <text class='text-request'>申请获取以下权限</text>
+    <text class='text-permiession'>{{permiession_text}}</text>
+  </view>
+
+  <button type='primary' class='button-login' open-type='getUserInfo' bindgetuserinfo='onGetUserInfo' bindtap='tapAuthLogin'>授权登录</button>
+</view>
