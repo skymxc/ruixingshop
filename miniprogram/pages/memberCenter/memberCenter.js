@@ -76,13 +76,7 @@ Page({
       wx.showToast({
         title: '跳转到管理',
       })
-   }).catch(()=>{
-     //申请权限
-     wx.showToast({
-       title: '去申请权限',
-       icon:'none'
-     })
-   });
+   }).catch(() => this.navigateToAuthorize());
   },
   /**
    * 点击订单管理
@@ -107,7 +101,7 @@ Page({
             wx.hideLoading();
             //登陆成功 跳转
             resolve();
-          }).catch(app.showErrNoCancel('登陆异常', error.errMsg));
+          }).catch(error=>app.showErrNoCancel('登陆异常', error.errMsg));
         } else { //申请权限
           //去权限申请页
           reject();
@@ -116,6 +110,21 @@ Page({
         console.log(err.errMsg);
         app.showErrNoCancel("检查权限异常", err.errMsg);
       });
+    })
+  },
+  /**
+   * 去申请获取用户信息的权限
+   */
+  navigateToAuthorize:function(){
+    app.showLoadingMask('申请授权');
+    wx.navigateTo({
+      url: '../authorize/authorize',
+      success: function () {
+        wx.hideLoading();
+      },
+      fail: function (error) {
+        app.showErrNoCancel('授权失败', error.errMsg);
+      }
     })
   }
 })

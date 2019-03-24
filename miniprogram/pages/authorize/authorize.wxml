@@ -8,5 +8,5 @@
     <text class='text-permiession'>{{permiession_text}}</text>
   </view>
 
-  <button type='primary' class='button-login' open-type='getUserInfo' bindgetuserinfo='onGetUserInfo' bindtap='tapAuthLogin'>授权登录</button>
+  <button type='primary' class='button-login' open-type='getUserInfo' bindgetuserinfo='onGetUserInfo' bindtap='tapAuth'>授权登录</button>
 </view>

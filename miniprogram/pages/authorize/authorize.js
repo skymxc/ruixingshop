@@ -11,78 +11,60 @@ Page({
    * 页面的初始数据
    */
   data: {
-    permiession_text:'获得你的公开信息（昵称，头像等）'
+    permiession_text: '获得你的公开信息（昵称，头像等）'
   },
 
   /**
    * 生命周期函数--监听页面加载
+   * 
    */
-  onLoad: function (options) {
-      //检查 当前用户是否拥有 获取用户信息的权限
+  onLoad: function(options) {
+    //检查 当前用户是否拥有 获取用户信息的权限
     var that = this;
     app.showLoadingMask('拉取授权');
-    app.checkUserPermission().then(res=>{
-        wx.hideLoading();
-        if(res){
-            //直接登陆
-            that.login();
-        }
-    }).catch(app.showErrNoCancel('拉取错误',error.errMsg));
-   
+    app.checkUserPermission().then(res => {
+      wx.hideLoading();
+      if (res) {
+        //直接获取用户信息登陆
+        app.login().then(() =>that.back()).catch(error =>app.showErrNoCancel('登陆失败', error.errMsg));
+      }
+    }).catch(error=>app.showErrNoCancel('拉取错误', error.errMsg));
+
   },
-  onGetUserInfo:function(event){
-    app.globalData.userInfo = event.detail.userInfo;
-    app.globalData.logged = true;
-    this.login();
+  onGetUserInfo: function(event) {
+    console.log(event);
+    var that = this;
+    if(event.detail.userInfo){
+      console.log(event.detail.userInfo)
+      app.globalData.userInfo = event.detail.userInfo;
+      app.globalData.logged = true;
+      app.getOpenid()
+        .then(() => app.userExistInDB())
+        .then(data => app.countDBUser(data))
+        .then(() => that.back())
+        .catch(error =>{
+          console.error(error);
+          app.showErrNoCancel('登陆失败', error.errMsg)
+        });
+    }else{
+      wx.hideLoading();
+  
+    }
     
   },
-  login:function(){
-
-    app.showLoadingMask('正在登陆');
-
-    var that = this;
-
-    //登陆 获取openID
-    app.login().then(res => {
-          wx.hideLoading();
-          //返回首页
-          that.toReturn();
-       
-    }).catch(error => {
-      wx.hideLoading();
-
-      wx.showModal({
-        title: '网络异常！',
-        content: error.errMsg,
-        showCancel: false
-      });
-    });
-  },
-  toReturn:function(){
-    //返回首页
-    wx.showLoading({
-      title: '登陆成功，返回中',
-      mask:true
-    })
-    wx.redirectTo({
-      url: '../booklist/booklist',
+  back:function(){
+    //登陆成功 关闭
+    app.showLoadingMask('登陆成功');
+    wx.navigateBack({
       success: function () {
         wx.hideLoading();
       },
-      fail: function (err) {
-        console.error(err);
-        wx.showModal({
-          title: '异常！',
-          content: err.errMsg,
-          showCancel: false
-        });
+      fail: function (error) {
+        app.showErrNoCancel('跳转失败', error.errMsg);
       }
     });
   },
-  tapAuthLogin:function(){
-    wx.showLoading({
-      title: '请稍后',
-      mask:true
-    })
+  tapAuth:function(){
+    app.showLoadingMask('拉取中');
   }
 })
