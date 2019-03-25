@@ -1,0 +1,96 @@
+/* 修改/添加 商品 */
+.container{
+  position: relative;
+  background-color: white;
+}
+.form-goods{
+  width: 100%;
+  height: 500px;
+}
+.mask{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 0, 0, 0.404);
+  position: absolute;
+  top: 0px;
+}
+
+.container-param{
+  width: 80%;
+  min-height: 200px;
+  background-color: white;
+  border-radius: 10px;
+  position: absolute;
+  top: 100px;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+
+}
+.container-rule{
+  width: 80%;
+  min-height: 200px;
+  background-color: ghostwhite;
+  border-radius: 10px;
+  position: absolute;
+  top: 100px;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.text-param{
+  width: 100%;
+  text-align: center;
+  min-height: 30px;
+  font-size: 20px;
+  color: gray;
+}
+.form-param{
+  width: 100%;
+}
+.container-form-param{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+.container-param-input{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 30px;
+ align-items: center;
+  margin-bottom: 10px;
+}
+.input-param{
+  flex: 1;
+  min-height: 30px;
+  border: solid gainsboro 1px;
+  border-radius: 2px;
+  padding-left: 5px;
+}
+
+.container-button{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-form-goods{
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.textarea-name{
+  padding-top: 5px;
+}
+.image-category{
+  width: 25px;
+  height: 25px;
+}

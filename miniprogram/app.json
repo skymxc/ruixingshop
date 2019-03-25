@@ -2,9 +2,10 @@
   "cloud": true,
   "pages": [
 
+    "pages/addGoods/addGoods",
+    "pages/goodsManager/goodsManager",
     "pages/memberCenter/memberCenter",
     "pages/authorize/authorize",
-    
     "pages/index/index",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",

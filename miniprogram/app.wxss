@@ -5,7 +5,7 @@
   flex-direction: column;
   box-sizing: border-box;
   font-size: 15px;
-  /* background-color: rgba(220, 220, 220, 0.247); */
+  background-color: ghostwhite;
 }
 
 .box {
@@ -13,7 +13,7 @@
 }
 
 .container-interval-vertical {
-  margin-top: 5px;
+  /* margin-top: 5px; */
   margin-bottom: 5px;
 }
 

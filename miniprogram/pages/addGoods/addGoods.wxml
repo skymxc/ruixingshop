@@ -1,0 +1,65 @@
+<!--添加/修改 商品-->
+<view class='container'>
+  <form class='form-goods' bindsubmit='formSubmitGoods'>
+    <view class='container-form-goods box'>
+      <view class='container-param-input box'>
+        <text>名字：</text>
+        <textarea class='input-param textarea-name' name='goodsName' auto-height='true' placeholder='这里输入商品名称'></textarea>
+      </view>
+      <view class='container-param-input box'>
+        <text>基本价格(¥)：</text>
+        <input class='input-param' name='goodsPrice' placeholder='人民币' type='number'></input>
+      </view>
+      <view class='container-param-input box'>
+      <text>分类：</text>
+      <image wx:if='{{addCategoryVisible}}' class='image-category' src='../../images/add.png' ></image>
+      <text wx:if='{{!addCategoryVisible}}'>{{goodsCategory}}</text>
+      </view>      
+    </view>
+  </form>
+  <view wx:if='{{maskVisible}}' class='mask box'></view>
+  <view wx:if='{{paramVisible}}' class='container-param box'>
+    <view class='text-param box'>商品参数</view>
+    <form class='form-param box' bindsubmit='formSubmitParam'>
+      <view class='container-form-param box'>
+        <view class='container-param-input box'>
+          <text>名字：</text>
+          <input class='input-param' name='paramName' value='{{paramName}}' type='text' placeholder='这里输入参数名字' focus='{{paramVisible}}'></input>
+        </view>
+        <view class='container-param-input'>
+          <text>参数：</text>
+          <input class='input-param' name='paramValue' value='{{paramValue}}' type='text' placeholder='这里输入参数值'></input>
+        </view>
+
+      </view>
+      <view class='container-button box'>
+        <button bindtap='tapParamCancel'>取消</button>
+        <button form-type='submit'>确定</button>
+      </view>
+    </form>
+  </view>
+  <view wx:if='{{ruleVisible}}' class='container-rule box'>
+    <view class='text-param box'>商品规格</view>
+    <form class='form-param box' bindsubmit='formSubmitRule'>
+      <view class='container-form-param box'>
+        <view class='container-param-input box'>
+          <text>{{inputRule}}：</text>
+          <input class='input-param' name='ruleName' value='{{ruleName}}' type='text' placeholder='这里输入{{inputRule}}' focus='{{ruleVisible}}'></input>
+        </view>
+        <view class='container-param-input'>
+          <text>库存：</text>
+          <input class='input-param' name='ruleStoreNum' value='{{ruleStoreNum}}' type='text' placeholder='这里输入库存'></input>
+        </view>
+        <view class='container-param-input'>
+          <text>价格：</text>
+          <input class='input-param' name='rulePrice' value='{{rulePrice}}' type='text' placeholder='这里输入价格（会累加在基础价格）'></input>
+        </view>
+
+      </view>
+      <view class='container-button box'>
+        <button bindtap='tapRuleInputCancel'>取消</button>
+        <button form-type='submit'>确定</button>
+      </view>
+    </form>
+  </view>
+</view>

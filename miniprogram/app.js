@@ -190,5 +190,18 @@ App({
 
     // })
     // .catch(app.showErrNoCancel('登陆异常', error.errMsg));
+  },
+  navigateTo:function(url){
+    this.showLoadingMask('请稍后');
+    var that = this;
+    wx.navigateTo({
+      url: url,
+      success:function(){
+        wx.hideLoading();
+      },
+      fail:function(error){
+          that.showErrNoCancel('跳转失败',error.errMsg);
+      }
+    })
   }
 })
