@@ -11,10 +11,84 @@
         <input class='input-param' name='goodsPrice' placeholder='人民币' type='number'></input>
       </view>
       <view class='container-param-input box'>
-      <text>分类：</text>
-      <image wx:if='{{addCategoryVisible}}' class='image-category' src='../../images/add.png' ></image>
-      <text wx:if='{{!addCategoryVisible}}'>{{goodsCategory}}</text>
-      </view>      
+        <text>分类：</text>
+        <image wx:if='{{addCategoryVisible}}' class='image-category' src='../../images/add.png'></image>
+        <text wx:if='{{!addCategoryVisible}}'>{{goodsCategory}}</text>
+      </view>
+      <view class='container-rule box'>
+        <view class='container-rule-root container-param-input'>
+          <text>规格</text>
+          <!-- <image class='image-category' src='../../images/add.png'></image> -->
+        </view>
+        <block wx:for='{{ruleArray}}' wx:for-item='rule' wx:for-index='index' wx:key='rule.name'>
+          <view class='container-rule-item'>
+            <view class='container-rule-item-name'>
+              <text>{{rule.name}}：</text>
+              <image class='image-category' src='../../images/add.png'></image>
+            </view>
+            <view class='container-rule-item-value'>
+              <block wx:for='{{rule.value}}' wx:key='item'>
+                <view class='text-rule-item-value'>{{item}}</view>
+              </block>
+            </view>
+          </view>
+        </block>
+      </view>
+      <view class='container-store container-param-input box'>
+        <text>总库存：</text>
+        <input class='input-param' name='goodsStore' type='number' disabled='{{storeInputEnable}}'></input>
+      </view>
+      <view class='container-postage container-param-input box'>
+        <text>邮费(¥)：</text>
+        <input class='input-param' name='goodsPostage' type='number'></input>
+      </view>
+      <view class='container-image box'>
+        <view class='container-rule-item-name container-image-add box'>
+          <text>图片：</text>
+          <image wx:if='{{imageArray.length<6}}' class='image-category' src='../../images/add.png'></image>
+        </view>
+        <view wx:if='{{imageArray.length>0}}' class='container-image-value box'>
+          <block wx:for='{{imageArray}}'>
+            <view class='container-image-item'>
+              <image class='image-goods' src='{{item}}' mode='center'></image>
+              <image src='../../images/delete-2.png' class='image-delete'></image>
+            </view>
+
+          </block>
+        </view>
+      </view>
+      <view class='container-image box'>
+        <view class='container-rule-item-name container-image-add box'>
+          <text>参数：</text>
+          <image class='image-category' src='../../images/add.png'></image>
+        </view>
+        <block wx:for='{{paramArray}}' wx:for-item='param' wx:key='param.name'>
+          <view class='container-rule-item container-param-item box'>
+            <image src='../../images/delete.png' class='image-category'></image>
+            <view class='container-param-item-value box'>
+              <view class='text-param-show text-param-name box'>{{param.name}}</view>
+              <view class='text-param-show text-param-value box'>{{param.value}}</view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <view class='container-image container-image-detail box'>
+        <view class='container-rule-item-name container-image-add box'>
+          <text>详情图片：</text>
+          <image wx:if='{{imageDetailArray.length<10}}' class='image-category' src='../../images/add.png'></image>
+        </view>
+
+        <block wx:for='{{imageDetailArray}}'>
+          <view class='container-image-detail-item box' >
+            <image class='image-detail' src='{{item}}' mode='aspectFit' ></image>
+            <image src='../../images/delete-2.png' class='image-delete-detail'></image>
+          </view>
+
+        </block>
+
+      </view>
+
+      <button form-type='submit' type='primary' class='button-submit-goods'>添加</button>
     </view>
   </form>
   <view wx:if='{{maskVisible}}' class='mask box'></view>
@@ -38,7 +112,7 @@
       </view>
     </form>
   </view>
-  <view wx:if='{{ruleVisible}}' class='container-rule box'>
+  <view wx:if='{{ruleVisible}}' class='container-rule-input box'>
     <view class='text-param box'>商品规格</view>
     <form class='form-param box' bindsubmit='formSubmitRule'>
       <view class='container-form-param box'>

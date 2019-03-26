@@ -1,13 +1,16 @@
 /* 修改/添加 商品 */
-.container{
+
+.container {
   position: relative;
   background-color: white;
 }
-.form-goods{
+
+.form-goods {
   width: 100%;
   height: 500px;
 }
-.mask{
+
+.mask {
   width: 100%;
   height: 100%;
   background-color: rgba(7, 0, 0, 0.404);
@@ -15,7 +18,7 @@
   top: 0px;
 }
 
-.container-param{
+.container-param {
   width: 80%;
   min-height: 200px;
   background-color: white;
@@ -26,9 +29,9 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
-
 }
-.container-rule{
+
+.container-rule-input {
   width: 80%;
   min-height: 200px;
   background-color: ghostwhite;
@@ -40,31 +43,35 @@
   flex-direction: column;
   padding: 10px;
 }
-.text-param{
+
+.text-param {
   width: 100%;
   text-align: center;
   min-height: 30px;
   font-size: 20px;
   color: gray;
 }
-.form-param{
+
+.form-param {
   width: 100%;
 }
-.container-form-param{
+
+.container-form-param {
   display: flex;
   flex-direction: column;
   width: 100%;
-
 }
-.container-param-input{
+
+.container-param-input {
   display: flex;
   flex-direction: row;
   width: 100%;
   min-height: 30px;
- align-items: center;
+  align-items: center;
   margin-bottom: 10px;
 }
-.input-param{
+
+.input-param {
   flex: 1;
   min-height: 30px;
   border: solid gainsboro 1px;
@@ -72,7 +79,7 @@
   padding-left: 5px;
 }
 
-.container-button{
+.container-button {
   display: flex;
   flex-direction: row;
   padding: 10px;
@@ -80,17 +87,140 @@
   justify-content: center;
 }
 
-.container-form-goods{
+.container-form-goods {
   width: 100%;
   padding: 5px;
   display: flex;
   flex-direction: column;
 }
 
-.textarea-name{
+.textarea-name {
   padding-top: 5px;
 }
-.image-category{
+
+.image-category {
   width: 25px;
   height: 25px;
+}
+
+.container-rule, .container-rule-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container-rule {
+  /* background-color: ghostwhite; */
+}
+
+.container-rule-item {
+  padding-left: 20px;
+}
+
+.container-rule-item-name, .container-rule-item-value {
+  display: flex;
+  flex-direction: row;
+}
+
+.container-rule-item-value {
+  flex-wrap: wrap;
+  margin: 5px;
+}
+
+.text-rule-item-value {
+  min-width: 20px;
+  text-align: center;
+  padding: 4px;
+  border: solid rgba(128, 128, 128, 0.603) 1px;
+  border-radius: 10px;
+  background-color: whitesmoke;
+  margin: 5px;
+}
+
+.container-image {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.container-image-add {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 30px;
+  align-items: center;
+}
+
+.container-image-value {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.container-image-item{
+  width: 30%;
+  height: 100px;
+  margin: 5px;
+  position: relative;
+
+  background-color: rgba(8, 0, 0, 0.192);
+}
+.image-goods{
+  width: 100%;
+  height: 100%;
+}
+.image-delete{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+.container-param-item{
+  align-items: center;
+  flex-direction: row;
+}
+.container-param-item-value{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  margin-left: 5px;
+
+border: solid gainsboro 1px;
+}
+.text-param-show{
+  display: flex;
+  padding: 2px;
+ flex: 1;
+ height: 100%;
+ min-height: 50px;
+  align-items: center;
+  border-right: solid gainsboro 0.5px;
+}
+
+.container-image-detail-item{
+  width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.image-detail{
+  flex: 1;
+  margin-top: 15px;
+}
+.image-delete-detail{
+  width: 30px;
+  height: 30px;
+  border: solid gray 1px;
+  border-radius: 15px;
+
+  /* background-color: rgba(14, 0, 0, 0.356); */
+}
+.button-submit-goods{
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
 }

@@ -12,7 +12,44 @@ Page({
     paramVisible: false,
     addCategoryVisible:false,
     inputRule:'颜色',
-    goodsCategory:'男装 T恤'
+    goodsCategory:'男装 T恤',
+    ruleArray:[
+      {name:'颜色',
+      value:[
+        'white',
+        'black',
+        'yellow',
+        'red',
+        'gray',
+        'grey',
+        'green',
+        'blue',
+        'dark'
+      ]},{
+        name:'尺寸',
+        value:[
+          's',
+          'm',
+          'l',
+          'xl'
+        ]
+      }
+    ],
+    storeInputEnable:false,
+    imageArray:[],
+    paramArray:[
+      {
+        name:'制造厂家里卡多说了你发裂了那份快递蓝山咖啡价格来看日记',
+        value:'波司登'
+      },{
+        name:'制造地',
+        value:'中国厂家里卡多说了你发裂了那份快递蓝山咖啡价格来看日记'
+      }
+    ],
+    imageDetailArray:[
+      'cloud://te-85cb20.7465-te-85cb20/image/goods/WechatIMG11.jpeg',
+      'cloud://te-85cb20.7465-te-85cb20/image/goods/WechatIMG11.jpeg'
+    ]
   },
 
   /**
