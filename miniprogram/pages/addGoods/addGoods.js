@@ -46,10 +46,7 @@ Page({
         value:'中国厂家里卡多说了你发裂了那份快递蓝山咖啡价格来看日记'
       }
     ],
-    imageDetailArray:[
-      'cloud://te-85cb20.7465-te-85cb20/image/goods/WechatIMG11.jpeg',
-      'cloud://te-85cb20.7465-te-85cb20/image/goods/WechatIMG11.jpeg'
-    ]
+    imageDetailArray:[]
   },
 
   /**

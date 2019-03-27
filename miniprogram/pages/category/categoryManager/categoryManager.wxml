@@ -1,0 +1,47 @@
+<!--分类管理-->
+<!-- 
+  container{
+    list{}
+    button(add)
+    mask{
+      
+    }
+    confirm{}
+  }
+ -->
+
+<view class='container'>
+  <view class='container-list box'>
+    <block wx:for='{{data}}' wx:for-item='category' wx:key='category._id'>
+      <view class='container-category box' data-category='{{category}}' data-index='{{index}}' bindtap='tapCategory' bindlongpress='longtapCategory'>
+
+
+        <image class='image-category' src='{{category.icon}}' mode='center'></image>
+        <view class='text-category box'>{{category.name}}</view>
+      </view>
+    </block>
+  </view>
+  <button class='button-add' type='primary'>添加</button>
+  <view wx:if='{{maskVisible}}' class='mask box ' bindtap='tapMask'></view>
+  <view wx:if='{{confirmVisible}}' class='container-confirm box '>
+    <form class='form-update' bindsubmit='submitUpdate'>
+      <view class='container-update'>
+        <view class='container-input'>
+          名称：
+          <input type='text' name='categoryName' value='{{category.name}}' placeholder='分类名字' class='input-category' maxlength='10'></input>
+        </view>
+        <view class='container-input'>
+          图标：
+          <image wx:if='{{category.icon.length>0}}' class='image-category'  src='{{category.icon}}' mode='center'></image>
+          <image wx:if='{{category.icon.length>0}}' src='../../../images/delete-2.png' class='image-category'></image>
+          <image wx:if='{{category.icon.length==0}}'class='image-category'  src='../../../images/add.png' ></image>
+        </view>
+       <view class='container-update-button'>
+        <button class='button-update' type='warn'>删除</button>
+        <button class='button-update' type='primary'>添加</button>
+       </view>
+      </view>
+    </form>
+
+  </view>
+</view>

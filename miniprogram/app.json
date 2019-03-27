@@ -1,7 +1,8 @@
 {
   "cloud": true,
   "pages": [
-
+    "pages/category/categoryManager/categoryManager",
+    "pages/category/subcategoryManager/subcategoryManager",
     "pages/addGoods/addGoods",
     "pages/goodsManager/goodsManager",
     "pages/memberCenter/memberCenter",
