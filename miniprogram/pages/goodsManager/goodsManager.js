@@ -38,6 +38,6 @@ Page({
    * 分类管理
    */
   tapCategoryManager:function(){
-
+    app.navigateTo('../category/categoryManager/categoryManager')
   }
 })

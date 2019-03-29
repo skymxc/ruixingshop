@@ -66,16 +66,12 @@ Page({
   tapManagerGoods: function(event) {
     //是否已经登陆
     if (app.globalData.logged) {
-        wx.showToast({
-          title: '跳转到管理',
-        })
+      app.navigateTo('../goodsManager/goodsManager');
       return
     }
    this.checkUserLogin().then(()=>{
       //跳转管理；
-      wx.showToast({
-        title: '跳转到管理',
-      })
+     app.navigateTo('../goodsManager/goodsManager');
    }).catch(() => this.navigateToAuthorize());
   },
   /**

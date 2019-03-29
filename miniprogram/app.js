@@ -203,5 +203,47 @@ App({
           that.showErrNoCancel('跳转失败',error.errMsg);
       }
     })
+  },
+  /**
+   * 获取上传文件的 cloudname
+   */
+  getCloudName:function(src){
+    var split = src.split('.');
+    //时间戳
+    var time = new Date().getTime();
+    var cloudName = this.globalData.openid + '_' + time + '.' + split[split.length - 1];
+    return cloudName;
+  },
+  /**
+   * 上传文件
+   */
+  uploadFile: function (src,cloudPath) {
+    
+    return new Promise((resolve,reject)=>{
+      wx.cloud.uploadFile({
+        cloudPath: cloudPath,
+        filePath: src,
+        success:function(res){
+          console.log(res);
+          if (res.statusCode == 200) {
+            resolve(res.fileID);
+          }else{
+            var error={
+              errMsg:'上传失败('+res.statusCode+')'
+            }
+            reject(error);
+          }
+        
+        },
+        fail:function(error){
+          var err = {
+            errMsg: error.errMsg + '(' + error.errCode + ')'
+          }
+          console.log(error);
+          reject(err);
+        }
+      });
+    }); 
+
   }
 })
