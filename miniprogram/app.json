@@ -1,10 +1,11 @@
 {
   "cloud": true,
   "pages": [
-
-    "pages/memberCenter/memberCenter",
-    "pages/category/categoryManager/categoryManager",
+"pages/memberCenter/memberCenter",
+    "pages/category/ruleManager/ruleManager",
     "pages/category/subcategoryManager/subcategoryManager",
+    "pages/category/categoryManager/categoryManager",
+    
     "pages/addGoods/addGoods",
     "pages/goodsManager/goodsManager",
     "pages/authorize/authorize",

@@ -1,2 +1,49 @@
-<!--miniprogram/pages/category/subcategoryManager/subcategoryManager.wxml-->
-<text>子分类管理</text>
+<!--分类管理-->
+<!-- 
+  container{
+    list{}
+    button(add)
+    mask{
+      
+    }
+    confirm{}
+  }
+ -->
+
+<view class='container'>
+  <view class='container-list box'>
+    <block wx:for='{{list}}' wx:for-item='category' wx:key='category._id'>
+      <view class='container-category box' data-category='{{category}}' data-index='{{index}}' bindtap='tapCategory' bindlongpress='longtapCategory'>
+
+
+        <image class='image-category' src='{{category.icon}}' mode='center'></image>
+        <view class='text-category box'>{{category.name}}</view>
+      </view>
+    </block>
+  </view>
+  <button class='button-add' type='primary' bindtap='tapToAdd'>添加</button>
+  <view wx:if='{{maskVisible}}' class='mask box ' bindtap='tapMask'></view>
+  <view wx:if='{{confirmVisible}}' class='container-confirm box '>
+    <form class='form-update' bindsubmit='submitUpdate'>
+      <view class='container-update'>
+        <view class='container-input'>
+          名称：
+          <input type='text' name='categoryName' value='{{category.name}}' placeholder='分类名字' class='input-category' maxlength='10'></input>
+        </view>
+        <view class='container-input'>
+          图标：
+          <image wx:if='{{addImageSrc.length>0}}' class='image-category'  src='{{addImageSrc}}' mode='center'></image>
+          <image wx:if='{{addImageSrc.length>0}}' src='../../../images/delete-2.png' class='image-add' bindtap='tapDelImage' ></image>
+          <image wx:if='{{addImageVisible}}' class='image-add'  src='../../../images/add.png' bindtap='tapAddImage'></image>
+        </view>
+       <view class='container-update-button'>
+        <button wx:if='{{!pureAdd}}' class='button-update' type='warn' bindtap='tapDel'>删除</button>
+        <button wx:if='{{pureAdd}}' class='button-update' type='primary' form-type='submit'>添加</button>
+        <button wx:if='{{!pureAdd}}' class='button-update' type='primary' form-type='submit'>修改</button>
+
+       </view>
+      </view>
+    </form>
+
+  </view>
+</view>

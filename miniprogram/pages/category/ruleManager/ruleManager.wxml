@@ -1,0 +1,35 @@
+<!--
+ container{
+    list{}
+    button(add)
+    mask{
+      
+    }
+    confirm{}
+  }
+-->
+
+
+<view class='container'>
+  <view class='container-list box'>
+    <block wx:for='{{list}}' wx:for-item='rule' wx:key='rule._id'>
+      <view class='container-rule box' data-rule='{{rule}}' data-index='{{index}}' bindtap='tapRule' bindlongpress='longtapRule'>
+        {{rule.value}}
+      </view>
+    </block>
+  </view>
+
+  <button class='button-add' type='primary' bindtap='tapToAdd'>添加</button>
+  <view wx:if='{{maskVisible}}' class='mask box ' bindtap='tapMask'></view>
+  <view wx:if='{{confirmVisible}}' class='container-confirm box '>
+    <form class='form-update' bindsubmit='submitUpdate'>
+      <view class='container-update'>
+        <input type='text' name='ruleName' value='{{rule.value}}' placeholder='名字' class='input-rule' maxlength='10'></input>
+
+        <button wx:if='{{!pureAdd}}' class='button-update' type='primary' form-type='submit'>修改</button>
+        <button  wx:if='{{pureAdd}}' class='button-update' type='primary' form-type='submit'>添加</button>
+      </view>
+    </form>
+
+  </view>
+</view>

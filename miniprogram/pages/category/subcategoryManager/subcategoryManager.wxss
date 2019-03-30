@@ -1,1 +1,8 @@
 /* miniprogram/pages/category/subcategoryManager/subcategoryManager.wxss */
+@import '../categoryManager/categoryManager.wxss';
+
+.image-category{
+   width: 70px;
+  height: 100px;
+  margin-right: 5px;
+}

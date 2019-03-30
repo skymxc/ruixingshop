@@ -1,0 +1,59 @@
+/* miniprogram/pages/category/ruleManager/ruleManager.wxss */
+
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.container-list {
+  width: 100%;
+  margin-bottom: 60px;
+}
+
+.button-add {
+  width: 80%;
+  position: fixed;
+  bottom: 5px;
+  left: 10%;
+}
+
+.container-confirm {
+  width: 70%;
+  min-height: 150px;
+  background-color: white;
+  border-radius: 10px;
+  position: absolute;
+  top: 200px;
+  left: 15%;
+  padding: 10px;
+  align-items: center;
+}
+
+.container-rule {
+  min-height: 50px;
+  display: flex;
+  flex-direction: row;
+ align-items: center;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-bottom: solid #999 1px;
+}
+
+.container-update {
+  display: flex;
+  flex-direction: column;
+}
+.input-rule {
+  width: 90%;
+  min-height: 30px;
+  border: solid gainsboro 1px;
+  padding: 2px;
+  margin: 5%;
+}
+
+.button-update{
+  margin: 5%;
+  width: 90%;
+
+}

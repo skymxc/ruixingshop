@@ -21,12 +21,16 @@ var count = function(table,where){
  return  db.collection(table).where(where).count();
 }
 var update= function(table,_id,data){
-  console.log(data);
+  console.log('_id->'+_id+';'+data);
   return db.collection(table).doc(_id).update({data:data});
+}
+var del = function(table,_id){
+ return db.collection(table).doc(_id).remove();
 }
 module.exports = {
   add:add,
   load:load,
   count:count,
-  update:update
+  update:update,
+  remove :del
 }

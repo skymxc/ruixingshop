@@ -22,20 +22,21 @@ Page({
     updateIndex: -1,
     addImageSrc: '',
     pageIndex: 0,
-    pageSize: 20
+    pageSize: 20,
+    table:'category'
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    //为了测试
-    app.globalData.openid = 'oEaLm5Tep2eHAwEor4Kjo84QyTXc';
+    
   },
   onReady: function() {
+    
     app.showLoadingMask('加载中');
     var that = this;
-    dbUtils.load('category', {}, this.data.pageSize, this.data.pageIndex, 'name', 'asc')
+    dbUtils.load(this.data.table, {}, this.data.pageSize, this.data.pageIndex, 'name', 'asc')
       .then(res => {
         console.log(res);
         wx.hideLoading();
@@ -47,6 +48,29 @@ Page({
         app.showErrNoCancel('加载失败', error.errMsg);
       })
   },
+  onReachBottom:function(){
+    if (this.data.maskVisible) {
+     
+      return;
+    } 
+    if (this.data.list.length < this.data.pageSize) {
+      return;
+    }
+    var that =this;
+    app.showLoadingMask('加载中')
+    dbUtils.load(this.data.table,{},this.data.pageSize,this.data.list.length,'name','asc')
+    .then(res=>{
+      wx.hideLoading();
+        if(res.data.length>0){
+          that.data.list = that.data.list.concat(res.data);
+          that.setData({
+            list:that.data.list
+          });
+        }
+    }).catch(error=>{
+      app.showErrNoCancel('加载失败', error.errMsg);
+    })
+  },
   /**
    * 点击分类
    */
@@ -54,15 +78,9 @@ Page({
     var category = event.currentTarget.dataset.category;
     var index = event.currentTarget.dataset.index;
     app.showLoadingMask('请稍候');
-    wx.navigateTo({
-      url: '../subcategoryManager/subcategoryManager',
-      success: function() {
-        wx.hideLoading();
-      },
-      fail: function(error) {
-        app.showErrNoCancel('跳转错误', error.errMsg);
-      }
-    })
+    var param = '?_id='+category._id+'&name='+category.name;
+    app.navigateTo('../subcategoryManager/subcategoryManager'+param)
+    
   },
   /**
    * 长按分类
@@ -201,7 +219,7 @@ Page({
         app.showLoadingMask('修改中');
 
         var _id = that.data.list[that.data.updateIndex]._id;
-        dbUtils.update('category',_id,category)
+        dbUtils.update(this.data.table,_id,category)
         .then(res => that.updateAfter(res, category))
           .catch(error => {
             console.error(error);
@@ -209,18 +227,44 @@ Page({
           });
       }).catch(error => {
         console.error(error);
-        app.showErrNoCancel('修改错误', error.errMsg);
+        app.showErrNoCancel('名字查重错误', error.errMsg);
       });
     } else {
       //修改了图标
       app.showLoadingMask('修改中');
+      if (this.data.list[this.data.updateIndex].name == category.name){
+        //如果没有修改名字
+        this.uploadFile(category.icon)
+          .then(res => this.submitCategory(res, category))
+          .then(res => this.updateAfter(res, category))
+          .catch(error => {
+            app.showErrNoCancel('修改错误', error.errMsg);
+          });
+          return;
+      }
+      //修改了名字 需要判断名字是否重复
+      this.isExist(category.name).then(res => {
+        if (res.total != 0) {
+          wx.hideLoading();
+          wx.showToast({
+            title: '分类名称已经存在',
+            icon: 'none'
+          });
+          return;
+        }
+        var _id = that.data.list[that.data.updateIndex]._id;
+        dbUtils.update(this.data.table, _id, category)
+          .then(res => that.updateAfter(res, category))
+          .catch(error => {
+            console.error(error);
+            app.showErrNoCancel('修改错误', error.errMsg);
+          });
 
-      this.uploadFile(category.icon)
-        .then(res => this.submitCategory(res, category))
-        .then(res => this.updateAfter(res, category))
-        .catch(error => {
-          app.showErrNoCancel('修改错误', error.errMsg);
-        });
+      }).catch(error => {
+        console.error(error);
+        app.showErrNoCancel('名字查重错误', error.errMsg);
+      });
+      
     }
   },
   /**
@@ -228,12 +272,30 @@ Page({
    */
   toAdd: function(category) {
     app.showLoadingMask('添加中');
-    this.uploadFile(category.icon)
-      .then(res => this.submitCategory(res, category))
-      .then(res => this.addAfter(res, category))
-      .catch(error => {
-        app.showErrNoCancel('添加错误', error.errMsg);
+    this.isExist(category.name).then(res => {
+      console.log(category.name+' :count:'+res.total);
+      if (res.total != 0) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '分类名称已经存在',
+          icon: 'none'
+        });
+        return;
+        
+      }
+
+      this.uploadFile(category.icon)
+        .then(res => this.submitCategory(res, category))
+        .then(res => this.addAfter(res, category))
+        .catch(error => {
+          app.showErrNoCancel('添加错误', error.errMsg);
+        });
+    }).catch(error=>{
+        console.error(error);
+        app.showErrNoCancel('检索重名错误',error.errMsg);
       });
+
+    
   },
   /**
    * 提交表单 根据 pureAdd 判断是不是添加或者修改
@@ -244,10 +306,12 @@ Page({
   submitCategory: function(icon, category) {
     category.icon = icon;
     if (this.data.pureAdd) {
-      return dbUtils.add('category', category);
+      console.log('submitCategory--add')
+      return dbUtils.add(this.data.table, category);
     } else {
+      console.log('submitCategory--udpate')
       var _id = this.data.list[this.data.updateIndex]._id;
-      return dbUtils.update('category', _id, category);
+      return dbUtils.update(this.data.table, _id, category);
     }
   },
   updateAfter: function(res, category) {
@@ -311,7 +375,7 @@ Page({
     var where = {
       name: name
     }
-    return dbUtils.count('category', where);
+    return dbUtils.count(this.data.table, where);
   },
   /**
    * 删除
@@ -338,14 +402,12 @@ Page({
   hasGoods:function(){
     var _id = this.data.list[this.data.updateIndex]._id;
     app.showLoadingMask('删除中');
-    dbUtils.count('category',{category:_id})
+    var that =this;
+    dbUtils.count('goods',{category:_id})
     .then(res=>{
         if(res.total==0){
           // 准备删除
-          wx.hideLoading();
-          wx.showToast({
-            title: '删除成功',
-          })
+          that.toDelCategory();
         }else{
           app.showErrNoCancel('删除失败','该分类下有商品无法删除');
         }
@@ -353,5 +415,44 @@ Page({
       console.error(error);
       app.showErrNoCancel('删除失败',error.errMsg);
     })
+  },
+  toDelCategory:function(){
+   
+    var category = this.data.list[this.data.updateIndex];
+    wx.cloud.callFunction({
+      name:'delCategory',
+      data:{
+        _id:category._id
+      }
+    }).then(res=>this.delAfter(res))
+    .catch(error=>{
+      console.error(error);
+      app.showErrNoCancel('删除错误',error.errMsg);
+    })
+  },
+  delAfter:function(res){
+    console.log(res);
+    wx.hideLoading();
+    var index = this.data.updateIndex;
+    if (res.result.stats.removed != 0) {
+      wx.showToast({
+        title: '删除成功',
+      });
+      this.data.list.splice(index,1);
+      this.setData({
+        list:this.data.list,
+        category:{},
+        maskVisible:false,
+        confirmVisible:false,
+        addImageSrc:false,
+        addImageVisible:true,
+        pureAdd:true
+      })
+    }else{
+      wx.showToast({
+        title: '删除失败',
+        icon:'none'
+      });
+    }
   }
 })
