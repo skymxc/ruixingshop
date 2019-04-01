@@ -24,12 +24,13 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
+  z-index: 99;
 }
 
 .container-rule-input {
   width: 80%;
   min-height: 200px;
-  background-color: ghostwhite;
+  background-color: white;
   border-radius: 10px;
   position: absolute;
   top: 100px;
@@ -37,6 +38,7 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
+  z-index: 99;
 }
 
 .text-param {

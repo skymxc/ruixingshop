@@ -31,6 +31,9 @@ const db = cloud.database();
  * 首先将所有的 category 列出来。
  * 遍历category 列出来所有的sub;
  * 遍历 sub 列出来 rule
+ * 
+ * 全部加载这种方式会出现堆栈溢出的情况。
+ * 弃用。但是通过这函数更好的理解了 async await,Promise 的用法。保留在这里吧，就不删除了。
  */
 var getSubcategory =  function(category) {
   return db.collection('subcategory').where({

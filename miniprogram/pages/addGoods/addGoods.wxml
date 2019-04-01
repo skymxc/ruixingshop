@@ -11,11 +11,14 @@
         <input class='input-param' name='goodsPrice' placeholder='人民币' type='number'></input>
       </view>
       <view class='container-param-input box'>
-        <text>分类：</text>
-        <image wx:if='{{addCategoryVisible}}' class='image-category' src='../../images/add.png'></image>
-        <text wx:if='{{!addCategoryVisible}}'>{{goodsCategory}}</text>
+        <picker mode='multiSelector' range='{{cateArray}}' range-key="{{'name'}}" value='{{cateIndex}}' bindchange='bindMultiPickerChange' bindcolumnchange="bindMultiPickerColumnChange" disabled='{{disablePicker}}'>
+          <view class='picker-text'>
+            分类：{{category.name}}，{{subcategory.name}}
+          </view>
+        </picker>
+        
       </view>
-      <view class='container-rule box'>
+      <view class='container-rule box' wx:if='{{ruleArray.length>0}}'>
         <view class='container-rule-root container-param-input'>
           <text>规格</text>
           <!-- <image class='image-category' src='../../images/add.png'></image> -->
@@ -23,12 +26,12 @@
         <block wx:for='{{ruleArray}}' wx:for-item='rule' wx:for-index='index' wx:key='rule.name'>
           <view class='container-rule-item'>
             <view class='container-rule-item-name'>
-              <text>{{rule.name}}：</text>
-              <image class='image-category' src='../../images/add.png'></image>
+              <text>{{rule.value}}：</text>
+              <image class='image-category' src='../../images/add.png' bindtap='tapAddRule' data-index='{{index}}' data-rule='{{rule}}'></image>
             </view>
             <view class='container-rule-item-value'>
-              <block wx:for='{{rule.value}}' wx:key='item'>
-                <view class='text-rule-item-value'>{{item}}</view>
+              <block wx:for='{{rule.array}}' wx:key='item' wx:for-index='itemIndex'>
+                <view bindtap='tapRuleItem' data-itemIndex='{{itemIndex}}' data-item='{{item}}' data-ruleIndex='{{index}}' class='text-rule-item-value'>{{item.value}}</view>
               </block>
             </view>
           </view>
@@ -40,7 +43,7 @@
       </view>
       <view class='container-postage container-param-input box'>
         <text>邮费(¥)：</text>
-        <input class='input-param' name='goodsPostage' type='number'></input>
+        <input disabled='{{maskVisible}}' class='input-param' name='goodsPostage' type='number'></input>
       </view>
       <view class='container-image box'>
         <view class='container-rule-item-name container-image-add box'>
@@ -91,7 +94,7 @@
       <button form-type='submit' type='primary' class='button-submit-goods'>添加</button>
     </view>
   </form>
-  <view wx:if='{{maskVisible}}' class='mask box'></view>
+  <view wx:if='{{maskVisible}}' class='mask box' bindtap='tapMask'></view>
   <view wx:if='{{paramVisible}}' class='container-param box'>
     <view class='text-param box'>商品参数</view>
     <form class='form-param box' bindsubmit='formSubmitParam'>
@@ -117,21 +120,22 @@
     <form class='form-param box' bindsubmit='formSubmitRule'>
       <view class='container-form-param box'>
         <view class='container-param-input box'>
-          <text>{{inputRule}}：</text>
-          <input class='input-param' name='ruleName' value='{{ruleName}}' type='text' placeholder='这里输入{{inputRule}}' focus='{{ruleVisible}}'></input>
+          <text>{{inputRuleName}}：</text>
+          <input class='input-param' name='ruleName' value='{{ruleItem.value}}' type='text' placeholder='这里输入{{inputRuleName}}' focus='{{ruleVisible}}'></input>
         </view>
         <view class='container-param-input'>
           <text>库存：</text>
-          <input class='input-param' name='ruleStoreNum' value='{{ruleStoreNum}}' type='text' placeholder='这里输入库存'></input>
+          <input class='input-param' name='ruleStoreNum' value='{{ruleItem.store}}' type='number' placeholder='这里输入库存'></input>
         </view>
         <view class='container-param-input'>
           <text>价格：</text>
-          <input class='input-param' name='rulePrice' value='{{rulePrice}}' type='text' placeholder='这里输入价格（会累加在基础价格）'></input>
+          <input class='input-param' name='rulePrice' value='{{ruleItem.price}}' type='number' placeholder='这里输入价格（会累加在基础价格）'></input>
         </view>
 
       </view>
       <view class='container-button box'>
-        <button bindtap='tapRuleInputCancel'>取消</button>
+        <button bindtap='tapDelRule' type='warn' wx:if='{{!ruleItemAdd}}'>删除</button>
+        <button bindtap='tapRuleInputCancel' wx:if='{{ruleItemAdd}}'>取消</button>
         <button form-type='submit'>确定</button>
       </view>
     </form>

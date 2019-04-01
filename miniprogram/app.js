@@ -245,5 +245,12 @@ App({
       });
     }); 
 
+  },
+  showToast:function(text){
+    wx.showToast({
+      title: text,
+      icon: 'none'
+    });
+    
   }
 })
