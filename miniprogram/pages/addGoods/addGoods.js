@@ -21,13 +21,7 @@ Page({
     ruleArray: [],
     storeInputEnable: false,
     imageArray: [],
-    paramArray: [{
-      name: '制造厂家里卡多说了你发裂了那份快递蓝山咖啡价格来看日记',
-      value: '波司登'
-    }, {
-      name: '制造地',
-      value: '中国厂家里卡多说了你发裂了那份快递蓝山咖啡价格来看日记'
-    }],
+    paramArray: [],
     imageDetailArray: [],
     categoryList: [],
     cateArray: [],
@@ -39,11 +33,15 @@ Page({
       name: ''
     },
     disablePicker: false,
-    inputRule:{},
-    inputRuleIndex:-1,
-    ruleItemAdd:true,
-    ruleItemIndex:-1,
-    ruleItem:{}
+    inputRule: {},
+    inputRuleIndex: -1,
+    ruleItemAdd: true,
+    ruleItemIndex: -1,
+    ruleItem: {},
+    paramItemAdd: true,
+    paramItemIndex: -1,
+    paramItem: {},
+    totalStore: 0
   },
 
   /**
@@ -62,17 +60,36 @@ Page({
     console.log(value);
     var name = value.paramName;
     var paramValue = value.paramValue;
-    console.log(name);
-    console.log(paramValue);
+    if (name.length == 0) {
+      app.showToast('参数名称未填写');
+      return;
+    }
+    if (paramValue.length == 0) {
+      app.showToast('参数值未填写');
+      return;
+    }
+
+    var item = {
+      name: name,
+      value: paramValue
+    }
+
+
+    if (this.data.paramItemAdd) {
+      this.data.paramArray.push(item);
+    } else {
+      this.data.paramArray[this.data.paramItemIndex] = item;
+    }
+    this.setData({
+      paramArray: this.data.paramArray
+    });
+    this.tapMask();
   },
   /**
    * 取消参数写入
    */
   tapParamCancel: function() {
-    this.setData({
-      paramVisible: false,
-      maskVisible: false
-    });
+    this.tapMask();
   },
   /**
    * 取消规格输入
@@ -102,44 +119,44 @@ Page({
     var rule = this.data.inputRule;
     var ruleIndex = this.data.inputRuleIndex;
     //
-    if(ruleValue.length==0){
+    if (ruleValue.length == 0) {
       wx.showToast({
-        title: this.data.inputRuleName+'没有输入',
-        icon:'none'
+        title: this.data.inputRuleName + '没有输入',
+        icon: 'none'
       });
       return
     }
-    if(rulePrice.length==0){
+    if (rulePrice.length == 0) {
       rulePrice = 0;
     }
-    if(ruleStore.length==0){
+    if (ruleStore.length == 0) {
       ruleStore = 0;
     }
-    if(rulePrice<0){
-        rulePrice=0;
+    if (rulePrice < 0) {
+      rulePrice = 0;
     }
-    if(ruleStore<0){
+    if (ruleStore < 0) {
       ruleStore = 0;
     }
-    
+
     var item = {
       ruleName: rule.value,
       value: ruleValue,
       store: ruleStore,
       price: rulePrice,
-      ruleIndex:ruleIndex
+      ruleIndex: ruleIndex
     }
 
     //这里使用 ruleArray 吧，不与 category 关联了
-    if(this.data.ruleItemAdd){ //新增
+    if (this.data.ruleItemAdd) { //新增
 
-    if(rule.array){
-      rule.array.push(item);
-    }else{
-      var array = new Array();
-      array[0] = item;
-      rule.array = array;
-    }
+      if (rule.array) {
+        rule.array.push(item);
+      } else {
+        var array = new Array();
+        array[0] = item;
+        rule.array = array;
+      }
       this.data.ruleArray[ruleIndex] = rule;
       this.setData({
         ruleArray: this.data.ruleArray,
@@ -150,21 +167,22 @@ Page({
         ruleName: '',
         ruleVisible: false
       });
-      
-    }else{
+
+    } else {
       //修改; ruleArrayValueIndex是修改的index
-     
-      this.data.ruleArray[ruleIndex].array[this.data.ruleItemIndex] =item;
-        this.setData({
-          ruleArray:this.data.ruleArray,
-          ruleItem:{},
-          ruleIndex:-1,
-          ruleItemIndex:-1,
-          maskVisible:false,
-          ruleVisible:false,
-          inputRuleName:''
-        })
+
+      this.data.ruleArray[ruleIndex].array[this.data.ruleItemIndex] = item;
+      this.setData({
+        ruleArray: this.data.ruleArray,
+        ruleItem: {},
+        ruleIndex: -1,
+        ruleItemIndex: -1,
+        maskVisible: false,
+        ruleVisible: false,
+        inputRuleName: ''
+      })
     }
+    this.calculateTotalStore();
   },
   listCategory: function() {
     var that = this;
@@ -214,14 +232,14 @@ Page({
           cateArray: that.data.cateArray,
           cateIndex: that.data.cateIndex
         });
-        that.listSubcategory(res.data[0], 0,true);
+        that.listSubcategory(res.data[0], 0, true);
       }).catch(error => {
         console.error(error);
         app.showErrNoCancel('分类加载错误', error.errMsg);
 
       })
   },
-  listSubcategory: function(category, index,loadRule) {
+  listSubcategory: function(category, index, loadRule) {
     app.showLoadingMask('子分类加载中');
     var that = this;
     this.setData({
@@ -246,8 +264,8 @@ Page({
         subcategory: res.data[0],
         disablePicker: false
       })
-      if(loadRule){
-        that.listRule(category,res.data[0],0,index);
+      if (loadRule) {
+        that.listRule(category, res.data[0], 0, index);
       }
     }).catch(error => {
       console.error(error);
@@ -269,7 +287,7 @@ Page({
 
         this.setData(data);
       } else {
-        this.listSubcategory(category, event.detail.value,false);
+        this.listSubcategory(category, event.detail.value, false);
       }
     }
   },
@@ -280,7 +298,7 @@ Page({
       category: category,
       subcategory: subcategory,
       ruleArray: this.data.ruleArray,
-      cateIndex:this.data.cateIndex
+      cateIndex: this.data.cateIndex
     }
     data.cateIndex[0] = event.detail.value[0];
     data.cateIndex[1] = event.detail.value[1];
@@ -291,89 +309,149 @@ Page({
     } else {
       //加载rule
       this.setData({
-        cateIndex:data.cateIndex
+        cateIndex: data.cateIndex
       });
-      this.listRule(category,subcategory,event.detail.value[1],event.detail.value[0]);
+      this.listRule(category, subcategory, event.detail.value[1], event.detail.value[0]);
     }
   },
   listRule: function(category, subcategory, subIndex, cIndex) {
     app.showLoadingMask('规格加载中');
-    var that =this;
+    var that = this;
 
     db.collection('rule').where({
-      category: category._id,
-      subcategory: subcategory._id
-    }).get()
-    .then(res => {
-      wx.hideLoading();
-      subcategory.rule = res.data;
-      category.sub[subIndex] = subcategory;
-      that.data.categoryList[cIndex] = category;
-       that.setData({
-          categoryList:that.data.categoryList,
-          category:category,
-          subcategory:subcategory,
-          ruleArray:subcategory.rule
-       })
-    }).catch(error => {
+        category: category._id,
+        subcategory: subcategory._id
+      }).get()
+      .then(res => {
+        wx.hideLoading();
+        subcategory.rule = res.data;
+        category.sub[subIndex] = subcategory;
+        that.data.categoryList[cIndex] = category;
+        that.setData({
+          categoryList: that.data.categoryList,
+          category: category,
+          subcategory: subcategory,
+          ruleArray: subcategory.rule
+        })
+        that.calculateTotalStore();
+      }).catch(error => {
         console.error(error);
-        app.showErrNoCancel('规格加载错误',error.errMsg);
-    })
+        app.showErrNoCancel('规格加载错误', error.errMsg);
+      })
   },
-  tapAddRule:function(event){
+  tapAddRule: function(event) {
     console.log(event);
     var rule = event.currentTarget.dataset.rule;
     var index = event.currentTarget.dataset.index;
-    var data={
-      inputRuleName:rule.value,
-      ruleName:'',
-      maskVisible:true,
-      ruleVisible:true,
-      inputRuleIndex:index,
-      ruleItemAdd:true,
-      inputRule:rule,
+    var data = {
+      inputRuleName: rule.value,
+      ruleName: '',
+      maskVisible: true,
+      ruleVisible: true,
+      inputRuleIndex: index,
+      ruleItemAdd: true,
+      inputRule: rule,
     }
     this.setData(data);
   },
-  tapMask:function(){
+  tapMask: function() {
     console.log('tap mask')
     this.setData({
-      maskVisible:false,
-      ruleVisible:false,
-      paramVisible:false,
-      ruleItem:false,
-      inputRule:{},
-      ruleItemAdd:true
+      maskVisible: false,
+      ruleVisible: false,
+      paramVisible: false,
+      ruleItem: false,
+      inputRule: {},
+      ruleItemAdd: true,
+      inputParam: {},
+      paramItemAdd: true,
+      paramItemIndex: -1,
+      paramItem: {}
     })
   },
-  tapRuleItem:function(event){
+  tapRuleItem: function(event) {
     // data-  这个数据名字是不一律小写的，尽管你是在wxml 大写的
     var ruleIndex = event.currentTarget.dataset.ruleindex;
     var itemIndex = event.currentTarget.dataset.itemindex;
     var rule = this.data.ruleArray[ruleIndex];
     var item = rule.array[itemIndex];
-   
+
 
     this.setData({
-      inputRuleName:rule.value,
-      ruleItem:item,
-      inputRuleIndex:ruleIndex,
-      ruleItemIndex:itemIndex,
-      ruleItemAdd:false,
-      maskVisible:true,
-      ruleVisible:true
+      inputRuleName: rule.value,
+      ruleItem: item,
+      inputRuleIndex: ruleIndex,
+      ruleItemIndex: itemIndex,
+      ruleItemAdd: false,
+      maskVisible: true,
+      ruleVisible: true
     })
   },
-  tapDelRule:function(){
+  tapDelRule: function() {
     var rule = this.data.ruleArray[this.data.inputRuleIndex];
-    var itemIndex= this.data.ruleItemIndex;
-   var array  = rule.array.splice(itemIndex,1);
+    var itemIndex = this.data.ruleItemIndex;
+    var array = rule.array.splice(itemIndex, 1);
 
     this.data.ruleArray[this.data.inputRuleIndex] = rule;
-    
+
     this.setData({
-        ruleArray:this.data.ruleArray
+      ruleArray: this.data.ruleArray
+    });
+    this.calculateTotalStore();
+    this.tapMask();
+  },
+  tapAddParam: function() {
+    this.setData({
+      maskVisible: true,
+      paramVisible: true,
+      paraItemAdd: true
+    });
+  },
+  tapDelParamItem: function(event) {
+    var index = event.currentTarget.dataset.index;
+    this.data.paramArray.splice(index, 1);
+    this.setData({
+      paramArray: this.data.paramArray
     });
     this.tapMask();
+  },
+  tapParamItem: function(event) {
+    var index = event.currentTarget.dataset.index;
+    var item = this.data.paramArray[index];
+    this.setData({
+      paramItem: item,
+      paramItemIndex: index,
+      paramItemAdd: false,
+      maskVisible: true,
+      paramVisible: true
+    });
+  },
+  calculateTotalStore: function() {
+    var result = false; //可用
+    var ruleArray = this.data.ruleArray;
+
+    var num = 0;
+    if (ruleArray.length > 0) {
+      for (var i = 0; i < ruleArray.length; i++) {
+        var rule = ruleArray[i];
+        if (rule.array) {
+          if (rule.array.length > 0) {
+            result = true;
+            var array = rule.array;
+            for (var k = 0; k < array.length; k++) {
+              var item = array[k];
+              num += new Number(item.store);
+            }
+          }
+        }
+      }
+    }
+
+
+    this.setData({
+      storeInputEnable: result,
+      totalStore: num
+    })
+    console.log('store input enable -->', this.data.storeInputEnable);
   }
 })
