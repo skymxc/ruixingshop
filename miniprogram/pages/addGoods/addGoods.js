@@ -6,12 +6,16 @@
  */
 const app = getApp();
 const db = wx.cloud.database();
+const dbUtils = require('../../js/DB.js');
+
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    goods:{},
     maskVisible: false,
     ruleVisible: false,
     paramVisible: false,
@@ -453,5 +457,222 @@ Page({
       totalStore: num
     })
     console.log('store input enable -->', this.data.storeInputEnable);
+  },
+  tapAddPicture:function(){
+    var that =this;
+    wx.chooseImage({
+    count:1,
+      success: function(res) {
+          if(res.tempFilePaths.length>0){
+              that.handlerChooseImage(res.tempFilePaths[0]);
+          }
+      },
+    })
+  },
+  /**
+   * 处理选择的图片，
+   * 先上传，返回后，显示本地的图片
+   * {
+   *  local:'',
+   *  remote:''
+   * }
+   */
+  handlerChooseImage: function (src){
+    app.showLoadingMask('上传中');
+    var that =this;
+    var name = app.getCloudName(src);
+    wx.cloud.uploadFile({
+      cloudPath: 'image/goods/' + name,
+      filePath: src
+    }).then(res=>{
+      wx.hideLoading();
+        that.data.imageArray.push({local:src,remote:res.fileID});
+        that.setData({
+          imageArray:that.data.imageArray
+        })
+    }).catch(error=>{
+      console.error(error);
+      app.showErrNoCancel('上传失败！',error.errMsg);
+    })
+  },
+  tapDelPicture:function(event){
+    var index= event.currentTarget.dataset.index;
+    this.data.imageArray.splice(index,1);
+    this.setData({
+      imageArray:this.data.imageArray
+    });
+  },
+  tapAddDetailImage:function(){
+    var that = this;
+    wx.chooseImage({
+      count: 1,
+      success: function (res) {
+        if (res.tempFilePaths.length > 0) {
+          that.handlerChooseDetailImage(res.tempFilePaths[0]);
+        }
+      },
+    })
+  },
+  handlerChooseDetailImage:function(src){
+    app.showLoadingMask('上传中');
+    var that = this;
+    var name = app.getCloudName(src);
+    wx.cloud.uploadFile({
+      cloudPath: 'image/goods/' + name,
+      filePath: src
+    }).then(res => {
+      wx.hideLoading();
+      that.data.imageDetailArray.push({ local: src, remote: res.fileID });
+      that.setData({
+        imageDetailArray: that.data.imageDetailArray
+      })
+    }).catch(error => {
+      console.error(error);
+      app.showErrNoCancel('上传失败！', error.errMsg);
+    })
+  },
+  tapDelDetailPicture: function (event) {
+    var index = event.currentTarget.dataset.index;
+    this.data.imageDetailArray.splice(index, 1);
+    this.setData({
+      imageDetailArray: this.data.imageDetailArray
+    });
+  },
+  formSubmitGoods:function(event){
+    console.log(event);
+    var name = event.detail.value.goodsName;
+    var postage= new Number(event.detail.value.goodsPostage);
+    var price = new Number(event.detail.value.goodsPrice);
+    var store = new Number(event.detail.value.goodsStore);
+    if(name.length==0){
+      app.showToast('名称不能为空');
+      return;
+    }
+    if(price<0){
+      app.showToast('价格不能低于0元');
+      return ;
+    }
+    if(store<0){
+      app.showToast('库存不能少于0');
+      return;
+    }
+    if(postage<0){
+      app.showToast('邮费不能少于0元');
+      return;
+    }
+    if(this.data.imageArray.length==0){
+      app.showToast('至少上传一张图片');
+      return;
+    }
+    if(this.data.imageDetailArray.length==0){
+      app.showToast('至少上传一张详情图片');
+      return;
+    }
+    if(this.data.category.name.length==0){
+      app.showToast('请选择所属分类');
+      return;
+    }
+    //图片处理
+    var pictures = new Array();
+    for(var i=0;i<this.data.imageArray.length;i++){
+      var item  = this.data.imageArray[i];
+      pictures.push(item.remote);
+    }
+    var detailPictures = new Array();
+    for (var i = 0; i < this.data.imageDetailArray.length; i++) {
+      var item = this.data.imageDetailArray[i];
+      detailPictures.push(item.remote);
+    }
+    //价格
+    var min = 0;
+    var max = 0;
+    if(this.data.ruleArray.length>0){
+      for(var i=0;i<this.data.ruleArray.length;i++){
+        var rule = this.data.ruleArray[i];
+        if(rule.array){
+          if(rule.array.length>0){
+            for(var k=0;k<rule.array.length;k++){
+                var item = rule.array[k];
+                var num = new Number(item.price);
+                if(num>max){
+                  max = num;
+                }
+                if(num<min){
+                  min = num;
+                }
+            }
+          }
+        }
+      }
+    }
+    min +=price;
+    max+=price;
+    //这将 _id 换个名字，不然会出现错误 无效的Key（_id）
+    var category={
+      category_id : this.data.category._id,
+      name:this.data.category.name,
+      icon:this.data.category.icon
+    }
+    var subcategory={
+      subcategory_id:this.data.subcategory._id,
+      name :this.data.subcategory.name,
+      icon:this.data.subcategory.icon
+    }
+    var rules = new Array();
+    for(var i=0;i<this.data.ruleArray.length;i++){
+        var rule=this.data.ruleArray[i];
+      var item = {
+        rule_id:rule._id,
+        value: rule.value,
+        category: rule.category,
+        subcategory: rule.subcategory
+      }
+      rules.push(item);
+    }
+    var goods={
+      name :name,
+      pictures:pictures,
+      postage:postage,
+      sale_num:0,
+      store_num:store,
+      detail_pcitures:detailPictures,
+      price:price,
+      category:category,
+      subcategory:subcategory,
+      rules: rules,
+      state:0,
+      params:this.data.paramArray,
+      price_min:min,
+      price_max:max
+    }
+    app.showLoadingMask('保存中');
+    dbUtils.add('goods',goods)
+    // db.collection('goods').add({
+    //   data:goods
+    // })
+    .then(res=>this.addAfter(res))
+    .catch(error=>{
+      console.error(error);
+      app.showErrNoCancel('添加失败',error.errMsg);
+    })
+  },
+  addAfter:function(res){
+    wx.hideLoading();
+    if(res._id){
+      //todo 添加成功 clean data
+     this.data.goods.name = '';
+      this.data.goods.price = '';
+      this.data.goods.postage = '',
+
+      this.setData({
+        goods:this.data.goods,
+        paramArray:[],
+        imageArray:[],
+        imageDetailArray:[]
+      });
+    }else{
+      
+      app.showErrNoCancel('提示','添加失败');
+    }
   }
 })

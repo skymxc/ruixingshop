@@ -4,11 +4,11 @@
     <view class='container-form-goods box'>
       <view class='container-param-input box'>
         <text>名字：</text>
-        <textarea class='input-param textarea-name' name='goodsName' auto-height='true' placeholder='这里输入商品名称'></textarea>
+        <textarea class='input-param textarea-name' name='goodsName' auto-height='true' placeholder='这里输入商品名称' value='{{goods.name}}'></textarea>
       </view>
       <view class='container-param-input box'>
         <text>基本价格(¥)：</text>
-        <input class='input-param' name='goodsPrice' placeholder='人民币' type='number'></input>
+        <input class='input-param' value='{{goods.price}}' name='goodsPrice' placeholder='人民币' type='number'></input>
       </view>
       <view class='container-param-input box'>
         <picker mode='multiSelector' range='{{cateArray}}' range-key="{{'name'}}" value='{{cateIndex}}' bindchange='bindMultiPickerChange' bindcolumnchange="bindMultiPickerColumnChange" disabled='{{disablePicker}}'>
@@ -16,7 +16,7 @@
             分类：{{category.name}}，{{subcategory.name}}
           </view>
         </picker>
-        
+
       </view>
       <view class='container-rule box' wx:if='{{ruleArray.length>0}}'>
         <view class='container-rule-root container-param-input'>
@@ -43,23 +43,9 @@
       </view>
       <view class='container-postage container-param-input box'>
         <text>邮费(¥)：</text>
-        <input disabled='{{maskVisible}}' class='input-param' name='goodsPostage' type='number'></input>
+        <input value='{{goods.postage}}' disabled='{{maskVisible}}' class='input-param' name='goodsPostage' type='number'></input>
       </view>
-      <view class='container-image box'>
-        <view class='container-rule-item-name container-image-add box'>
-          <text>图片：</text>
-          <image wx:if='{{imageArray.length<6}}' class='image-category' src='../../images/add.png'></image>
-        </view>
-        <view wx:if='{{imageArray.length>0}}' class='container-image-value box'>
-          <block wx:for='{{imageArray}}'>
-            <view class='container-image-item'>
-              <image class='image-goods' src='{{item}}' mode='center'></image>
-              <image src='../../images/delete-2.png' class='image-delete'></image>
-            </view>
 
-          </block>
-        </view>
-      </view>
       <view class='container-image box'>
         <view class='container-rule-item-name container-image-add box'>
           <text>参数：</text>
@@ -75,23 +61,41 @@
           </view>
         </block>
       </view>
+
+      <view class='container-image box'>
+        <view class='container-rule-item-name container-image-add box'>
+          <text>图片：</text>
+          <image wx:if='{{imageArray.length<6}}' bindtap="tapAddPicture" class='image-category' src='../../images/add.png'></image>
+        </view>
+        <view wx:if='{{imageArray.length>0}}' class='container-image-value box'>
+          <block wx:for='{{imageArray}}'>
+            <view class='container-image-item'>
+              <image class='image-goods' src='{{item.local}}' mode='center'></image>
+              <image src='../../images/delete-2.png' data-index='{{index}}' class='image-delete' bindtap='tapDelPicture'></image>
+            </view>
+
+          </block>
+        </view>
+      </view>
+
+
       <view class='container-image container-image-detail box'>
         <view class='container-rule-item-name container-image-add box'>
           <text>详情图片：</text>
-          <image wx:if='{{imageDetailArray.length<10}}' class='image-category' src='../../images/add.png'></image>
+          <image wx:if='{{imageDetailArray.length<10}}' class='image-category' src='../../images/add.png' bindtap='tapAddDetailImage'></image>
         </view>
 
         <block wx:for='{{imageDetailArray}}'>
-          <view class='container-image-detail-item box' >
-            <image class='image-detail' src='{{item}}' mode='aspectFit' ></image>
-            <image src='../../images/delete-2.png' class='image-delete-detail'></image>
+          <view class='container-image-detail-item box'>
+            <image class='image-detail' src='{{item.local}}' mode='center'></image>
+            <image src='../../images/delete-2.png' data-index="{{index}}" bindtap='tapDelDetailPicture' class='image-delete-detail'></image>
           </view>
 
         </block>
 
       </view>
 
-      <button form-type='submit' type='primary' class='button-submit-goods'>添加</button>
+      <button form-type='submit' type='primary' class='button-submit-goods'>保存</button>
     </view>
   </form>
   <view wx:if='{{maskVisible}}' class='mask box' bindtap='tapMask'></view>
