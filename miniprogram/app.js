@@ -252,5 +252,9 @@ App({
       icon: 'none'
     });
     
+  },
+  showError:function(error,txt){
+   console.error(error);
+   app.showErrNoCancel(txt,error.errMsg);
   }
 })

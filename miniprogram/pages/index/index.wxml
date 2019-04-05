@@ -1,45 +1,42 @@
 <!--index.wxml
-
+container{
+  search-container{}
+  banner-container{}
+  category-container{}
+  goods-container{}
+}
 -->
-<view class="container">
-
-  <!-- 用户 openid -->
-  <view class="userinfo">
-    <button 
-      open-type="getUserInfo" 
-      bindgetuserinfo="onGetUserInfo"
-      class="userinfo-avatar"
-      style="background-image: url({{avatarUrl}})"
-    ></button>
-    <view>
-      <button class="userinfo-nickname" bindtap="onGetOpenid">点击获取 openid</button>
+<view class="container ">
+  <view class='coantienr-search box'>
+    <view class='contianer-search-border' bindtap='tapSearch'>
+      <image class='image-search' src='../../images/sousuo.png'></image>
+      <text>搜索</text>
     </view>
   </view>
-
-
-  <!-- 上传图片 -->
-  <view class="uploader">
-    <view class="uploader-text" bindtap="doUpload">
-      <text>上传图片</text>
-    </view>
-    <view class="uploader-container" wx:if="{{imgUrl}}">
-      <image class="uploader-image" src="{{imgUrl}}" mode="aspectFit" bindtap="previewImg"></image>
-    </view>
+  <view class='container-banner box' wx:if='{{bannerArray.length>0}}'>
+    <swiper class='swiper-banner box' autoplay='true' indicator-dots='true' circular='true' interval='3000'>
+      <block wx:for="{{bannerArray}}" wx:key='item._id'>
+        <swiper-item>
+          <image src='{{item.pictures[0]}}' mode='center' class='image-banner' data-goods='{{item}}' bindtap='tapBanner'></image>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
-
-
-  <!-- 操作数据库 -->
-  <view class="uploader">
-    <navigator url="../databaseGuide/databaseGuide" open-type="navigate" class="uploader-text">
-      <text>前端操作数据库</text>
-    </navigator>
+  <view class='container-category box'>
+    <swiper class='swiper-category box' autoplay='true' indicator-dots='true' wx:if='{{categoryPageList.length>0}}'>
+      <block wx:for='{{categoryPageList}}' wx:key='index'>
+        <swiper-item>
+          <view wx:if="{{item.array.length>0}}" class='container-category-page'>
+            <block wx:for='{{item.array}}' wx:for-item='category' wx:key='_id'>
+              <view class='container-category-item box' bindtap='tapCategory' data-category='{{category}}'>
+                <image class='image-category' src='{{category.icon}}'></image>
+                <text class='text-category'>{{category.name}}</text>
+              </view>
+            </block>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
-
-  <!-- 新建云函数 -->
-  <view class="uploader">
-    <navigator url="../addFunction/addFunction" open-type="navigate" class="uploader-text">
-      <text>快速新建云函数</text>
-    </navigator>
-  </view>
-
+  <view class='container-goods box'></view>
 </view>

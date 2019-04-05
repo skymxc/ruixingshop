@@ -3,7 +3,6 @@
 .container {
   position: relative;
   height: 100%;
-  background-color: white;
 }
 
 .form-goods {
@@ -227,4 +226,21 @@ border: solid gainsboro 1px;
   width: 90%;
   margin-left: 5%;
   margin-right: 5%;
+}
+
+.container-cover-image{
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-cover-picture{
+  height: 180px;
+  width: 150px;
+  padding: 2px;
+  border: solid gainsboro 1px;
+  border-radius: 1px;
 }

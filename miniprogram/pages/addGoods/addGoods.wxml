@@ -11,7 +11,7 @@
         <input class='input-param' value='{{goods.price}}' name='goodsPrice' placeholder='人民币' type='number'></input>
       </view>
       <view class='container-param-input box'>
-        <picker mode='multiSelector' range='{{cateArray}}' range-key="{{'name'}}" value='{{cateIndex}}' bindchange='bindMultiPickerChange' bindcolumnchange="bindMultiPickerColumnChange" disabled='{{disablePicker}}'>
+        <picker mode='multiSelector' range='{{cateArray}}' range-key="{{'name'}}" value='{{cateIndex}}' bindchange='bindMultiPickerChange' bindcolumnchange="bindMultiPickerColumnChange" >
           <view class='picker-text'>
             分类：{{category.name}}，{{subcategory.name}}
           </view>
@@ -64,13 +64,24 @@
 
       <view class='container-image box'>
         <view class='container-rule-item-name container-image-add box'>
-          <text>图片：</text>
+          <text>封面图片：</text>
+          <image  bindtap="tapAddCoverPicture" class='image-category' src='../../images/add.png'></image>
+        </view>
+        <view wx:if='{{cover.local}}' class='container-cover-image'>
+        <image  src='{{cover.local}}' class='image-cover-picture' mode='center' bindtap='tapImage' data-src='{{cover.local}}'></image>
+        </view>
+        
+        
+      </view>
+      <view class='container-image box'>
+        <view class='container-rule-item-name container-image-add box'>
+          <text>展示图片：</text>
           <image wx:if='{{imageArray.length<6}}' bindtap="tapAddPicture" class='image-category' src='../../images/add.png'></image>
         </view>
         <view wx:if='{{imageArray.length>0}}' class='container-image-value box'>
           <block wx:for='{{imageArray}}'>
             <view class='container-image-item'>
-              <image class='image-goods' src='{{item.local}}' mode='center'></image>
+              <image class='image-goods' src='{{item.local}}' mode='center' data-src='{{item.local}}' bindtap='tapImage'></image>
               <image src='../../images/delete-2.png' data-index='{{index}}' class='image-delete' bindtap='tapDelPicture'></image>
             </view>
 
@@ -87,7 +98,7 @@
 
         <block wx:for='{{imageDetailArray}}'>
           <view class='container-image-detail-item box'>
-            <image class='image-detail' src='{{item.local}}' mode='center'></image>
+            <image class='image-detail'  data-src='{{item.local}}' bindtap='tapImage' src='{{item.local}}' mode='center'></image>
             <image src='../../images/delete-2.png' data-index="{{index}}" bindtap='tapDelDetailPicture' class='image-delete-detail'></image>
           </view>
 

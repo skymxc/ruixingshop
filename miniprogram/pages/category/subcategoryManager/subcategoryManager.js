@@ -381,7 +381,8 @@ Page({
   },
   isExist: function (name) {
     var where = {
-      name: name
+      name: name,
+      parent:this.data.parent._id
     }
     return dbUtils.count(this.data.table, where);
   },
@@ -411,7 +412,7 @@ Page({
     var _id = this.data.list[this.data.updateIndex]._id;
     app.showLoadingMask('删除中');
     var that = this;
-    dbUtils.count('goods', { subcategory: _id })
+    dbUtils.count('goods', { subcategory:{subcategory_id:_id} })
       .then(res => {
         if (res.total == 0) {
           // 准备删除
@@ -462,5 +463,12 @@ Page({
         icon: 'none'
       });
     }
+  },
+  tapCategoryImage: function (event) {
+    var src = event.currentTarget.dataset.src;
+    wx.previewImage({
+      urls: [src],
+      current: 0
+    })
   }
 })

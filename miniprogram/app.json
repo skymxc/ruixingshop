@@ -1,6 +1,7 @@
 {
   "cloud": true,
   "pages": [
+    "pages/index/index",
     "pages/addGoods/addGoods",
     "pages/memberCenter/memberCenter",
     "pages/category/ruleManager/ruleManager",
@@ -11,10 +12,26 @@
     
   ],
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#F8F8FF",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarBackgroundColor": "#F8F8FF",
     "navigationBarTitleText": "瑞星购物",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar":{
+    "list":[{
+      "pagePath":"pages/index/index",
+      "text":"首页",
+      "iconPath":"images/index.png",
+      "selectedIconPath":"images/index_sel.png"
+    }
+    ,{
+      "pagePath": "pages/memberCenter/memberCenter",
+      "text": "个人中心",
+      "iconPath": "images/memberCenter.png",
+      "selectedIconPath": "images/memberCenter_sel.png"
+    }],
+    "color":"#333",
+    "selectedColor":"#EF3B23"
   }
 }

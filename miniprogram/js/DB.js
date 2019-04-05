@@ -17,6 +17,10 @@ var load = function(table,where,limit,skip,orderFieldName,orderBy){
 .skip(skip)
 .get();
 }
+/**
+ * 
+ * {total: 1, errMsg: "collection.count:ok"}
+ */
 var count = function(table,where){
  return  db.collection(table).where(where).count();
 }

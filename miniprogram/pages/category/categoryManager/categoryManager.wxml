@@ -13,11 +13,11 @@
 <view class='container'>
   <view class='container-list box'>
     <block wx:for='{{list}}' wx:for-item='category' wx:key='category._id'>
-      <view class='container-category box' data-category='{{category}}' data-index='{{index}}' bindtap='tapCategory' bindlongpress='longtapCategory'>
+      <view class='container-category box' data-category='{{category}}' data-index='{{index}}'  bindlongpress='longtapCategory'>
 
 
-        <image class='image-category' src='{{category.icon}}' mode='center'></image>
-        <view class='text-category box'>{{category.name}}</view>
+        <image class='image-category' src='{{category.icon}}' mode='center' data-src='{{category.icon}}' bindtap='tapCategoryImage'></image>
+        <view class='text-category box' data-category='{{category}}' data-index='{{index}}' bindtap='tapCategory'>{{category.name}}</view>
       </view>
     </block>
   </view>

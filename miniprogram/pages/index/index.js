@@ -1,120 +1,127 @@
 //index.js
 const app = getApp()
-
+const db = wx.cloud.database();
+const dbUtils = require('../../js/DB.js')
 Page({
   data: {
-    avatarUrl: './user-unlogin.png',
-    userInfo: {},
-    logged: false,
-    takeSession: false,
-    requestResult: ''
+    bannerArray: [],
+    goodsTable: 'goods',
+    categoryList: [],
+    categoryCount: 0,
+    categoryPageList: []
   },
-
   onLoad: function() {
-    if (!wx.cloud) {
-      wx.redirectTo({
-        url: '../chooseLib/chooseLib',
-      })
-      return
-    }
-
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              this.setData({
-                avatarUrl: res.userInfo.avatarUrl,
-                userInfo: res.userInfo
-              })
-            }
+    this.loadBanner();
+    this.loadCategory();
+  },
+  loadBanner: function() {
+    var data = this.data;
+    var that = this;
+    app.showLoadingMask('请稍后');
+    dbUtils.load(data.goodsTable, {}, 5, 0, 'sale_num', 'desc')
+      .then(res => {
+        wx.hideLoading();
+        if (res.data.length > 0) {
+          that.setData({
+            bannerArray: res.data
           })
+        } else {
+          console.error('没有商品吗？banner没有加载到')
         }
-      }
-    })
-  },
 
-  onGetUserInfo: function(e) {
-    if (!this.logged && e.detail.userInfo) {
-      this.setData({
-        logged: true,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        userInfo: e.detail.userInfo
+      }).catch(error => app.showError(error, 'banner加载错误'));
+  },
+  loadCategory: function() {
+    app.showLoadingMask('请稍后');
+    var that = this;
+    var data = this.data;
+    dbUtils.count('category', {})
+      .then(res => {
+        if (res.total == 0) {
+          wx.hideLoading();
+          app.showErrNoCancel('提示', '没有商品');
+          return;
+        }
+        data.categoryCount = res.total;
+        that.setData(data);
+        that.listCategory();
       })
-    }
+      .catch(error => app.showError(error, '分类加载失败'));
   },
+  loadGoods:function(){
 
-  onGetOpenid: function() {
-    // 调用云函数
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
-        wx.navigateTo({
-          url: '../userConsole/userConsole',
-        })
-      },
-      fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
-        wx.navigateTo({
-          url: '../deployFunctions/deployFunctions',
-        })
-      }
-    })
   },
-
-  // 上传图片
-  doUpload: function () {
-    // 选择图片
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-
-        wx.showLoading({
-          title: '上传中',
-        })
-
-        const filePath = res.tempFilePaths[0]
-        
-        // 上传图片
-        const cloudPath = 'my-image' + filePath.match(/\.[^.]+?$/)[0]
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath,
-          success: res => {
-            console.log('[上传文件] 成功：', res)
-
-            app.globalData.fileID = res.fileID
-            app.globalData.cloudPath = cloudPath
-            app.globalData.imagePath = filePath
-            
-            wx.navigateTo({
-              url: '../storageConsole/storageConsole'
-            })
-          },
-          fail: e => {
-            console.error('[上传文件] 失败：', e)
-            wx.showToast({
-              icon: 'none',
-              title: '上传失败',
-            })
-          },
-          complete: () => {
-            wx.hideLoading()
+  listCategory: function() {
+    var that = this;
+    db.collection('category').skip(this.data.categoryList.length).get()
+      .then(res => {
+        wx.hideLoading();
+        console.log(res.data);
+        if (res.data.length > 0) {
+          that.data.categoryList = that.data.categoryList.concat(res.data);
+          that.setData({
+            categoryList: that.data.categoryList
+          })
+          if (that.data.categoryCount > that.data.categoryList.length) {
+            //继续加载
+            that.listCategory();
           }
-        })
-
-      },
-      fail: e => {
-        console.error(e)
-      }
-    })
+        }
+        that.handleCategory()
+      })
+      .catch(error => app.showError(error, '分类加载异常'));
   },
+  /**
+   * 将 category List 转化为 page{index,array},10个为一页
+   */
+  handleCategory: function() {
+    var list = this.data.categoryList;
+    if (list.length == 0) return;
+    var pageList = new Array();
+    if (list.length <= 10) {
+      pageList.push({
+        index: 0,
+        array: list
+      });
+      this.setData({
+        categoryPageList: pageList
+      })
+      return;
+    }
+    var size = Math.floor(list.length / 10); //下舍入 取整
 
+
+    if (Math.floor(list.length / 10) != (list.length / 10)) { //如果 不是整数 那么 就需要再加一个
+      size++
+    }
+    var temp = 0;
+    for (var i = 0; i < size; i++) {
+      var end = 10;
+      if (list.length - temp < 10) {
+        end = list.length;
+      }
+      var data = list.slice(temp, end);
+      temp += end;
+      pageList.push({
+        index: i,
+        array: data
+      });
+    }
+    this.setData({
+      categoryPageList: pageList
+    })
+
+  },
+  tapCategory: function(event) {
+    var category = event.currentTarget.dataset.category;
+    console.log(category);
+    //todo  携带参数去搜索页
+  },
+  tapSearch: function() {
+    //todo  直接打开搜索页
+  },
+  tapBanner: function(event) {
+    var goods = event.currentTarget.dataset.goods;
+    //todo  商品详情
+  }
 })

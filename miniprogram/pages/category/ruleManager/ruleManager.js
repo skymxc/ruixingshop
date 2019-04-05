@@ -293,7 +293,12 @@ Page({
    * 是否存在
    */
   isExist:function(value){
-    return dbUtils.count(this.data.table, { value: value });
+    var where={
+      value: value,
+       category:this.data.category.parent,
+        subcategory:this.data.category._id
+    }
+    return dbUtils.count(this.data.table, where);
    
   }
 })

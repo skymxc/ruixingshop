@@ -2,7 +2,7 @@
 
 /**
  * todo
- * -参数
+ * - 图片删除后没有从云开发后台删除
  */
 const app = getApp();
 const db = wx.cloud.database();
@@ -45,7 +45,8 @@ Page({
     paramItemAdd: true,
     paramItemIndex: -1,
     paramItem: {},
-    totalStore: 0
+    totalStore: 0,
+    cover:{}
   },
 
   /**
@@ -107,7 +108,11 @@ Page({
       subcategory: goods.subcategory,
       imageArray: imageArray,
       imageDetailArray: imageDetailArray,
-      paramArray: goods.params
+      paramArray: goods.params,
+      cover:{
+        local:goods.coverPicture,
+        remote:goods.coverPicture
+      }
     });
     //加载 分类
     this.getCategory();
@@ -347,7 +352,13 @@ Page({
     }).get().then(res => {
       wx.hideLoading();
       if (res.data.length == 0) {
-        wx.showErrNoCancel('提示', category.name + '下没有子分类');
+        app.showToast(category.name + '没有子分类');
+        that.data.cateArray[1] = new Array();
+        that.data.cateIndex[1]=0;
+        that.setData({
+          cateArray: that.data.cateArray,
+          cateIndex: that.data.cateIndex
+        })
         return
       }
       category.sub = res.data;
@@ -705,6 +716,12 @@ Page({
       app.showToast('请选择所属分类');
       return;
     }
+    if(this.data.cover.remote){
+      if (this.data.cover.remote.length==0){
+        app.showToast('请选这封面图片');
+        return;
+      }
+    }
     //图片处理
     var pictures = new Array();
     for (var i = 0; i < this.data.imageArray.length; i++) {
@@ -777,7 +794,8 @@ Page({
       state: 0,
       params: this.data.paramArray,
       price_min: min,
-      price_max: max
+      price_max: max,
+      coverPicture: this.data.cover.remote
     }
     app.showLoadingMask('保存中');
     if (this.data.goods._id) {
@@ -812,17 +830,58 @@ Page({
       this.data.goods.name = '';
       this.data.goods.price = '';
       this.data.goods.postage = '',
-
+      this.data.cover={}
         this.setData({
           goods: this.data.goods,
           paramArray: [],
           imageArray: [],
-          imageDetailArray: []
+          imageDetailArray: [],
+          cover:this.data.cover
         });
         app.showToast('添加成功')
     } else {
 
       app.showErrNoCancel('提示', '添加失败');
     }
+  },
+  tapAddCoverPicture:function(){
+    
+    var that =this;
+    wx.chooseImage({
+      count:1,
+      success: function(res) {
+        console.log(res);
+        if(res.tempFilePaths.length>0){
+         
+         that.handlerChooseCoverPicutre(res.tempFilePaths[0])
+        }
+        
+      },
+    })
+  },
+  handlerChooseCoverPicutre:function(src){
+   var name = cover+'_'+app.getCloudName(src);
+    var cover = this.data.cover;
+    app.showLoadingMask('上传中')
+    var that =this;
+    wx.cloud.uploadFile({
+      cloudPath: 'image/goods/' + name,
+      filePath: src
+    }).then(res=>{
+        cover.remote = res.fileID;
+        cover.local = src;
+        wx.hideLoading();
+      that.setData({
+        cover:cover
+      })
+    }).catch(error=>app.showError(error,'上传失败'));
+    
+    
+  },
+  tapImage:function(event){
+    var src = event.currentTarget.dataset.src;
+    wx.previewImage({
+      urls: [src]
+    })
   }
 })
