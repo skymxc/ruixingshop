@@ -27,6 +27,7 @@ var update= function(table,_id,data){
 var del = function(table,_id){
  return db.collection(table).doc(_id).remove();
 }
+
 module.exports = {
   add:add,
   load:load,

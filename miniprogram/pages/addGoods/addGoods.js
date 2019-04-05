@@ -15,7 +15,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    goods:{},
+    goods: {},
     maskVisible: false,
     ruleVisible: false,
     paramVisible: false,
@@ -52,7 +52,64 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    //为了测试
+    if (options._id) {
+      this.data.goods._id = options._id;
+      this.setData({
+        goods: this.data.goods
+      })
+      this.getGoods();
+    } else {
+
+      this.getCategory();
+    }
+  },
+  getGoods: function() {
+    app.showLoadingMask('商品加载中');
+    db.collection('goods').doc(this.data.goods._id).get()
+      .then(res => this.getGoodsAfter(res.data)).catch(error => {
+        console.error(error);
+        wx.hideLoading();
+        wx.showModal({
+          title: '加载失败',
+          content: error.errMsg,
+          showCancel: false,
+          success: function() {
+            wx.navigateBack({
+
+            })
+          }
+        })
+      })
+  },
+  getGoodsAfter: function(goods) {
+    var imageArray = new Array();
+    for (var i = 0; i < goods.pictures.length; i++) {
+      var remote = goods.pictures[i];
+      var item = {
+        local: remote,
+        remote: remote
+      }
+      imageArray.push(item);
+    }
+    var imageDetailArray = new Array();
+    for (var i = 0; i < goods.detail_pcitures.length; i++) {
+      var remote = goods.detail_pcitures[i];
+      var item = {
+        local: remote,
+        remote: remote
+      }
+      imageDetailArray.push(item);
+    }
+    this.setData({
+      goods: goods,
+      ruleArray: goods.rules,
+      category: goods.category,
+      subcategory: goods.subcategory,
+      imageArray: imageArray,
+      imageDetailArray: imageDetailArray,
+      paramArray: goods.params
+    });
+    //加载 分类
     this.getCategory();
   },
   /**
@@ -209,6 +266,7 @@ Page({
 
       // 分类处理
       data.categoryList = res.result;
+
       data.cateArray[0] = data.cateArray;
       data.cateArray[1] = data.cateArray[0].sub;
       that.setData(data);
@@ -228,15 +286,50 @@ Page({
           app.showErrNoCancel('提示', '没有分类无法添加商品');
           return;
         }
-        that.data.cateArray[0] = res.data;
-        that.data.cateIndex[0] = 0;
-        that.setData({
-          categoryList: res.data,
-          category: res.data[0],
-          cateArray: that.data.cateArray,
-          cateIndex: that.data.cateIndex
-        });
-        that.listSubcategory(res.data[0], 0, true);
+
+
+        if (that.data.goods._id) {
+          //找到分类所在的index，没有的话加在最后
+          var index = -1;
+          for (var i = 0; i < res.data.length; i++) {
+            var category = res.data[i];
+            if (category.name == that.data.category.name) {
+              index = i;
+              break;
+            }
+          }
+
+          that.data.categoryList = res.data;
+          if (index == -1) {
+            index = res.data.length;
+            that.data.categoryList = res.data;
+            var category = {
+              _id: that.data.category.category_id,
+              icon: that.data.category.icon,
+              name: that.data.category.name
+            }
+            that.data.categoryList.push(category);
+          }
+
+          that.data.cateIndex[0] = index;
+          that.data.cateArray[0] = that.data.categoryList;
+          that.setData({
+            categoryList: that.data.categoryList,
+            cateArray: that.data.cateArray,
+            cateIndex: that.data.cateIndex
+          })
+          that.listSubcategory(that.data.categoryList[index], index, false);
+        } else {
+          that.data.cateArray[0] = res.data;
+          that.data.cateIndex[0] = 0;
+          that.setData({
+            categoryList: res.data,
+            category: res.data[0],
+            cateArray: that.data.cateArray,
+            cateIndex: that.data.cateIndex
+          });
+          that.listSubcategory(res.data[0], 0, true);
+        }
       }).catch(error => {
         console.error(error);
         app.showErrNoCancel('分类加载错误', error.errMsg);
@@ -258,19 +351,53 @@ Page({
         return
       }
       category.sub = res.data;
-      that.data.categoryList[index] = category;
-      that.data.cateArray[1] = category.sub;
-      that.data.cateIndex[1] = 0;
-      that.setData({
-        categoryList: that.data.categoryList,
-        cateArray: that.data.cateArray,
-        cateIndex: that.data.cateIndex,
-        subcategory: res.data[0],
-        disablePicker: false
-      })
-      if (loadRule) {
-        that.listRule(category, res.data[0], 0, index);
+      if (that.data.goods._id) {
+        //找到index 没有的话放在最后一个
+        var sindex = -1;
+        for (var i = 0; i < res.data.length; i++) {
+          var subcategory = res.data[i];
+          if (subcategory.name == that.data.subcategory.name) {
+            sindex = i;
+            break;
+          }
+        }
+        if (sindex == -1) {
+          sindex = res.data.length;
+          var subcategory = {
+            subcategory_id: that.data.subcategory._id,
+            icon: that.data.subcategory.icon,
+            name: that.data.subcategory.name
+          }
+          category.sub.push(subcategory);
+        }
+        that.data.categoryList[sindex] = category;
+        that.data.cateArray[1] = category.sub;
+        that.data.cateIndex[1] = sindex;
+        that.setData({
+          categoryList: that.data.categoryList,
+          cateArray: that.data.cateArray,
+          cateIndex: that.data.cateIndex,
+          disablePicker: false
+        })
+        if (loadRule) {
+          that.listRule(category, category.sub[sindex], sindex, index);
+        }
+      } else {
+        that.data.categoryList[index] = category;
+        that.data.cateArray[1] = category.sub;
+        that.data.cateIndex[1] = 0;
+        that.setData({
+          categoryList: that.data.categoryList,
+          cateArray: that.data.cateArray,
+          cateIndex: that.data.cateIndex,
+          subcategory: res.data[0],
+          disablePicker: false
+        })
+        if (loadRule) {
+          that.listRule(category, res.data[0], 0, index);
+        }
       }
+
     }).catch(error => {
       console.error(error);
       app.showErrNoCancel('子分类加载错误', error.errMsg);
@@ -458,14 +585,14 @@ Page({
     })
     console.log('store input enable -->', this.data.storeInputEnable);
   },
-  tapAddPicture:function(){
-    var that =this;
+  tapAddPicture: function() {
+    var that = this;
     wx.chooseImage({
-    count:1,
+      count: 1,
       success: function(res) {
-          if(res.tempFilePaths.length>0){
-              that.handlerChooseImage(res.tempFilePaths[0]);
-          }
+        if (res.tempFilePaths.length > 0) {
+          that.handlerChooseImage(res.tempFilePaths[0]);
+        }
       },
     })
   },
@@ -477,43 +604,7 @@ Page({
    *  remote:''
    * }
    */
-  handlerChooseImage: function (src){
-    app.showLoadingMask('上传中');
-    var that =this;
-    var name = app.getCloudName(src);
-    wx.cloud.uploadFile({
-      cloudPath: 'image/goods/' + name,
-      filePath: src
-    }).then(res=>{
-      wx.hideLoading();
-        that.data.imageArray.push({local:src,remote:res.fileID});
-        that.setData({
-          imageArray:that.data.imageArray
-        })
-    }).catch(error=>{
-      console.error(error);
-      app.showErrNoCancel('上传失败！',error.errMsg);
-    })
-  },
-  tapDelPicture:function(event){
-    var index= event.currentTarget.dataset.index;
-    this.data.imageArray.splice(index,1);
-    this.setData({
-      imageArray:this.data.imageArray
-    });
-  },
-  tapAddDetailImage:function(){
-    var that = this;
-    wx.chooseImage({
-      count: 1,
-      success: function (res) {
-        if (res.tempFilePaths.length > 0) {
-          that.handlerChooseDetailImage(res.tempFilePaths[0]);
-        }
-      },
-    })
-  },
-  handlerChooseDetailImage:function(src){
+  handlerChooseImage: function(src) {
     app.showLoadingMask('上传中');
     var that = this;
     var name = app.getCloudName(src);
@@ -522,7 +613,49 @@ Page({
       filePath: src
     }).then(res => {
       wx.hideLoading();
-      that.data.imageDetailArray.push({ local: src, remote: res.fileID });
+      that.data.imageArray.push({
+        local: src,
+        remote: res.fileID
+      });
+      that.setData({
+        imageArray: that.data.imageArray
+      })
+    }).catch(error => {
+      console.error(error);
+      app.showErrNoCancel('上传失败！', error.errMsg);
+    })
+  },
+  tapDelPicture: function(event) {
+    var index = event.currentTarget.dataset.index;
+    this.data.imageArray.splice(index, 1);
+    this.setData({
+      imageArray: this.data.imageArray
+    });
+  },
+  tapAddDetailImage: function() {
+    var that = this;
+    wx.chooseImage({
+      count: 1,
+      success: function(res) {
+        if (res.tempFilePaths.length > 0) {
+          that.handlerChooseDetailImage(res.tempFilePaths[0]);
+        }
+      },
+    })
+  },
+  handlerChooseDetailImage: function(src) {
+    app.showLoadingMask('上传中');
+    var that = this;
+    var name = app.getCloudName(src);
+    wx.cloud.uploadFile({
+      cloudPath: 'image/goods/' + name,
+      filePath: src
+    }).then(res => {
+      wx.hideLoading();
+      that.data.imageDetailArray.push({
+        local: src,
+        remote: res.fileID
+      });
       that.setData({
         imageDetailArray: that.data.imageDetailArray
       })
@@ -531,51 +664,51 @@ Page({
       app.showErrNoCancel('上传失败！', error.errMsg);
     })
   },
-  tapDelDetailPicture: function (event) {
+  tapDelDetailPicture: function(event) {
     var index = event.currentTarget.dataset.index;
     this.data.imageDetailArray.splice(index, 1);
     this.setData({
       imageDetailArray: this.data.imageDetailArray
     });
   },
-  formSubmitGoods:function(event){
+  formSubmitGoods: function(event) {
     console.log(event);
     var name = event.detail.value.goodsName;
-    var postage= new Number(event.detail.value.goodsPostage);
+    var postage = new Number(event.detail.value.goodsPostage);
     var price = new Number(event.detail.value.goodsPrice);
     var store = new Number(event.detail.value.goodsStore);
-    if(name.length==0){
+    if (name.length == 0) {
       app.showToast('名称不能为空');
       return;
     }
-    if(price<0){
+    if (price < 0) {
       app.showToast('价格不能低于0元');
-      return ;
+      return;
     }
-    if(store<0){
+    if (store < 0) {
       app.showToast('库存不能少于0');
       return;
     }
-    if(postage<0){
+    if (postage < 0) {
       app.showToast('邮费不能少于0元');
       return;
     }
-    if(this.data.imageArray.length==0){
+    if (this.data.imageArray.length == 0) {
       app.showToast('至少上传一张图片');
       return;
     }
-    if(this.data.imageDetailArray.length==0){
+    if (this.data.imageDetailArray.length == 0) {
       app.showToast('至少上传一张详情图片');
       return;
     }
-    if(this.data.category.name.length==0){
+    if (this.data.category.name.length == 0) {
       app.showToast('请选择所属分类');
       return;
     }
     //图片处理
     var pictures = new Array();
-    for(var i=0;i<this.data.imageArray.length;i++){
-      var item  = this.data.imageArray[i];
+    for (var i = 0; i < this.data.imageArray.length; i++) {
+      var item = this.data.imageArray[i];
       pictures.push(item.remote);
     }
     var detailPictures = new Array();
@@ -586,93 +719,110 @@ Page({
     //价格
     var min = 0;
     var max = 0;
-    if(this.data.ruleArray.length>0){
-      for(var i=0;i<this.data.ruleArray.length;i++){
+    if (this.data.ruleArray.length > 0) {
+      for (var i = 0; i < this.data.ruleArray.length; i++) {
         var rule = this.data.ruleArray[i];
-        if(rule.array){
-          if(rule.array.length>0){
-            for(var k=0;k<rule.array.length;k++){
-                var item = rule.array[k];
-                var num = new Number(item.price);
-                if(num>max){
-                  max = num;
-                }
-                if(num<min){
-                  min = num;
-                }
+        if (rule.array) {
+          if (rule.array.length > 0) {
+            for (var k = 0; k < rule.array.length; k++) {
+              var item = rule.array[k];
+              var num = new Number(item.price);
+              if (num > max) {
+                max = num;
+              }
+              if (num < min) {
+                min = num;
+              }
             }
           }
         }
       }
     }
-    min +=price;
-    max+=price;
+    min += price;
+    max += price;
     //这将 _id 换个名字，不然会出现错误 无效的Key（_id）
-    var category={
-      category_id : this.data.category._id,
-      name:this.data.category.name,
-      icon:this.data.category.icon
+    var category = {
+      category_id: this.data.category._id,
+      name: this.data.category.name,
+      icon: this.data.category.icon
     }
-    var subcategory={
-      subcategory_id:this.data.subcategory._id,
-      name :this.data.subcategory.name,
-      icon:this.data.subcategory.icon
+    var subcategory = {
+      subcategory_id: this.data.subcategory._id,
+      name: this.data.subcategory.name,
+      icon: this.data.subcategory.icon
     }
     var rules = new Array();
-    for(var i=0;i<this.data.ruleArray.length;i++){
-        var rule=this.data.ruleArray[i];
+    for (var i = 0; i < this.data.ruleArray.length; i++) {
+      var rule = this.data.ruleArray[i];
       var item = {
-        rule_id:rule._id,
+        rule_id: rule._id,
         value: rule.value,
         category: rule.category,
-        subcategory: rule.subcategory
+        subcategory: rule.subcategory,
+        array: rule.array
       }
       rules.push(item);
     }
-    var goods={
-      name :name,
-      pictures:pictures,
-      postage:postage,
-      sale_num:0,
-      store_num:store,
-      detail_pcitures:detailPictures,
-      price:price,
-      category:category,
-      subcategory:subcategory,
+    var goods = {
+      name: name,
+      pictures: pictures,
+      postage: postage,
+      sale_num: 0,
+      store_num: store,
+      detail_pcitures: detailPictures,
+      price: price,
+      category: category,
+      subcategory: subcategory,
       rules: rules,
-      state:0,
-      params:this.data.paramArray,
-      price_min:min,
-      price_max:max
+      state: 0,
+      params: this.data.paramArray,
+      price_min: min,
+      price_max: max
     }
     app.showLoadingMask('保存中');
-    dbUtils.add('goods',goods)
-    // db.collection('goods').add({
-    //   data:goods
-    // })
-    .then(res=>this.addAfter(res))
-    .catch(error=>{
-      console.error(error);
-      app.showErrNoCancel('添加失败',error.errMsg);
-    })
+    if (this.data.goods._id) {
+      dbUtils.update('goods', this.data.goods._id, goods)
+        .then(res => this.updateAfter(res))
+        .catch(error => {
+          console.error(error);
+          app.showErrNoCancel('保存失败', error.errMsg);
+        })
+      return;
+    }
+    dbUtils.add('goods', goods)
+      .then(res => this.addAfter(res))
+      .catch(error => {
+        console.error(error);
+        app.showErrNoCancel('添加失败', error.errMsg);
+      })
   },
-  addAfter:function(res){
+  updateAfter: function(res) {
+    console.log(res);
     wx.hideLoading();
-    if(res._id){
+    if (res.stats.updated == 1) {
+      app.showToast('保存成功');
+    } else {
+      wx.showErrNoCancel('保存失败', '请确定商品是否存在');
+    }
+  },
+  addAfter: function(res) {
+    wx.hideLoading();
+    if (res._id) {
       //todo 添加成功 clean data
-     this.data.goods.name = '';
+      this.data.goods.name = '';
       this.data.goods.price = '';
       this.data.goods.postage = '',
 
-      this.setData({
-        goods:this.data.goods,
-        paramArray:[],
-        imageArray:[],
-        imageDetailArray:[]
-      });
-    }else{
-      
-      app.showErrNoCancel('提示','添加失败');
+        this.setData({
+          goods: this.data.goods,
+          paramArray: [],
+          imageArray: [],
+          imageDetailArray: []
+        });
+        app.showToast('添加成功')
+    } else {
+
+      app.showErrNoCancel('提示', '添加失败');
     }
   }
 })
