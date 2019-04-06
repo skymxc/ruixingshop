@@ -7,12 +7,16 @@ container{
 }
 -->
 <view class="container ">
+
+  <!-- 搜索 -->
   <view class='coantienr-search box'>
     <view class='contianer-search-border' bindtap='tapSearch'>
       <image class='image-search' src='../../images/sousuo.png'></image>
       <text>搜索</text>
     </view>
   </view>
+
+  <!-- banner -->
   <view class='container-banner box' wx:if='{{bannerArray.length>0}}'>
     <swiper class='swiper-banner box' autoplay='true' indicator-dots='true' circular='true' interval='3000'>
       <block wx:for="{{bannerArray}}" wx:key='item._id'>
@@ -22,6 +26,7 @@ container{
       </block>
     </swiper>
   </view>
+  <!-- 分类 -->
   <view class='container-category box'>
     <swiper class='swiper-category box' autoplay='true' indicator-dots='true' wx:if='{{categoryPageList.length>0}}'>
       <block wx:for='{{categoryPageList}}' wx:key='index'>
@@ -38,5 +43,17 @@ container{
       </block>
     </swiper>
   </view>
-  <view class='container-goods box'></view>
+  <!-- 商品 -->
+  <view class='container-goods box' wx:if='{{goodsList.length>0}}'>
+    <block wx:for='{{goodsList}}' wx:for-item='goods' wx:key='_id'>
+      <view class='container-goods-item box' bindtap='tapGoods' data-goods='{{goods}}'>
+        <image class='image-goods-cover' src='{{goods.coverPicture}}' mode='center'></image>
+        <view class='text-goods-name box'>{{goods.name}}</view>
+        <view class='container-goods-price'>
+          <text class='text-goods-price'>¥{{goods.price}}</text>
+          <text class='text-goods-buy'>购买</text>
+        </view>
+      </view>
+    </block>
+  </view>
 </view>

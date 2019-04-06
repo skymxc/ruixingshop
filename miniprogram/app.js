@@ -256,5 +256,10 @@ App({
   showError:function(error,txt){
    console.error(error);
    app.showErrNoCancel(txt,error.errMsg);
+  },
+  getRandomNum:function(min,max){
+  var range = max-min;
+  var rand = Math.random();
+  return min+Math.round(rand*range);
   }
 })

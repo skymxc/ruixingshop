@@ -8,11 +8,44 @@ Page({
     goodsTable: 'goods',
     categoryList: [],
     categoryCount: 0,
-    categoryPageList: []
+    categoryPageList: [],
+    orderList: [
+      'sale_num',
+      'name',
+      'store_num'
+    ],
+    orderbyList: [
+      'desc',
+      'asc'
+    ],
+    orderBy: '',
+    order: '',
+    goodsWhere: {
+      state: 0
+    },
+    goodsList: [],
+   refreshGoods:true,
+   refreshCategory:true
   },
   onLoad: function() {
+
     this.loadBanner();
     this.loadCategory();
+    //随机一个排序列，随机一个排序顺序 desc asc
+    this.randomOrder();
+    this.loadGoods();
+  },
+  onPullDownRefresh: function() {
+    this.refresh();
+    this.loadBanner();
+    this.loadCategory();
+    //随机一个排序列，随机一个排序顺序 desc asc
+    
+    this.loadGoods();
+    wx.stopPullDownRefresh();
+  },
+  onReachBottom: function() {
+    this.loadGoods();
   },
   loadBanner: function() {
     var data = this.data;
@@ -48,17 +81,61 @@ Page({
       })
       .catch(error => app.showError(error, '分类加载失败'));
   },
-  loadGoods:function(){
+  loadGoods: function() {
+    var that = this;
+    app.showLoadingMask('请稍后');
+    var skip = this.data.refreshGoods?0:this.data.goodsList.length;
+    db.collection(this.data.goodsTable).where(this.data.goodsWhere)
+      .skip(skip).orderBy(this.data.order, this.data.orderBy)
+      .get().then(res => {
+        wx.hideLoading();
+
+        if (res.data.length > 0) {
+          if (that.data.refreshGoods) {
+            that.data.goodsList = res.data;
+            that.data.refreshGoods =false;
+          } else {
+            that.data.goodsList = that.data.goodsList.concat(res.data);
+          }
+          that.setData({
+            goodsList: that.data.goodsList
+          })
+        } else {
+          app.showToast('没有商品了');
+        }
+      }).catch(error => {
+        console.error(error);
+        wx.hideLoading();
+        wx.showModal({
+          title: '商品加载失败',
+          content: error.errMsg,
+          showCancel: false,
+          confirmText: '重试',
+          success: function(res) {
+            if (res.confirm) {
+              that.loadGoods();
+            }
+          }
+        })
+      })
+
 
   },
   listCategory: function() {
     var that = this;
-    db.collection('category').skip(this.data.categoryList.length).get()
+    var skip = this.data.refreshCategory ? 0 : this.data.categoryList.length;
+    db.collection('category').skip(skip).get()
       .then(res => {
         wx.hideLoading();
         console.log(res.data);
         if (res.data.length > 0) {
-          that.data.categoryList = that.data.categoryList.concat(res.data);
+          if(that.data.refreshCategory){
+              that.data.categoryList = res.data;
+              that.data.refreshCategory = false;
+          }else{
+            that.data.categoryList = that.data.categoryList.concat(res.data);
+          }
+          
           that.setData({
             categoryList: that.data.categoryList
           })
@@ -119,9 +196,29 @@ Page({
   },
   tapSearch: function() {
     //todo  直接打开搜索页
+
   },
   tapBanner: function(event) {
     var goods = event.currentTarget.dataset.goods;
     //todo  商品详情
+    dbUtils.load(this.data.goodsTable, this.data.goodsWhere, )
+  },
+  tapGoods: function(event) {
+    var goods = event.currentTarget.dataset.goods;
+    console.log(goods);
+  },
+  randomOrder: function() {
+    var orderIndex = app.getRandomNum(0, this.data.orderList.length - 1);
+    var orderbyIndex = app.getRandomNum(0, 1);
+    this.setData({
+      order: this.data.orderList[orderIndex],
+      orderBy: this.data.orderbyList[orderbyIndex]
+    });
+    console.log('排序列为-》', this.data.order, ';顺序是-》', this.data.orderBy);
+  },
+  refresh:function(){
+    this.data.refreshGoods =true;
+    this.data.refreshCategory =true;
+    
   }
 })
