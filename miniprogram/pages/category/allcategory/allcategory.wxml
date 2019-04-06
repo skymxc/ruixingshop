@@ -1,0 +1,47 @@
+<!--全部分类
+container{
+search{}
+content{
+  category{}
+  subcategory{}
+}
+}
+-->
+<view class='container'>
+  <!-- 搜索 -->
+  <view class='coantienr-search box'>
+    <view class='contianer-search-border' bindtap='tapSearch'>
+      <image class='image-search' src='../../../images/sousuo.png'></image>
+      <text>搜索</text>
+    </view>
+  </view>
+
+  <!-- content -->
+  <view class='container-content box'>
+    <scroll-view class='scroll-category box' scroll-y='true'>
+      <!-- <view class='container-category box'> -->
+        <block wx:for='{{categoryList}}' wx:key='_id'>
+
+          <view wx:if='{{index==chooseIndex}}' class='container-category-item box choose-item' data-category='{{item}}' data-index='{{index}}'>
+            {{item.name}}
+
+          </view>
+          <view wx:else class='container-category-item box' data-category='{{item}}' data-index='{{index}}' bindtap='tapCategory'>
+            {{item.name}}
+          </view>
+        </block>
+      <!-- </view> -->
+    </scroll-view>
+    <scroll-view class='scroll-subcategory box' scroll-y='true'>
+      <view class='container-subcategory box'>
+        <block wx:for='{{subcateogryList}}' wx:key='_id'>
+          <view class='container-subcategory-content box' data-subcategory='{{item}}' bindtap='tapSubcategory'>
+            <image class='image-subcategory'  src='{{item.icon}}'></image>
+            <text class='text-subcategory'>{{item.name}}</text>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+
+  </view>
+</view>

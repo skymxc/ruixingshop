@@ -16,7 +16,7 @@
       <view class='container-category box' data-category='{{category}}' data-index='{{index}}'  bindlongpress='longtapCategory'>
 
 
-        <image class='image-category' src='{{category.icon}}' mode='center' data-src='{{category.icon}}' bindtap='tapCategoryImage'></image>
+        <image class='image-category' src='{{category.icon}}'  data-src='{{category.icon}}' bindtap='tapCategoryImage'></image>
         <view class='text-category box' data-category='{{category}}' data-index='{{index}}' bindtap='tapCategory'>{{category.name}}</view>
       </view>
     </block>

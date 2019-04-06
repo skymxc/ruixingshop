@@ -16,7 +16,7 @@
       <view class='container-category box' data-category='{{category}}' data-index='{{index}}'  bindlongpress='longtapCategory'>
 
 
-        <image class='image-category' src='{{category.icon}}' mode='center' data-src='{{category.icon}}' bindtap='tapCategoryImage'></image>
+        <image class='image-category' src='{{category.icon}}' data-src='{{category.icon}}' bindtap='tapCategoryImage'></image>
         <view class='text-category box' data-category='{{category}}' data-index='{{index}}' bindtap='tapCategory'>{{category.name}}</view>
       </view>
     </block>
@@ -32,7 +32,7 @@
         </view>
         <view class='container-input'>
           图标：
-          <image wx:if='{{addImageSrc.length>0}}' class='image-category'  src='{{addImageSrc}}' mode='center'></image>
+          <image wx:if='{{addImageSrc.length>0}}' class='image-category'  src='{{addImageSrc}}' ></image>
           <image wx:if='{{addImageSrc.length>0}}' src='../../../images/delete-2.png' class='image-add' bindtap='tapDelImage' ></image>
           <image wx:if='{{addImageVisible}}' class='image-add'  src='../../../images/add.png' bindtap='tapAddImage'></image>
         </view>

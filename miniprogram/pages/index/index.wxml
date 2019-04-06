@@ -21,7 +21,7 @@ container{
     <swiper class='swiper-banner box' autoplay='true' indicator-dots='true' circular='true' interval='3000'>
       <block wx:for="{{bannerArray}}" wx:key='item._id'>
         <swiper-item>
-          <image src='{{item.pictures[0]}}' mode='center' class='image-banner' data-goods='{{item}}' bindtap='tapBanner'></image>
+          <image src='{{item.pictures[0]}}' class='image-banner' data-goods='{{item}}' bindtap='tapBanner'></image>
         </swiper-item>
       </block>
     </swiper>
@@ -47,7 +47,7 @@ container{
   <view class='container-goods box' wx:if='{{goodsList.length>0}}'>
     <block wx:for='{{goodsList}}' wx:for-item='goods' wx:key='_id'>
       <view class='container-goods-item box' bindtap='tapGoods' data-goods='{{goods}}'>
-        <image class='image-goods-cover' src='{{goods.coverPicture}}' mode='center'></image>
+        <image class='image-goods-cover' src='{{goods.coverPicture}}' ></image>
         <view class='text-goods-name box'>{{goods.name}}</view>
         <view class='container-goods-price'>
           <text class='text-goods-price'>¥{{goods.price}}</text>

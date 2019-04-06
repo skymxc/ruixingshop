@@ -68,7 +68,7 @@
           <image  bindtap="tapAddCoverPicture" class='image-category' src='../../images/add.png'></image>
         </view>
         <view wx:if='{{cover.local}}' class='container-cover-image'>
-        <image  src='{{cover.local}}' class='image-cover-picture' mode='center' bindtap='tapImage' data-src='{{cover.local}}'></image>
+        <image  src='{{cover.local}}' class='image-cover-picture' bindtap='tapImage' data-src='{{cover.local}}'></image>
         </view>
         
         
@@ -81,7 +81,7 @@
         <view wx:if='{{imageArray.length>0}}' class='container-image-value box'>
           <block wx:for='{{imageArray}}'>
             <view class='container-image-item'>
-              <image class='image-goods' src='{{item.local}}' mode='center' data-src='{{item.local}}' bindtap='tapImage'></image>
+              <image class='image-goods' src='{{item.local}}' data-src='{{item.local}}' bindtap='tapImage'></image>
               <image src='../../images/delete-2.png' data-index='{{index}}' class='image-delete' bindtap='tapDelPicture'></image>
             </view>
 
@@ -98,7 +98,7 @@
 
         <block wx:for='{{imageDetailArray}}'>
           <view class='container-image-detail-item box'>
-            <image class='image-detail'  data-src='{{item.local}}' bindtap='tapImage' src='{{item.local}}' mode='center'></image>
+            <image class='image-detail'  data-src='{{item.local}}' bindtap='tapImage' src='{{item.local}}'></image>
             <image src='../../images/delete-2.png' data-index="{{index}}" bindtap='tapDelDetailPicture' class='image-delete-detail'></image>
           </view>
 
