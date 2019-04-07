@@ -1,0 +1,118 @@
+/* miniprogram/pages/searchGoods/searchGoods.wxss */
+
+.container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+form {
+  width: 100%;
+  height: 50px;
+}
+
+.container-search {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  width: 100%;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.input-name {
+  background-color: white;
+  flex: 1;
+  padding-left: 5px;
+  height: 35px;
+  margin-right: 5px;
+}
+
+.button-search::after {
+  border: none !important;
+}
+
+.container-order {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  width: 100%;
+  border-top: solid gainsboro 1px;
+  border-bottom: solid gainsboro 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  align-items: center;
+}
+.container-order-item{
+  height: 80%;
+  flex: 1;
+  border-right: solid gainsboro 1px;
+  text-align: center;
+}
+.selected{
+  color: red;
+}
+.container-order-condition{
+  border: none;
+}
+.container-scroll-goods{
+  flex: 1;
+  overflow: hidden;
+}
+.container-goods{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #fdfdfd;
+}
+
+.container-condition{
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 90px;
+  width: 100%;
+  height: 90%;
+}
+.mask-condition{
+  background-color:rgba(7, 0, 0, 0.404);
+  flex: 1;
+  width: 100%;
+}
+.confition-title{
+  
+  padding: 10px;
+  background-color: white;
+  text-align: center;
+  border-bottom: solid rgba(220, 220, 220, 0.575) 1px;
+}
+.container-btn{
+  background-color: white;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-top: solid rgba(220, 220, 220, 0.575) 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.text-clean-condition{
+  color: green;
+}
+.text-confirm-condition{
+  color: red;
+}
+.picker-category{
+  height: 200px;
+  background-color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}

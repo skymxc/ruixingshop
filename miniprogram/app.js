@@ -255,7 +255,7 @@ App({
   },
   showError:function(error,txt){
    console.error(error);
-   app.showErrNoCancel(txt,error.errMsg);
+   this.showErrNoCancel(txt,error.errMsg);
   },
   getRandomNum:function(min,max){
   var range = max-min;

@@ -1,0 +1,89 @@
+<!--
+最外面使用弹性布局，方向为 column ；
+第二层依次排列搜索框，排序，商品，分类筛选
+第三层的搜索框也是弹性布局，一个 输入框，一个 button 
+第三层的排序也用弹性布局，均匀分布三个排序和一个筛选按钮，这里是有标示的，使用哪一个which one 高亮，就使用两个view吧，选择的一个，普通的一个，选中哪个哪个高亮。
+第三层的商品，也适用弹性布局，不过外面需要套一层scrollview 来滑动，并且要监听滑动到底的事件来加载更多。
+第三层的分类筛选，使用固定定位，悬浮在商品之上。层级要高于商品。
+
+contianer{
+  search{
+    form{
+      input
+      button
+    }
+  }
+  order{
+    view{}
+    ...
+  }
+  goods{}
+  condition{
+    picker-view
+  }
+}
+-->
+<view class='container'>
+  <!--  -->
+  <form bindsubmit='submitSearch'>
+    <view class='container-search box'>
+      <input class='input-name' placeholder='输入商品名称' name='name' maxlength='10'></input>
+      <button class= 'button-search' form-type='submit'>
+        搜索
+      </button>
+        </view>
+  </form>
+
+  <!-- -->
+  <view class='container-order box'>
+    <view wx:if='{{orderIndex==0}}' class='container-order-item box selected' data-index='0' bindtap='tapOrderDesc'>综合</view>
+    <view wx:else class='container-order-item box ' data-index='0' bindtap='tapOrder'>综合</view>
+
+    <view wx:if='{{orderIndex==1}}' class='container-order-item box selected' data-index='1' bindtap='tapOrderDesc'>销量</view>
+    <view wx:else class='container-order-item box ' data-index='1' bindtap='tapOrder'>销量</view>
+
+    <view wx:if='{{orderIndex==2}}' class='container-order-item box selected' data-index='2' bindtap='tapOrderDesc'>价格</view>
+    <view wx:else class='container-order-item box ' data-index='2' bindtap='tapOrder'>价格</view>
+
+    <view wx:if='{{chooseVisible}}' class='container-order-item container-order-condition box selected'  bindtap='tapChooseCondition'>筛选</view>
+    <view wx:else class='container-order-item box container-order-condition'  bindtap='tapChooseCondition'>筛选</view>
+
+  </view>
+  <scroll-view class='container-scroll-goods box ' scroll-y bindscrolltolower='loadMoreGoods'>
+  <view class='container-goods'>
+    <block wx:for='{{goodsList}}' wx:for-item='goods' wx:key='_id'>
+       <view class='container-goods-item box' bindtap='tapGoods' data-goods='{{goods}}'>
+        <image class='image-goods-cover' src='{{goods.coverPicture}}' ></image>
+        <view class='text-goods-name box'>{{goods.name}}</view>
+        <view class='container-goods-price'>
+          <text class='text-goods-price'>¥{{goods.price}}</text>
+          <text class='text-goods-buy'>购买</text>
+        </view>
+      </view>
+    </block>
+    </view>
+  </scroll-view> 
+  
+  <view class='container-condition box'>
+   
+    
+    <view class='confition-title box'>选择分类</view>
+   
+      <picker-view class='picker-category' value='{{categroyIndex}}'  >
+        <picker-view-column range-key="{{'name'}}">
+          <view  class=' picker-column picker-cateogry'  wx:for='{{categoryList}}' wx:key='_id'>{{item.name}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view class=' picker-column picker-subcateogry' wx:for='{{subcategoryList}}' wx:key='_id'>{{item.name}}</view>
+        </picker-view-column>
+      </picker-view>
+
+      <view class='container-btn box'>
+        <text class='text-cancel-condition' bindtap='tapCancelCondition'>取消筛选</text>
+        <text class='text-clean-condition' bindtap='tapCleanCondition'>清空选择</text>
+        <text class='text-confirm-condition' bindtap='tapConfirmCondition'>确认</text>
+      </view>
+     <view class='mask-condition '></view>
+  </view>
+
+</view>

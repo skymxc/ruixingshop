@@ -1,6 +1,7 @@
 {
   "cloud": true,
   "pages": [
+    "pages/searchGoods/searchGoods",
     "pages/category/allcategory/allcategory",
     "pages/index/index",
     "pages/addGoods/addGoods",
@@ -21,10 +22,10 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/category/allcategory/allcategory",
-        "text": "全部分类",
-        "iconPath": "images/category.png",
-        "selectedIconPath": "images/category_sel.png"
+        "pagePath": "pages/searchGoods/searchGoods",
+        "text": "调试",
+        "iconPath": "images/index.png",
+        "selectedIconPath": "images/index_sel.png"
       },
       {
         "pagePath": "pages/index/index",
@@ -32,6 +33,13 @@
         "iconPath": "images/index.png",
         "selectedIconPath": "images/index_sel.png"
       },
+      {
+        "pagePath": "pages/category/allcategory/allcategory",
+        "text": "全部分类",
+        "iconPath": "images/category.png",
+        "selectedIconPath": "images/category_sel.png"
+      },
+      
       {
         "pagePath": "pages/memberCenter/memberCenter",
         "text": "个人中心",

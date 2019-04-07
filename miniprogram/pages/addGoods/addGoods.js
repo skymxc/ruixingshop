@@ -3,6 +3,7 @@
 /**
  * todo
  * - 图片删除后没有从云开发后台删除
+ * - 图片上传 getCloudName();有bug
  */
 const app = getApp();
 const db = wx.cloud.database();
