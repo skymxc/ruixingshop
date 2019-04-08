@@ -1,9 +1,10 @@
 {
   "cloud": true,
   "pages": [
+   
+    "pages/index/index",
     "pages/searchGoods/searchGoods",
     "pages/category/allcategory/allcategory",
-    "pages/index/index",
     "pages/addGoods/addGoods",
     "pages/memberCenter/memberCenter",
     "pages/category/ruleManager/ruleManager",
@@ -21,12 +22,7 @@
   },
   "tabBar": {
     "list": [
-      {
-        "pagePath": "pages/searchGoods/searchGoods",
-        "text": "调试",
-        "iconPath": "images/index.png",
-        "selectedIconPath": "images/index_sel.png"
-      },
+      
       {
         "pagePath": "pages/index/index",
         "text": "首页",

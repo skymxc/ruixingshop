@@ -92,7 +92,7 @@ height:image 100 +text 30+ padding+10 +textmaring +10 = 150
 }
 .image-subcategory{
   width: 70px;
-  height: 100px;
+  height: 90px;
 }
 .text-subcategory{
   font-size: 15px;

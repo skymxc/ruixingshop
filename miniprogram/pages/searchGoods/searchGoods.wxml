@@ -64,18 +64,21 @@ contianer{
     </view>
   </scroll-view> 
   
-  <view class='container-condition box'>
+  <view class='container-condition box' wx:if='{{chooseVisible}}'>
    
     
     <view class='confition-title box'>选择分类</view>
    
-      <picker-view class='picker-category' value='{{categroyIndex}}'  >
-        <picker-view-column range-key="{{'name'}}">
-          <view  class=' picker-column picker-cateogry'  wx:for='{{categoryList}}' wx:key='_id'>{{item.name}}</view>
+      <picker-view class='picker-category' value='{{categoryIndex}}' bindchange='bindCategoryChange'  >
+
+        <picker-view-column >
+          <view class=' picker-column picker-cateogry'  wx:for='{{categoryList}}' wx:key='_id'>{{item.name}}</view>
         </picker-view-column>
+
         <picker-view-column>
           <view class=' picker-column picker-subcateogry' wx:for='{{subcategoryList}}' wx:key='_id'>{{item.name}}</view>
         </picker-view-column>
+
       </picker-view>
 
       <view class='container-btn box'>

@@ -33,7 +33,7 @@ Page({
     categoryCount: 0,
     orderIndex: 0,
     categoryList: [],
-    categroyIndex: [0, 0],
+    categoryIndex: [0, 0],
     subcategoryList: [],
     chooseVisible:false,
     orderArray:['name','sale_num','price'],
@@ -51,7 +51,8 @@ Page({
       }
       var subcategory = {
         _id: options.subcategory_id,
-        name: options.subcategory_name
+        name: options.subcategory_name,
+        parent:category._id
       }
       var where = {
         category: {
@@ -71,7 +72,7 @@ Page({
    
     //加载商品
     this.loadGoods();
-    this.loadCategory();
+    // this.loadCategory();
   },
   loadGoods: function() {
     var skip = this.data.refreshGoods ? 0 : this.data.goodsList.length;
@@ -80,10 +81,16 @@ Page({
     data.lastLoadGoodsTime = new Date().getTime();
     this.setData(data);
     app.showLoadingMask('加载中');
-    db.collection('goods').where(this.data.goodsWhere).skip(skip).orderBy(this.data.goodsOrder, 'desc').get()
+    db.collection('goods').where(this.data.goodsWhere).skip(skip).orderBy(this.data.goodsOrder, this.data.goodsOrderBy).get()
       .then(res => {
         wx.hideLoading();
         if (res.data.length == 0) {
+          if(that.data.refreshGoods){
+            data.goodsList=[];
+            that.setData(data);
+            app.showToast('没有找到商品');
+            return;
+          }
           app.showToast('没有商品了');
           return;
         }
@@ -130,20 +137,20 @@ Page({
             for (var i = 0; i < data.categoryList.length; i++) {
               var choose = data.categoryList[i];
               if (choose.name == data.category.name) {
-                data.categroyIndex[0] = i;
+                data.categoryIndex[0] = i;
                 data.category = choose;
                 break;
               }
             }
           } else {
-            data.categroyIndex[0] = 0;
+            data.categoryIndex[0] = 0;
             data.category = data.categoryList[0];
           }
 
           that.setData(data);
           if (skip == 0) {
             ///加载子分类
-            that.loadSubcategory(data.category, data.categroyIndex[0]);
+            that.loadSubcategory(data.category, data.categoryIndex[0]);
           }
 
           if (data.categoryCount > that.data.categoryList.length) {
@@ -164,11 +171,11 @@ Page({
     if (category.sub) { //已经有了，不需要再次加载
 
 
-      this.data.categroyIndex[1] = 0;
+      this.data.categoryIndex[1] = 0;
       this.setData({
         subcategoryList: category.sub,
         subcategory: category.sub[0],
-        categroyIndex: this.data.categroyIndex
+        categoryIndex: this.data.categoryIndex
       });
       wx.hideLoading();
       return;
@@ -193,7 +200,7 @@ Page({
         data.categoryList[index] = category;
         data.subcategoryList = category.sub;
         data.subcategory = all;
-        data.categroyIndex[1] = 0;
+        data.categoryIndex[1] = 0;
         that.setData(data);
         return;
       }
@@ -244,18 +251,22 @@ Page({
         for (var i = 0; i < category.sub.length; i++) {
           var subcategory = category.sub[i];
           if (subcategory._id == data.subcategory._id&&subcategory.parent==data.subcategory.parent) {
-            data.categroyIndex[1] = i;
+            data.categoryIndex[1] = i;
             data.subcategory = subcategory;
             break;
           }
         }
       } else {
-        data.categroyIndex[1] = 0;
+        data.categoryIndex[1] = 0;
         data.subcategory = category.sub[0];
       }
       data.categoryList[index] = category;
       data.subcategoryList = category.sub;
       that.setData(data);
+
+      that.setData({
+        categoryIndex:data.categoryIndex
+      })
       if (category.sub.length == category.subtotal) {
         wx.hideLoading();
       } else {
@@ -297,41 +308,138 @@ Page({
     
     var name = event.detail.value.name;
     console.log('搜索 ->',name);
+    var name = db.RegExp({
+      regexp:name,
+      options:'i'
+    });
+    this.data.goodsWhere.name = name;
+    this.setData({
+      goodsWhere:this.data.goodsWhere,
+      refreshGoods:true
+    })
+    this.loadGoods();
   },
   tapOrderDesc:function(event){
+    if (this.data.chooseVisible) {
+      this.setData({
+        chooseVisible: false
+      })
+      
+    }
     var index = event.currentTarget.dataset.index;
     var order = this.data.orderArray[index];
-    if(this.data.goodsOrderBy=='desc'&&this.data.goodsOrder==order){
-      return;
+    var orderby = 'desc';
+    if(this.data.goodsOrderBy=='desc'){
+      orderby ='asc';
+      
     }
     this.setData({
       goodsOrder:order,
-      goodsOrderBy:'desc',
-      orderIndex:index
+      goodsOrderBy: orderby,
+      orderIndex:index,
+      refreshGoods:true
     })
-    console.log('排序-desc>',order);
+    console.log('排序-desc>', order);
+    this.loadGoods();
+    
   },
   tapOrder:function(event){
+    if(this.data.chooseVisible){
+      this.setData({
+        chooseVisible:false
+      })
+      return;
+    }
     var index = event.currentTarget.dataset.index;
     var order = this.data.orderArray[index];
-    if (this.data.goodsOrderBy == 'asc' && this.data.goodsOrder == order) {
+    var orderby = 'asc';
+    if (this.data.goodsOrderBy == 'asc') {
+      orderby = 'desc';
       return;
     }
     console.log('排序-asc>', order);
     this.setData({
       goodsOrder: order,
-      goodsOrderBy: 'asc',
-      orderIndex: index
+      goodsOrderBy: orderby,
+      orderIndex: index,
+      refreshGoods:true
     })
+    this.loadGoods();
   },
   tapChooseCondition:function(event){
     console.log('筛选')
     this.setData({
       chooseVisible:!this.data.chooseVisible
     })
+    if(this.data.categoryList.length==0){
+      this.loadCategory();
+    }
   },
   tapGoods:function(event){
     var goods = event.currentTarget.dataset.goods;
     console.log('tap ->',goods);
+  },
+  bindCategoryChange:function(event){
+    var data =this.data;
+    var parentIndex= event.detail.value[0];
+    var subIndex = event.detail.value[1];
+    data.category = this.data.categoryList[parentIndex];
+   
+    if(this.data.subcategoryList.length>subIndex){
+      data.subcategory = this.data.subcategoryList[subIndex];
+    }
+    data.categoryIndex = event.detail.value;
+    this.setData(data);
+   
+    if(data.category.sub){
+        this.setData({
+          subcategoryList:data.category.sub
+        })
+    }else{
+      data.categoryIndex[1]=0;
+      this.setData({
+        subcategoryList:[],
+        subcategory:{},
+        categoryIndex:data.categoryIndex
+      })
+      this.loadSubcategory(data.category,parentIndex);
+    }
+  },
+  tapConfirmCondition:function(){
+    //加载商品
+    var data =this.data;
+    data.chooseVisible =false;
+    var where = {
+      category: {
+        category_id: data.category._id
+      }
+    }
+    if(data.subcategory._id!='all'){
+      where.subcategory={
+        subcategory_id: data.subcategory._id
+      }
+    }
+    if(data.goodsWhere.name){
+      where.name = data.goodsWhere.name;
+    }
+    data.goodsWhere = where;
+    data.refreshGoods =true;
+    this.setData(data);
+    this.loadGoods();
+  },
+  tapCleanCondition:function(){
+    this.setData({
+      category:{},
+      subcategory:{},
+      categoryIndex:[0,0],
+      chooseVisible:false
+    })
+
+
+  },
+  tapCancelCondition:function(){
+    this.setData({
+      chooseVisible:false
+    })
   }
 })

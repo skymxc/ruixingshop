@@ -1,4 +1,9 @@
 //index.js
+/**
+ * 
+ * todo
+ * - 上啦加载更多 加入时间间隔限制 在搜索有实现
+ */
 const app = getApp()
 const db = wx.cloud.database();
 const dbUtils = require('../../js/DB.js')
@@ -25,7 +30,8 @@ Page({
     },
     goodsList: [],
    refreshGoods:true,
-   refreshCategory:true
+   refreshCategory:true,
+    lastLoadGoodsTime: 0
   },
   onLoad: function() {
 
@@ -45,6 +51,12 @@ Page({
     wx.stopPullDownRefresh();
   },
   onReachBottom: function() {
+    var current = new Date().getTime();
+    //5 s
+    if ((current - this.data.lastLoadGoodsTime) < 5 * 1000) {
+      console.log(' interval time less five second!')
+      return;
+    }
     this.loadGoods();
   },
   loadBanner: function() {
@@ -84,6 +96,7 @@ Page({
   loadGoods: function() {
     var that = this;
     app.showLoadingMask('请稍后');
+    this.data.lastLoadGoodsTime = new Date().getTime();
     var skip = this.data.refreshGoods?0:this.data.goodsList.length;
     db.collection(this.data.goodsTable).where(this.data.goodsWhere)
       .skip(skip).orderBy(this.data.order, this.data.orderBy)
@@ -193,9 +206,11 @@ Page({
     var category = event.currentTarget.dataset.category;
     console.log(category);
     //todo  携带参数去搜索页
+    var param = '?category_id=' + category._id +'&category_name='+category.name;
+    app.navigateTo('../searchGoods/searchGoods'+param);
   },
   tapSearch: function() {
-    //todo  直接打开搜索页
+    app.navigateTo('../searchGoods/searchGoods');
 
   },
   tapBanner: function(event) {

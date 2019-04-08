@@ -3,6 +3,6 @@
 
 .image-category{
    width: 70px;
-  height: 100px;
+  height: 90px;
   margin-right: 5px;
 }

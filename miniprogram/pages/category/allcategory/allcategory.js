@@ -175,8 +175,12 @@ Page({
   tapSubcategory:function(event){
     var subcategory = event.currentTarget.dataset.subcategory;
     //去搜索页
+    var category = this.data.category;
+    var param = '?category_id='+category._id+'&category_name='+category.name+'&subcategory_id='+subcategory._id+'&subcategory_name='+subcategory.name;
+    app.navigateTo('../../searchGoods/searchGoods'+param);
   },
   tapSearch:function(){
     //去搜索页
+    app.navigateTo('../../searchGoods/searchGoods');
   }
 })
