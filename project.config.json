@@ -38,9 +38,9 @@
 				},
 				{
 					"id": 1,
-					"name": "分类进去",
-					"pathName": "pages/searchGoods/searchGoods",
-					"query": "category_id=XKdAFd7E7L4wIoKQ&category_name=男装&subcategory_id=XKdFTd7E7L4wIoc6&subcategory_name=T恤",
+					"name": "商品详情",
+					"pathName": "pages/goodsDetail/goodsDetail",
+					"query": "_id=XKdLs8DR1TiNTvid",
 					"scene": null
 				}
 			]

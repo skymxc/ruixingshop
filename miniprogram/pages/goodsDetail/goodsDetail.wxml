@@ -1,0 +1,80 @@
+<!--商品详情-->
+<!-- 
+
+第一层的container 主轴方向是 column 
+第二层scrollview 包裹商品所有内容
+第二层container-tools 主轴方向是 row 包裹操作button
+第二层 mask 蒙层 绝对定位覆盖上面两个view
+第二层 购物车&规格&立即购买选项 在蒙层之上 绝对固定定位到 底部
+
+ -->
+<view class='container box'>
+  <scroll-view scroll-y>
+    <view class='container-goods box' wx:if='{{goods.name}}'>
+      <!-- 图片 -->
+      <swiper class='swiper-pictures' autoplay='true' indicator-dots='true' circular='true' interval='3000'>
+        <block wx:for='{{goods.pictures}}' wx:key='item'>
+          <swiper-item>
+            <image src='{{item}}' class='image-goods-picture' bindtap='tapPicture' data-index='{{index}}'></image>
+          </swiper-item>
+        </block>
+
+      </swiper>
+      <!-- 名称-分享 -->
+      <view class='container-goods-name box'>
+        <view class='view-goods-name box'>{{goods.name}}</view>
+        <button class='button-share' open-type='share'>
+          <image class='image-share' src='../../images/share.png'></image>
+
+        </button>
+      </view>
+      <!-- 价格 -->
+      <view class='container-price box'>
+        ¥ {{goods.price}}
+      </view>
+      <!-- 快递，销量 -->
+      <view class='container-goods-pastage box' wx:if='{{goods.name}}'>
+        <view class='container-goods-posage-item  box'>快递:
+          <text wx:if='{{goods.postage>0}}'>{{goods.postage}}元</text>
+          <text wx:else>包邮</text>
+
+        </view>
+        <view class='container-goods-posage-item  box'>销量:{{goods.sale_num}} </view>
+      </view>
+      <!-- 选择规格 -->
+
+      <view class='container-rule box padding-left-right'>
+        请选择
+        <text wx:if='{{rulestring.length>0}}'>{{rulestring}}</text>
+        <text wx:else>数量</text>
+        <image src='../../images/more.png' class='image-more'></image>
+      </view>
+
+      <view class='container-detial-title box padding-left-right'>
+        <view wx:if='{{goods.params && !detailVisible}}' class='container-detial-item box' >详情</view>
+        <view wx:if='{{goods.params && detailVisible}}' class='container-detial-item selected box' >详情</view>
+        <view wx:if='{{goods.params && !detailVisible}}' class='container-detial-item selected box'>参数</view>
+        <view  wx:if='{{goods.params && detailVisible}}' class='container-detial-item box'>参数</view>
+       <text wx:if='{{!goods.params}}'>商品详情</text>
+      </view>
+      <!-- 详情图片 -->
+      <view wx:if='{{detailVisible}}' class='container-detail-picture'>
+        <block wx:for='{{goods.detail_pcitures}}' wx:key='item'>
+        <image class='image-detail-picture' src='{{item}}'></image>
+        </block>
+      </view>
+      <!-- 参数 -->
+      <view wx:else class='container-param'>
+        <block wx:for='{{goods.params}}' wx:key='name'>
+          <view class='container-param-item'>
+            <view class='text-param-name'>{{item.name}}</view>
+            <view class='text-param-value'>{{item.value}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </scroll-view>
+  <view class='container-tools box'></view>
+  <view class='mask' wx:if='{{chooseVisible}}'></view>
+  <view class='container-choose-rule box' wx:if='{{chooseVisible}}'></view>
+</view>

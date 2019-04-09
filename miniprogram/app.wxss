@@ -99,3 +99,7 @@ page{
   font-size: 15px;
 
 }
+.padding-left-right{
+ padding-left: 10px;
+  padding-right: 10px;
+}

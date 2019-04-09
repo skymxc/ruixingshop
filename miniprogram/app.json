@@ -1,7 +1,6 @@
 {
   "cloud": true,
   "pages": [
-   
     "pages/index/index",
     "pages/searchGoods/searchGoods",
     "pages/category/allcategory/allcategory",
@@ -11,7 +10,8 @@
     "pages/category/subcategoryManager/subcategoryManager",
     "pages/category/categoryManager/categoryManager",
     "pages/goodsManager/goodsManager",
-    "pages/authorize/authorize"
+    "pages/authorize/authorize",
+    "pages/goodsDetail/goodsDetail"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",
@@ -22,7 +22,6 @@
   },
   "tabBar": {
     "list": [
-      
       {
         "pagePath": "pages/index/index",
         "text": "首页",
@@ -35,7 +34,6 @@
         "iconPath": "images/category.png",
         "selectedIconPath": "images/category_sel.png"
       },
-      
       {
         "pagePath": "pages/memberCenter/memberCenter",
         "text": "个人中心",

@@ -320,11 +320,12 @@ Page({
     this.loadGoods();
   },
   tapOrderDesc:function(event){
+console.log(event);
     if (this.data.chooseVisible) {
       this.setData({
         chooseVisible: false
       })
-      
+      return;
     }
     var index = event.currentTarget.dataset.index;
     var order = this.data.orderArray[index];
@@ -344,6 +345,7 @@ Page({
     
   },
   tapOrder:function(event){
+    console.log(event);
     if(this.data.chooseVisible){
       this.setData({
         chooseVisible:false
@@ -355,7 +357,7 @@ Page({
     var orderby = 'asc';
     if (this.data.goodsOrderBy == 'asc') {
       orderby = 'desc';
-      return;
+     
     }
     console.log('排序-asc>', order);
     this.setData({
