@@ -215,12 +215,13 @@ Page({
   },
   tapBanner: function(event) {
     var goods = event.currentTarget.dataset.goods;
-    //todo  商品详情
-    dbUtils.load(this.data.goodsTable, this.data.goodsWhere, )
+    // 商品详情
+   app.navigateTo('../goodsDetail/goodsDetail?_id='+goods._id);
   },
   tapGoods: function(event) {
     var goods = event.currentTarget.dataset.goods;
     console.log(goods);
+    app.navigateTo('../goodsDetail/goodsDetail?_id=' + goods._id);
   },
   randomOrder: function() {
     var orderIndex = app.getRandomNum(0, this.data.orderList.length - 1);

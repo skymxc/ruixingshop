@@ -380,6 +380,7 @@ console.log(event);
   tapGoods:function(event){
     var goods = event.currentTarget.dataset.goods;
     console.log('tap ->',goods);
+    app.navigateTo('../goodsDetail/goodsDetail?_id='+goods._id)
   },
   bindCategoryChange:function(event){
     var data =this.data;

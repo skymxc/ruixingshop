@@ -11,13 +11,18 @@ Page({
     chooseVisible:false,
     goods:{},
     rulestring:'',
-    detailVisible:true
+    detailVisible:true,
+    shopcarNum:0,
+    attetion:false,
+    chooseNum:1,
+    chooseRule:true
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options);
    this.data.goods._id = options._id
    this.loadGoods();
   },
@@ -53,10 +58,20 @@ Page({
         if(res.data.rules){
           if(res.data.rules.length>0){
               for(var i=0;i<res.data.rules.length;i++){
+
                 var rule = res.data.rules[i];
-                string+=rule.value;
+                if(rule.array){
+                  if(rule.array.length>0){
+                    string += rule.value;
+                  }
+
+                }
+               
               }
-              string+='等';
+              if(string.length>0){
+                string += '等';
+              }
+            
           }
         }
         that.setData({
@@ -74,6 +89,33 @@ Page({
       success:function(){
         wx.hideLoading();
       }
+    })
+  },
+  tapDetailChange:function(){
+    this.setData({
+      detailVisible:!this.data.detailVisible
+    })
+  },
+  tapAttention:function(){
+    console.log('关注-》',this.data.attetion)
+  },
+  tapShopcar:function(){
+    console.log('购物车')
+  },
+  tapAddToShopcar:function(){
+    console.log('加入购物车')
+  },
+  tapBuy:function(){
+    console.log('立即购买')
+  },
+  tapMask:function(){
+    this.setData({
+      chooseVisible:false
+    })
+  },
+  tapChooseRule:function(){
+    this.setData({
+      chooseVisible:true
     })
   }
 })

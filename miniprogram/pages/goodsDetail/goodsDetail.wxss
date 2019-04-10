@@ -1,12 +1,16 @@
 /* miniprogram/pages/goodsDetail/goodsDetail.wxss */
-.container{
+
+.container {
   height: 100%;
 }
-scroll-view{
+
+scroll-view {
   flex: 1;
   width: 100%;
+  padding-bottom: 50px;
 }
-.container-tools{
+
+.container-tools {
   height: 50px;
   background-color: white;
   width: 100%;
@@ -15,29 +19,35 @@ scroll-view{
   border-top: solid gainsboro 1px;
   position: fixed;
   bottom: 0px;
+  color: gainsboro;
 }
-.container-choose-rule{
+
+.container-choose-rule {
   position: fixed;
   bottom: 0px;
   background-color: white;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
-.container-goods{
+.container-goods {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-.swiper-pictures{
+
+.swiper-pictures {
   width: 100%;
   height: 300px;
 }
-.image-goods-picture{
+
+.image-goods-picture {
   height: 100%;
   width: 100%;
 }
-.container-goods-name{
+
+.container-goods-name {
   display: flex;
   width: 100%;
   min-height: 50px;
@@ -47,12 +57,14 @@ scroll-view{
   justify-content: center;
   margin-top: 5px;
 }
-.view-goods-name{
+
+.view-goods-name {
   flex: 1;
   padding-left: 5px;
   padding-right: 5px;
 }
-.button-share{
+
+.button-share {
   width: 30px;
   margin-right: 10px;
   display: flex;
@@ -62,15 +74,17 @@ scroll-view{
   background-color: white;
   font-size: 12px;
 }
-.button-share::after{
-border: none;
+
+.button-share::after {
+  border: none;
 }
-.image-share{
+
+.image-share {
   height: 25px;
   width: 25px;
 }
 
-.container-goods-pastage{
+.container-goods-pastage {
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -79,34 +93,39 @@ border: none;
   color: rgb(189, 185, 185);
   font-size: 13px;
 }
-.container-goods-posage-item{
+
+.container-goods-posage-item {
   flex: 1;
 }
-.container-price{
+
+.container-price {
   color: rgba(255, 0, 64, 0.774);
   font-size: 20px;
   background-color: white;
   width: 100%;
   padding-left: 10px;
 }
-.container-rule{
+
+.container-rule {
   width: 100%;
   height: 50px;
- background-color: white;
- display: flex;
- flex-direction: row;
- align-items: center;
- position: relative;
- margin-top: 10px;
- margin-bottom: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-.image-more{
+
+.image-more {
   height: 20px;
   width: 20px;
   position: absolute;
   right: 10px;
 }
-.container-detial-title{
+
+.container-detial-title {
   display: flex;
   flex-direction: row;
   height: 50px;
@@ -115,11 +134,13 @@ border: none;
   align-items: center;
   background-color: white;
 }
-.selected{
+
+.selected {
   color: red;
   border-bottom: solid red 1px;
 }
-.container-detial-item{
+
+.container-detial-item {
   flex: 1;
   height: 100%;
   display: flex;
@@ -127,13 +148,215 @@ border: none;
   align-items: center;
   justify-content: center;
 }
-.container-detail-picture{
+
+.container-detail-picture {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 50px;
 }
-.image-detail-picture{
+
+.image-detail-picture {
   width: 100%;
   height: 500px;
+}
+
+.container-param {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: white;
+  margin-top: 5px;
+}
+
+.container-param-item {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 50px;
+  justify-content: center;
+  border-bottom: solid gainsboro 1px;
+  border-top: solid gainsboro 1px;
+  align-items: center;
+}
+
+.text-param {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 50px;
+}
+
+.text-param-name {
+  border-right: solid gainsboro 1px;
+}
+
+.container-attention, .container-shopcar {
+  width: 60px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  font-size: 12px;
+}
+
+.image-attention, .image-shaopcar {
+  width: 30px;
+  height: 30px;
+}
+
+.container-shopcar {
+  position: relative;
+}
+
+.text-shopcar-num {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  background-color: red;
+  color: white;
+  border-radius: 10px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-weight: bold;
+}
+.container-add-into-shopcar,.container-buy{
+  flex: 1;
+  height: 100%;
+  background-color: goldenrod;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+.container-buy{
+  background-color: red;
+
+}
+.container-choose-title{
+  width: 100%;
+  height: 100px;
+  border-bottom: solid gainsboro 1px;
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.image-choose-rule{
+  border: solid white 2px;
+  border-radius: 1px;
+  height: 130px;
+  width: 120px;
+  position: relative;
+  top: -50px;
+  background-color: white;
+}
+
+.contianer-choose-price{
+  margin-left: 10px;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+.text-price-choose{
+  color: red;
+  font-size: 20px;
+  display: inline-block;
+  flex: 1;
+}
+.image-choose-cancel{
+  width: 30px;
+  height: 30px;
+  border: solid black 1px;
+  border-radius: 15px;
+}
+
+.container-choose-rule-content{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.container-rule-item{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: solid gainsboro 1px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.text-rule-value{
+  font-size: 17px;
+
+}
+.container-rule-array{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.rule-value-item{
+  background-color: rgba(220, 220, 220, 0.801);
+  border-radius: 5px;
+  padding: 3px 10px 3px 10px;
+  margin: 5px;
+  text-align: center;
+}
+
+.container-choose-num{
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 40px;
+  margin-bottom: 50px;
+  
+}
+.text-choose-num{
+  flex: 1;
+}
+.container-choose-num-border{
+  display: flex;
+  flex-direction: row;
+  border: solid gainsboro 1px;
+
+}
+.image-num{
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+
+}
+.text-choose-goods-num{
+  border-left: solid gainsboro 1px;
+  border-right: solid gainsboro 1px;
+  min-height: 20px;
+  min-width: 20px;
+  padding: 5px;
+  text-align: center;
+}
+.container-choose-button{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+}
+.container-choose-rule-confirm{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: red;
+  font-weight: bold;
 }
