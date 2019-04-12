@@ -72,7 +72,8 @@ App({
       wx.cloud.callFunction({
         name: 'login'
       }).then(res => {
-        that.globalData.openid = res.openid;
+        console.log('getOpenid',res)
+        that.globalData.openid = res.result.openid;
         wx.hideLoading();
         resolve();
       }).catch(err => {
@@ -96,6 +97,7 @@ App({
           wx.hideLoading();
           that.globalData.userInfo = response.userInfo;
           that.globalData.logged = true;
+          console.log('getUserInfo',response.userInfo);
           resolve();
         },
         fail: err => {
@@ -119,6 +121,7 @@ App({
           _openid: that.globalData.openid
         }).get().then(res => {
           wx.hideLoading();
+          console.log('userExistInDB',res);
           resolve(res.data);
         }).catch(err => {
           console.error(err);
@@ -131,7 +134,7 @@ App({
    * 因为 nickName 和 province 无法直接存储到云数据库，所以这里专门拿出来了。
    */
   countDBUser: function(data) {
-    console.log(data);
+    
     var that = this;
     var user = {
       info: this.globalData.userInfo,
@@ -149,14 +152,14 @@ App({
         db.collection('user').add({
           data: user
         }).then(res => {
+          console.log('add user ->',user,';res=>',res)
           that.globalData.user_id = res._id;
           wx.hideLoading();
           resolve();
         }).catch(error=>reject(error));
       } else {
         that.globalData.user_id = data[0]._id;
-        console.log('更新用户信息')
-        console.log(user.info);
+        
         db.collection('user').doc(data[0]._id).update({
           data: {
             info: user.info,
@@ -164,8 +167,8 @@ App({
           }
         }).then(res => {
           wx.hideLoading();
-          console.log('update user result =>:' );
-          console.log(res);
+          console.log('update user result =>:' ,res);
+         
           resolve();
         }).catch(error=>reject(error));
       }
@@ -261,5 +264,8 @@ App({
   var range = max-min;
   var rand = Math.random();
   return min+Math.round(rand*range);
+  },
+  checkEnable: function (exp){
+    return typeof (exp) !="undefined" 
   }
 })

@@ -89,7 +89,7 @@
     <view class='container-add-into-shopcar' bindtap='tapAddToShopcar'>加入购物车</view>
     <view class='container-buy' bindtap='tapBuy'>立即购买</view>
   </view>
-  
+
   <view class='mask' wx:if='{{chooseVisible}}' bindtap='tapMask'></view>
   <!-- 选择规格 -->
   <view class='container-choose-rule box' wx:if='{{chooseVisible}}'>
@@ -101,14 +101,14 @@
       </view>
       <image src='../../images/delete-2.png' class='image-choose-cancel' bindtap='tapMask'></image>
     </view>
-<!-- 规格 -->
+    <!-- 规格 -->
     <view class='container-choose-rule-content box padding-left-right' wx:if='{{goods.rules}}'>
-      <block wx:for='{{goods.rules}}' wx:key='rule_id' wx:for-item='rule'>
+      <block wx:for='{{goods.rules}}' wx:key='rule_id' wx:for-item='rule' wx:for-index='ruleIndex'>
         <view class='container-rule-item box' wx:if='{{rule.array.length>0}}'>
           <text class='text-rule-value'>{{rule.value}}</text>
           <view class='container-rule-array box'>
             <block wx:for='{{rule.array}}' wx:key='value' wx:for-item='item'>
-            <view class='rule-value-item'>{{item.value}}</view>
+              <view class="rule-value-item {{index==rule.selected?'rule-value-selected':''}} {{item.store==0?'rule-value-unable':''}}" bindtap='tapRuleValue' data-rule='{{rule}}' data-valueindex='{{index}}' data-ruleindex='{{ruleIndex}}'>{{item.value}}</view>
             </block>
           </view>
         </view>
@@ -120,17 +120,17 @@
     <view class='container-choose-num box padding-left-right'>
       <view class='text-choose-num box'> 数量</view>
       <view class='container-choose-num-border box'>
-        <image src='../../images/reduce.png' class=' image-num '></image>
-        <view class='text-choose-goods-num'>{{chooseNum}}</view>
-        <image src='../../images/add-2.png' class=' image-num '></image>
+        <image src='../../images/reduce.png' class=' image-num ' bindtap='tapChooseNumReduce'></image>
+        <input type='number' class='input-choose-goods-num' value='{{chooseNum}}' bindinput='inputChooseNum'></input>
+        <image src='../../images/add-2.png' class=' image-num ' bindtap='tapChooseNumAdd'></image>
       </view>
 
     </view>
     <!-- 按钮 -->
     <view wx:if='{{chooseRule}}' class='container-choose-button box'>
-      <view class='container-add-into-shopcar'>加入购物车</view>
-      <view class='container-buy' >立即购买</view>
+      <view class='container-add-into-shopcar' bindtap='tapToAddToShopcar'>加入购物车</view>
+      <view class='container-buy'>立即购买</view>
     </view>
-    <view wx:else class='container-choose-rule-confirm box'> 确定</view>
+    <view wx:else class='container-choose-rule-confirm box' bindtap='tapChooseConfirm'> 确定</view>
   </view>
 </view>

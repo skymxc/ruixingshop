@@ -174,8 +174,8 @@ scroll-view {
   width: 100%;
   min-height: 50px;
   justify-content: center;
-  border-bottom: solid gainsboro 1px;
-  border-top: solid gainsboro 1px;
+  border-bottom: solid gainsboro 0.5px;
+  border-top: solid gainsboro 0.5px;
   align-items: center;
 }
 
@@ -335,11 +335,12 @@ scroll-view {
   margin: 5px;
 
 }
-.text-choose-goods-num{
+.input-choose-goods-num{
   border-left: solid gainsboro 1px;
   border-right: solid gainsboro 1px;
   min-height: 20px;
   min-width: 20px;
+  max-width: 40px;
   padding: 5px;
   text-align: center;
 }
@@ -359,4 +360,12 @@ scroll-view {
   color: white;
   background-color: red;
   font-weight: bold;
+}
+.rule-value-selected{
+  background-color: rgba(255, 0, 64, 0.774);
+  color: white;
+}
+.rule-value-unable{
+  background-color: ghostwhite;
+  color: rgba(206, 203, 203, 0.945);
 }
