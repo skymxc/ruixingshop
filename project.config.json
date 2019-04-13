@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,
@@ -41,6 +41,12 @@
 					"name": "商品详情",
 					"pathName": "pages/goodsDetail/goodsDetail",
 					"query": "_id=XKdLs8DR1TiNTvid",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "确认订单",
+					"pathName": "pages/settlement/settlement",
 					"scene": null
 				}
 			]

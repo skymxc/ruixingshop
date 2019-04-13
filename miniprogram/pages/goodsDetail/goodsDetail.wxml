@@ -129,7 +129,7 @@
     <!-- 按钮 -->
     <view wx:if='{{chooseRule}}' class='container-choose-button box'>
       <view class='container-add-into-shopcar' bindtap='tapToAddToShopcar'>加入购物车</view>
-      <view class='container-buy'>立即购买</view>
+      <view class='container-buy' bindtap='tapToBuy' >立即购买</view>
     </view>
     <view wx:else class='container-choose-rule-confirm box' bindtap='tapChooseConfirm'> 确定</view>
   </view>

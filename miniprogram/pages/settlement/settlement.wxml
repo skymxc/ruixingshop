@@ -1,0 +1,85 @@
+<!--结算-->
+<!-- 
+  container{
+    address{}
+    goods{}
+    comment{}
+    total{}
+    operate{}
+    mask{}
+    newAddress{}
+  }
+ -->
+<view class='container'>
+
+  <!-- 收货地址 -->
+  <view wx:if='{{addressList.length==0}}' class='container-address-empty box' bindtap='tapWriteAddress'>
+    <image class='image-add-address' src='../../images/add.png'></image>
+    <text>添加收货地址</text>
+  </view>
+  <view wx:if='{{addressList.length>0}}' class='container-address box' bindtap='tapChooseAddress'>
+    {{address.consignee}}
+  </view>
+
+  <!-- 商品list -->
+  <view wx:if='{{goodsList.length>0}}' class='container-goods-list box'>
+    <block wx:for='{{goodsList}}' wx:key='goods_id' wx:for-item='goods'>
+      <view class='container-goods box'>
+
+        <image class='image-goods' src='{{goods.coverPicture}}'></image>
+
+        <view class='container-goods-content box'>
+
+          <view class='container-goods-name-price box'>
+
+            <view class='container-goods-name'>{{goods.goods_name}}</view>
+
+            <view class='container-goods-price-s box'>
+               <text>¥ {{goods.goods_price}}</text>
+            <text class='text-goods-num'>x{{goods.goods_num}}</text> 
+            </view>
+
+          </view>
+
+
+          <view class='contianer-goods-rule box'>{{goods.rule_value_text}}</view>
+
+        </view>
+
+
+      </view>
+    </block>
+    <view class='contianer-goods-list-total box'>
+      共{{goodsList.length}}件商品 共计：
+      <text class='text-goods-list-total-rpice'>¥ {{totalPrice}}</text>
+    </view>
+  </view>
+  <!-- 留言 -->
+  <view class='contianer-comment box'>
+    买家留言
+    <textarea class='textarea-comment' maxlength='50' placeholder='50字以内（选填）' bindinput='bindInputComment'></textarea>
+  </view>
+  <view class='container-total box'>
+    <view class=' container-total-item contianer-total-goods box'>
+      <text>商品小计</text>
+      <text>¥ {{totalPrice}}</text>
+    </view>
+    <view class=' container-total-item contianer-total-postage box'>
+      <text>运费</text>
+      <text>¥ {{totalPostage}}</text>
+    </view>
+
+  </view>
+
+  <!-- 支付 -->
+  <view wx:if='{{goodsList.length>0}}' class='contianer-operate box'>
+    需付：
+    <text class='text-goods-list-total-rpice'>¥ {{totalPrice}}</text>
+    <view class='pay'>立即支付</view>
+  </view>
+  <view class='mask' wx:if='{{writeAddress}}' bindtap='tapMask'></view>
+  
+
+    <address-form  wx:if='{{writeAddress}}' class='container-write-address box' bindsubmitAddress='submitAddress'></address-form>
+
+</view>

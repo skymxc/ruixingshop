@@ -1,0 +1,56 @@
+/* pages/components/AddressForm.wxss */
+.box {
+  box-sizing: border-box;
+}
+.container-write-address{
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+.container-form-address{
+   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.text-write-address-tip{
+  color: red;
+  font-size: 15px;
+}
+.container-input-item{
+  width: 100%;
+  min-height: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: solid gainsboro 1px;
+}
+.text-input-label{
+  color: #c5c5c5;
+  display: inline-block;
+  width: 70px;
+}
+.input-address{
+  flex: 1;
+  min-height: 30px;
+}
+
+.button-submit-address{
+  width: 80%;
+  margin-top: 10px;
+}
+.input-picker{
+  height: 100%;
+   display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+/* .picker{
+  width: 100%;
+  height: 100%;
+ 
+} */

@@ -140,7 +140,7 @@ Page({
     db.collection('category').skip(skip).get()
       .then(res => {
         wx.hideLoading();
-        console.log(res.data);
+        console.log('分类',res.data);
         if (res.data.length > 0) {
           if(that.data.refreshCategory){
               that.data.categoryList = res.data;

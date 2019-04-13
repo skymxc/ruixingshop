@@ -11,7 +11,8 @@
     "pages/category/categoryManager/categoryManager",
     "pages/goodsManager/goodsManager",
     "pages/authorize/authorize",
-    "pages/goodsDetail/goodsDetail"
+    "pages/goodsDetail/goodsDetail",
+    "pages/settlement/settlement"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",
@@ -43,5 +44,8 @@
     ],
     "color": "#333",
     "selectedColor": "#EF3B23"
+  },
+  "usingComponents":{
+    "address-form":"pages/components/AddressForm"
   }
 }

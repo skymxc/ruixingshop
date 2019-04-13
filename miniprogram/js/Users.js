@@ -1,6 +1,7 @@
 const db = wx.cloud.database();
 const tableCollect = 'collect';
-const tableShopcar = 'shopcar'
+const tableShopcar = 'shopcar';
+const tableAddress = 'address';
 var collect = function(goods,userid){
   var collect={
     goods_id:goods._id,
@@ -28,7 +29,7 @@ var getShopcarCount = function(openid){
 var existInShopcar = function(shopcar){
   return db.collection(tableShopcar).where({
     goods_id:shopcar.goods_id,
-    rule_value_array: shopcar.rule_value_array
+    rule_value_text: shopcar.rule_value_text
   }).get();
 }
 var incShopCarNUm =function(_id,num){
@@ -39,6 +40,7 @@ var incShopCarNUm =function(_id,num){
     }
   });
 }
+
 /**
  * 现判断购物车里是不是已经有了这个东西，
  * 有了的话 直接将数量+1
