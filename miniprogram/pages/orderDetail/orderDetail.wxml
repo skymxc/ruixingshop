@@ -1,0 +1,90 @@
+<!--miniprogram/pages/orderDetail/orderDetail.wxml-->
+
+<!-- 
+container{
+  state{}
+  address{}
+  goods-list{}
+  total{}
+  info{}
+  operate{}
+}
+ -->
+<view class='container'>
+  <view class='container-state box' wx:if='{{order._id}}'>
+    {{orderState}}
+  </view>
+  <view class='container-address box' wx:if='{{order._id}}'>
+    <text class='text-address-consignee'>收货人：{{address.consignee}} {{address.phone}}</text>
+    <text class='text-address-region'>{{address.region[0]}}{{address.region[1]}}{{address.region[2]}} {{address.street}}</text>
+  </view>
+
+  <view class='container-goods-list box' wx:if='{{order.goodsList.length>0}}'>
+    <block wx:for='{{order.goodsList}}' wx:key='goods_id' wx:for-item='goods'>
+      <view class='container-goods box'>
+
+        <image class='image-goods' src='{{goods.coverPicture}}'></image>
+
+        <view class='container-goods-content box'>
+
+          <view class='container-goods-name-price box'>
+
+            <view class='container-goods-name'>{{goods.goods_name}}</view>
+
+            <view class='container-goods-price-s box'>
+              <text>¥ {{goods.goods_price}}</text>
+              <text class='text-goods-num'>x{{goods.goods_num}}</text>
+            </view>
+
+          </view>
+
+
+          <view class='contianer-goods-rule box'>{{goods.rule_value_text}}</view>
+
+        </view>
+
+
+      </view>
+    </block>
+    <view class='contianer-goods-list-total box'>
+      共{{goodsList.length}}件商品 共计：
+      <text class='text-goods-list-total-rpice'>¥ {{order.totalPrice}}</text>
+    </view>
+  </view>
+  <view class='container-total box' wx:if='{{order._id}}'>
+
+    <view class=' container-total-item  box' wx:if='{{order.goodsList.length>0}}'>
+      <text>运费</text>
+      <text>¥ {{order.totalPostage}}</text>
+    </view>
+      <view class=' container-total-item  box'>
+    <text>实付款（含运费）</text>
+    <text>¥ {{order.totalPrice + order.totalPostage}}</text>
+  </view>
+
+  </view>
+
+  <view class='container-order-info box' wx:if='{{order._id}}'>
+    <view class='text-order-info box'>订单信息</view>
+    <view class=' container-order-info-item box'>
+      <text class='text-order-info-item-label'>订单编号:</text>
+      <text>{{order._id}}</text>
+    </view>
+     <view class=' container-order-info-item box'>
+      <text class='text-order-info-item-label'>创建时间:</text>
+      <text>{{createDateStr}}</text>
+    </view>
+     <view class=' container-order-info-item box'>
+      <text class='text-order-info-item-label'>付款时间:</text>
+      <text>{{payDateStr}}</text>
+    </view>
+    <view class=' container-order-info-item box'>
+      <text class='text-order-info-item-label'>发货时间:</text>
+      <text>{{deliveryDateStr}}</text>
+    </view>
+  </view>
+  <view class='container-operate box' wx:if='{{order._id && order.state!=2}}'>
+    <text class='text-confirm-delivery' bindtap='tapConfrim'>确认收货</text>
+  </view>
+
+</view>

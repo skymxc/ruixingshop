@@ -24,9 +24,11 @@ Page({
    */
   data: {
     goodsList: [],
-    goodsWhere: {},
+    goodsWhere: {
+      state: 0
+    },
     goodsOrder: 'name',
-    goodsOrderBy:'asc',
+    goodsOrderBy: 'asc',
     category: {},
     subcategory: {},
     refreshGoods: true,
@@ -35,9 +37,9 @@ Page({
     categoryList: [],
     categoryIndex: [0, 0],
     subcategoryList: [],
-    chooseVisible:false,
-    orderArray:['name','sale_num','price'],
-    lastLoadGoodsTime:0
+    chooseVisible: false,
+    orderArray: ['name', 'sale_num', 'price'],
+    lastLoadGoodsTime: 0
   },
 
   /**
@@ -52,16 +54,17 @@ Page({
       var subcategory = {
         _id: options.subcategory_id,
         name: options.subcategory_name,
-        parent:category._id
+        parent: category._id
       }
-      var where = {
-        category: {
-          category_id: category._id
-        },
-        subcategory: {
-          subcategory_id: subcategory._id
-        }
+      var where = this.data.goodsWhere;
+      where.category = {
+        category_id: category._id
       }
+
+      where.subcategory = {
+        subcategory_id: subcategory._id
+      }
+
       this.setData({
         goodsWhere: where,
         category: category,
@@ -69,7 +72,7 @@ Page({
       })
 
     }
-   
+
     //加载商品
     this.loadGoods();
     // this.loadCategory();
@@ -85,8 +88,8 @@ Page({
       .then(res => {
         wx.hideLoading();
         if (res.data.length == 0) {
-          if(that.data.refreshGoods){
-            data.goodsList=[];
+          if (that.data.refreshGoods) {
+            data.goodsList = [];
             that.setData(data);
             app.showToast('没有找到商品');
             return;
@@ -100,7 +103,7 @@ Page({
         } else {
           data.goodsList = data.goodsList.concat(res.data);
         }
-        
+
         that.setData(data);
       }).catch(error => app.showError(error, '加载错误'));
   },
@@ -204,7 +207,7 @@ Page({
         that.setData(data);
         return;
       }
-     
+
       category.subtotal = res.total;
       data.categoryList[index] = category;
       that.setData(data);
@@ -250,7 +253,7 @@ Page({
       if (data.subcategory._id) {
         for (var i = 0; i < category.sub.length; i++) {
           var subcategory = category.sub[i];
-          if (subcategory._id == data.subcategory._id&&subcategory.parent==data.subcategory.parent) {
+          if (subcategory._id == data.subcategory._id && subcategory.parent == data.subcategory.parent) {
             data.categoryIndex[1] = i;
             data.subcategory = subcategory;
             break;
@@ -265,7 +268,7 @@ Page({
       that.setData(data);
 
       that.setData({
-        categoryIndex:data.categoryIndex
+        categoryIndex: data.categoryIndex
       })
       if (category.sub.length == category.subtotal) {
         wx.hideLoading();
@@ -294,33 +297,33 @@ Page({
   onShareAppMessage: function() {
 
   },
-  loadMoreGoods:function(event){
+  loadMoreGoods: function(event) {
     console.log(event);
     var current = new Date().getTime();
     //5 s
-    if((current-this.data.lastLoadGoodsTime)<5 *1000){
-    console.log(' interval time less five second!')
+    if ((current - this.data.lastLoadGoodsTime) < 5 * 1000) {
+      console.log(' interval time less five second!')
       return;
     }
     this.loadGoods();
   },
-  submitSearch:function(event){
-    
+  submitSearch: function(event) {
+
     var name = event.detail.value.name;
-    console.log('搜索 ->',name);
+    console.log('搜索 ->', name);
     var name = db.RegExp({
-      regexp:name,
-      options:'i'
+      regexp: name,
+      options: 'i'
     });
     this.data.goodsWhere.name = name;
     this.setData({
-      goodsWhere:this.data.goodsWhere,
-      refreshGoods:true
+      goodsWhere: this.data.goodsWhere,
+      refreshGoods: true
     })
     this.loadGoods();
   },
-  tapOrderDesc:function(event){
-console.log(event);
+  tapOrderDesc: function(event) {
+    console.log(event);
     if (this.data.chooseVisible) {
       this.setData({
         chooseVisible: false
@@ -330,25 +333,25 @@ console.log(event);
     var index = event.currentTarget.dataset.index;
     var order = this.data.orderArray[index];
     var orderby = 'desc';
-    if(this.data.goodsOrderBy=='desc'){
-      orderby ='asc';
-      
+    if (this.data.goodsOrderBy == 'desc') {
+      orderby = 'asc';
+
     }
     this.setData({
-      goodsOrder:order,
+      goodsOrder: order,
       goodsOrderBy: orderby,
-      orderIndex:index,
-      refreshGoods:true
+      orderIndex: index,
+      refreshGoods: true
     })
     console.log('排序-desc>', order);
     this.loadGoods();
-    
+
   },
-  tapOrder:function(event){
+  tapOrder: function(event) {
     console.log(event);
-    if(this.data.chooseVisible){
+    if (this.data.chooseVisible) {
       this.setData({
-        chooseVisible:false
+        chooseVisible: false
       })
       return;
     }
@@ -357,92 +360,92 @@ console.log(event);
     var orderby = 'asc';
     if (this.data.goodsOrderBy == 'asc') {
       orderby = 'desc';
-     
+
     }
     console.log('排序-asc>', order);
     this.setData({
       goodsOrder: order,
       goodsOrderBy: orderby,
       orderIndex: index,
-      refreshGoods:true
+      refreshGoods: true
     })
     this.loadGoods();
   },
-  tapChooseCondition:function(event){
+  tapChooseCondition: function(event) {
     console.log('筛选')
     this.setData({
-      chooseVisible:!this.data.chooseVisible
+      chooseVisible: !this.data.chooseVisible
     })
-    if(this.data.categoryList.length==0){
+    if (this.data.categoryList.length == 0) {
       this.loadCategory();
     }
   },
-  tapGoods:function(event){
+  tapGoods: function(event) {
     var goods = event.currentTarget.dataset.goods;
-    console.log('tap ->',goods);
-    app.navigateTo('../goodsDetail/goodsDetail?_id='+goods._id)
+    console.log('tap ->', goods);
+    app.navigateTo('../goodsDetail/goodsDetail?_id=' + goods._id)
   },
-  bindCategoryChange:function(event){
-    var data =this.data;
-    var parentIndex= event.detail.value[0];
+  bindCategoryChange: function(event) {
+    var data = this.data;
+    var parentIndex = event.detail.value[0];
     var subIndex = event.detail.value[1];
     data.category = this.data.categoryList[parentIndex];
-   
-    if(this.data.subcategoryList.length>subIndex){
+
+    if (this.data.subcategoryList.length > subIndex) {
       data.subcategory = this.data.subcategoryList[subIndex];
     }
     data.categoryIndex = event.detail.value;
     this.setData(data);
-   
-    if(data.category.sub){
-        this.setData({
-          subcategoryList:data.category.sub
-        })
-    }else{
-      data.categoryIndex[1]=0;
+
+    if (data.category.sub) {
       this.setData({
-        subcategoryList:[],
-        subcategory:{},
-        categoryIndex:data.categoryIndex
+        subcategoryList: data.category.sub
       })
-      this.loadSubcategory(data.category,parentIndex);
+    } else {
+      data.categoryIndex[1] = 0;
+      this.setData({
+        subcategoryList: [],
+        subcategory: {},
+        categoryIndex: data.categoryIndex
+      })
+      this.loadSubcategory(data.category, parentIndex);
     }
   },
-  tapConfirmCondition:function(){
+  tapConfirmCondition: function() {
     //加载商品
-    var data =this.data;
-    data.chooseVisible =false;
-    var where = {
-      category: {
+    var data = this.data;
+    data.chooseVisible = false;
+    var where = this.data.goodsWhere;
+     where.category={
         category_id: data.category._id
       }
-    }
-    if(data.subcategory._id!='all'){
-      where.subcategory={
+    
+    if (data.subcategory._id != 'all') {
+      where.subcategory = {
         subcategory_id: data.subcategory._id
       }
     }
-    if(data.goodsWhere.name){
-      where.name = data.goodsWhere.name;
-    }
+    // if (data.goodsWhere.name) {
+    //   where.name = data.goodsWhere.name;
+    // }
     data.goodsWhere = where;
-    data.refreshGoods =true;
+    data.refreshGoods = true;
     this.setData(data);
     this.loadGoods();
   },
-  tapCleanCondition:function(){
+  tapCleanCondition: function() {
     this.setData({
-      category:{},
-      subcategory:{},
-      categoryIndex:[0,0],
-      chooseVisible:false
+      category: {},
+      subcategory: {},
+      categoryIndex: [0, 0],
+      chooseVisible: false
     })
 
 
   },
-  tapCancelCondition:function(){
+  tapCancelCondition: function() {
     this.setData({
-      chooseVisible:false
+      chooseVisible: false
     })
   }
 })

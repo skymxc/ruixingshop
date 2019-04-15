@@ -14,7 +14,8 @@ Page({
     totalPrice:0,
     totalPostage:0,
     writeAddress:false,
-    address:{}
+    address:{},
+    comment:''
   },
 
   /**
@@ -35,7 +36,7 @@ Page({
           var totalPostage =new Number();
           for(var i=0;i<res.data.length;i++){
               var goods = res.data[i];
-            totalPrice += new Number(goods.goods_price);
+            totalPrice += new Number(goods.goods_total);
             totalPostage += new Number(goods.postage);
           }
           that.setData({
@@ -89,7 +90,7 @@ Page({
           key: 'address',
           data: res.data[0],
           success: function () {
-            console.log('setStorage address-->',address);
+            console.log('setStorage address-->', res.data[0]);
           }
         })
         that.setAddress();
@@ -166,5 +167,97 @@ Page({
           app.showToast('添加失败');
         }
     }).catch(error=>app.showError(error,'添加失败！'))
+  },
+  tapChooseAddress:function(){
+    //todo  选择地址
+    console.log('选择地址')
+  },
+  bindInputComment:function(event){
+    // console.log('留言',event);
+    this.setData({
+      comment:event.detail.value
+    })
+  },
+  tapPay:function(){
+    var data =this.data;
+    if(data.goodsList.length==0){
+      return;
+    }
+    if(data.addressList.length==0){
+      app.showToast('请填写地址');
+      return;
+    }
+
+    var date = new Date();
+    var date_str = app.formatDate('yyyy-MM-dd HH:mm:ss',date);
+    //待发货 0；
+    //
+    var order  = {
+      address:this.data.address,
+      goodsList: this.data.goodsList,
+      comment: this.data.comment,
+      totalPrice:this.data.totalPrice,
+      totalPostage:this.data.totalPostage,
+      state:0,
+      stateStr:'待发货'
+      
+    }
+    console.log('生成订单',order);
+    app.showLoadingMask('请稍后');
+    wx.cloud.callFunction({
+      name:'handleOrder',
+      data:{
+        order:order
+      }
+    }).then(res=>this.handleOrderResult(res.result))
+    .catch(error=>{
+      app.showError(error,'出单失败');
+      // console.error('出单失败',error);
+    })
+  },
+  handleOrderResult(res){
+    wx.hideLoading();
+    console.log('出单结果', res);
+    var data =this.data;
+    if (res.code == -1) {
+      var goods = data.goodsList[res.index];
+     wx.showModal({
+       title: '出单失败',
+       content: goods.goods_name+'库存不够了',
+       showCancel:false
+     })
+      return;
+    }
+
+    if(res.code ==-2){
+      app.showError(res.error,'出单失败');
+      return;
+    }
+    if(res.code==-3){
+      wx.showModal({
+        title: '出单失败',
+        content: res.msg,
+        showCancel:false
+      })
+      return;
+    }
+    if(res.code ==0){
+        app.showToast('购买成功');
+        //todo 去 订单详情
+        wx.removeStorageSync('orderlist');
+        app.showLoadingMask('请稍后');
+
+            
+            wx.redirectTo({
+              url: '../orderDetail/orderDetail?_id='+res.order._id,
+              success: function () {
+                wx.hideLoading();
+              }
+              });
+
+       
+    }else{
+      app.showToast('出单异常');
+    }
   }
 })

@@ -18,7 +18,8 @@
     <text>添加收货地址</text>
   </view>
   <view wx:if='{{addressList.length>0}}' class='container-address box' bindtap='tapChooseAddress'>
-    {{address.consignee}}
+   <text class='text-address-consignee'>收货人：{{address.consignee}} {{address.phone}}</text>
+   <text class='text-address-region'>{{address.region[0]}}{{address.region[1]}}{{address.region[2]}} {{address.street}}</text>
   </view>
 
   <!-- 商品list -->
@@ -74,8 +75,8 @@
   <!-- 支付 -->
   <view wx:if='{{goodsList.length>0}}' class='contianer-operate box'>
     需付：
-    <text class='text-goods-list-total-rpice'>¥ {{totalPrice}}</text>
-    <view class='pay'>立即支付</view>
+    <text class='text-goods-list-total-rpice'>¥ {{totalPrice+totalPostage}}</text>
+    <view class='pay' bindtap='tapPay'>立即支付</view>
   </view>
   <view class='mask' wx:if='{{writeAddress}}' bindtap='tapMask'></view>
   

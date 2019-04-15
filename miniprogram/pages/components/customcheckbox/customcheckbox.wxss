@@ -1,0 +1,17 @@
+/* pages/components/customcheckbox/customcheckbox.wxss */
+.container{
+  border: solid gainsboro 1px;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  color: white;
+  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.checked{
+  border: solid red 1px;
+  background-color: red;
+}

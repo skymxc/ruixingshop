@@ -1,0 +1,67 @@
+<!--miniprogram/pages/shopcar/shopcar.wxml-->
+<!-- 
+  container{
+    toolbar{}
+    scroll-goods-list{}
+    operate{}
+  }
+ -->
+<view class='container'>
+  <view class='container-toolbar box'>
+    <text>共{{goodsList.length}}件商品</text>
+    <text wx:if='{{editVisible}}' class='text-toolbar-complete' bindtap='tapEditComplete'> 完成</text>
+    <text wx:else class='text-toolbar-edit' bindtap='tapEdit'> 编辑</text>
+  </view>
+  <!-- <scroll-view scroll-y class='scroll-goods-list box' > -->
+    <view class='container-goods-list box'>
+      <block wx:for='{{goodsList}}' wx:for-item='goods' wx:key='goods_id'>
+        <view class='container-goods box'>
+    
+        <custom-checkbox checked='{{goods.checked}}' bindchange='bindGoodsChange'  class='checkbox-goods' value='{{goods._id}}' ></custom-checkbox>
+
+      
+          
+          <image class='image-goods' src='{{goods.coverPicture}}'></image>
+
+          <view class='container-goods-content box'>
+
+
+            <view class='container-goods-name box'>{{goods.goods_name}}</view>
+
+            <view class='contianer-goods-rule box'>{{goods.rule_value_text}}</view>
+
+            <view class='container-goods-price-s box'>
+              <text class='text-goods-price-s'>¥ {{goods.goods_price}}</text>
+              <view class='container-goods-num-border box'>
+                <image src='../../images/reduce.png' class=' image-num ' bindtap='tapGoodsNumReduce' data-index='{{index}}'></image>
+                <text class='text-goods-num-s'>{{goods.goods_num}}</text>
+                <image src='../../images/add-2.png' class=' image-num ' bindtap='tapGoodsNumAdd' data-index='{{index}}'></image>
+              </view>
+              
+
+            </view>
+
+          </view>
+
+
+        </view>
+      </block>
+    </view>
+  <!-- </scroll-view> -->
+  <view class='container-operate box' wx:if='{{goodsList.length>0}}'>
+    <view class='container-checkbox box'>
+      <custom-checkbox checked='{{checkall}}' bindchange='bindCheckAllChange'  class='checkbox-goods' ></custom-checkbox>
+      全选
+    </view>
+
+    <view wx:if='{{editVisible}}' class='container-edit-button' bindtap='tapDel'>
+      删除
+    </view>
+    <view wx:else class='container-calc box'>
+      <view class='container-calc-total box'>
+        合计：<text class='text-goods-price-s'>¥ {{selectedTotal}}</text>
+      </view>
+      <view class='button-calc box' bindtap='tapCalc'>结算</view>
+    </view>
+  </view>
+</view>

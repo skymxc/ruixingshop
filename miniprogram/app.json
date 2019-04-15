@@ -12,7 +12,9 @@
     "pages/goodsManager/goodsManager",
     "pages/authorize/authorize",
     "pages/goodsDetail/goodsDetail",
-    "pages/settlement/settlement"
+    "pages/settlement/settlement",
+    "pages/orderDetail/orderDetail",
+    "pages/shopcar/shopcar"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",
@@ -34,6 +36,11 @@
         "text": "全部分类",
         "iconPath": "images/category.png",
         "selectedIconPath": "images/category_sel.png"
+      },{
+        "pagePath": "pages/shopcar/shopcar",
+        "text": "购物车",
+        "iconPath": "images/shopcar.png",
+        "selectedIconPath": "images/shopcar_sel.png"
       },
       {
         "pagePath": "pages/memberCenter/memberCenter",
@@ -45,7 +52,8 @@
     "color": "#333",
     "selectedColor": "#EF3B23"
   },
-  "usingComponents":{
-    "address-form":"pages/components/AddressForm"
+  "usingComponents": {
+    "address-form": "pages/components/addressForm/AddressForm",
+    "custom-checkbox":"pages/components/customcheckbox/customcheckbox"
   }
 }

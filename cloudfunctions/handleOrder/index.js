@@ -28,7 +28,8 @@ var  handleGoods =function(goods,storenum){
   var _ = db.command;
  return db.collection('goods').doc(goods._id).update({
     data:{
-      store_num:_.inc(storenum)
+      store_num:_.inc(storenum*-1),
+      sale_num:_.inc(storenum)
     }
   });
 }
@@ -79,9 +80,9 @@ try{
     var sotreIndex= -1;
     for(var i=0;i<goodsList.length;i++){
       var store = order.goodsList[i].goods_num;
-      var num = new Number(-sotre);
+      var num = new Number(sotre);
      var handleRes = await handleGoods(goodsList[i],num);
-     console.log('处理库存',goodsList[i],handleRes);
+      console.log(handleRes);
      if(handleRes.stats.updated!=1){
        sotreIndex = i;
         break;

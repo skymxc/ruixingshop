@@ -28,13 +28,14 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
-					"id": -1,
-					"name": "db guide",
-					"pathName": "pages/databaseGuide/databaseGuide",
-					"query": ""
+					"id": 0,
+					"name": "订单详情",
+					"pathName": "pages/orderDetail/orderDetail",
+					"query": "_id=f4cf49925cb2d969065721884d877adc",
+					"scene": null
 				},
 				{
 					"id": 1,
@@ -47,6 +48,14 @@
 					"id": -1,
 					"name": "确认订单",
 					"pathName": "pages/settlement/settlement",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/shopcar/shopcar",
+					"query": "",
 					"scene": null
 				}
 			]

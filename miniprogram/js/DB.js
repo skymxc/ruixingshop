@@ -25,7 +25,7 @@ var count = function(table,where){
  return  db.collection(table).where(where).count();
 }
 var update= function(table,_id,data){
-  console.log('_id->'+_id+';'+data);
+  
   return db.collection(table).doc(_id).update({data:data});
 }
 var del = function(table,_id){

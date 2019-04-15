@@ -179,7 +179,10 @@ Page({
     }).catch(() => this.navigateToAuthorize());
   },
   tapShopcar: function() {
-    console.log('购物车')
+   
+    wx.switchTab({
+      url: '../shopcar/shopcar',
+    })
   },
   tapAddToShopcar: function() {
     console.log('加入购物车')
@@ -379,7 +382,7 @@ Page({
     var rules = goods.rules;
     var array = new Array();
     var rule_value_text = '';
-    var price = goods.price;
+    var price = new Number(goods.price);
     if (rules && rules.length > 0) {
       var index = -1;
       for (var i = 0; i < rules.length; i++) {
@@ -398,7 +401,7 @@ Page({
           rule_value: rule.array[selected].value,
           rule_price: rule.array[selected].price
         }
-        price += item.rule_price;
+        price += new Number(item.rule_price);
         rule_value_text += ' ' + item.rule_value;
 
         array.push(item.rule_value);
@@ -412,13 +415,14 @@ Page({
       }
     }
     var shopcar = {
-      goods_price: new Number(price) * new Number(this.data.chooseNum),
+      goods_price: price,
       goods_num: this.data.chooseNum,
       goods_id: goods._id,
       goods_name: goods.name,
       rules: array,
       rule_value_text: rule_value_text,
       postage: goods.postage,
+      goods_total: new Number(price) * new Number(this.data.chooseNum),
       coverPicture: goods.coverPicture
     }
     result.code = 0;
@@ -469,4 +473,5 @@ Page({
     }
     this.handleBuy(result.item);
   }
+  
 })

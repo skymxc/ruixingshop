@@ -149,4 +149,18 @@ align-items:center;
  min-height: 80px;
  background-color: white;
  border-bottom: dashed rebeccapurple 5px;
+ padding: 10px;
+ display: flex;
+ flex-direction: column;
+}
+
+.text-address-consignee{
+  color: black;
+  
+}
+.text-address-region{
+  display: inline-block;
+  margin-top: 5px;
+  color: #cdcdcd;
+  font-size: 15px;
 }

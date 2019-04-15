@@ -1,0 +1,5 @@
+<!--pages/components/customcheckbox/customcheckbox.wxml-->
+<view class="container {{checked?'checked':''}}" bindtap='onTap'>
+<text wx:if='{{checked}}' class='text'>✓</text>
+</view>
+

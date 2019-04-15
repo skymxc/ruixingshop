@@ -1,0 +1,137 @@
+/* miniprogram/pages/shopcar/shopcar.wxss */
+
+.container-toolbar{
+  width: 100%;
+  display: flex;
+  height: 50px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+
+}
+.text-toolbar-complete,.text-toolbar-edit{
+  padding: 5px;
+  position: absolute;
+  right: 10px;
+  color: #a9a9a9;
+}
+.scroll-goods-list{
+  flex: 1;
+  width: 100%;
+  padding-bottom: 60px;
+}
+.container-goods-list{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 60px;
+
+}
+
+.container-goods{
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  margin-bottom: 15px;
+}
+.checkbox-goods{
+  align-self: center;
+  margin: 5px;
+  width: 15px;
+  height: 15px;
+}
+.image-goods {
+  width: 100px;
+  height: 110px;
+  margin-right: 10px;
+}
+.container-goods-content{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.container-goods-name{
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+}
+.contianer-goods-rule{
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #c0bdbd;
+}
+
+.container-goods-price-s{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.text-goods-price-s{
+  color: red;
+}
+.container-goods-num-border{
+  display: flex;
+  flex-direction: row;
+  border: solid gainsboro 1px;
+
+}
+.image-num{
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+
+}
+.text-goods-num-s{
+  display: inline-block;
+  border-left: solid gainsboro 1px;
+  border-right: solid gainsboro 1px;
+  min-height: 15px;
+  min-width: 15px;
+  max-width: 40px;
+  padding: 5px;
+  text-align: center;
+}
+.container-operate{
+  width: 100%;
+  height: 60px;
+  border-top: solid gainsboro 1px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  position: fixed;
+  bottom: 0px;
+}
+.container-checkbox{
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.container-edit-button,.button-calc{
+  width: 100px;
+  height: 100%;
+  background-color: red;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  
+}
+.container-calc{
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.container-calc-total{
+  font-size: 15px;
+  padding-right: 10px;
+}
