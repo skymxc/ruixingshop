@@ -14,7 +14,8 @@
     "pages/goodsDetail/goodsDetail",
     "pages/settlement/settlement",
     "pages/orderDetail/orderDetail",
-    "pages/shopcar/shopcar"
+    "pages/shopcar/shopcar",
+    "pages/goodsComment/goodsComment"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",
@@ -36,7 +37,8 @@
         "text": "全部分类",
         "iconPath": "images/category.png",
         "selectedIconPath": "images/category_sel.png"
-      },{
+      },
+      {
         "pagePath": "pages/shopcar/shopcar",
         "text": "购物车",
         "iconPath": "images/shopcar.png",
@@ -54,6 +56,6 @@
   },
   "usingComponents": {
     "address-form": "pages/components/addressForm/AddressForm",
-    "custom-checkbox":"pages/components/customcheckbox/customcheckbox"
+    "custom-checkbox": "pages/components/customcheckbox/customcheckbox"
   }
 }

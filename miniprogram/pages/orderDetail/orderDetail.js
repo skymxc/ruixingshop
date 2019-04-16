@@ -130,13 +130,43 @@ Page({
     //     state:2
     //   }
     // })
-    dbUtils.update('order', this.data.order._id, { state: 2 })
+    // dbUtils.update('order', this.data.order._id, { state: 2 })
+    var collection = 'order';
+    var where = {
+      _id:this.data.order._id
+    }
+    var data = {
+      state:2,
+      stateStr:'已收货'
+    }
+    wx.cloud.callFunction({
+      name:'update',
+      data:{
+        collection:collection,
+        data:data,
+        where:where
+      }
+    })
     .then(res=>{
       console.log('收货',res);
         wx.hideLoading();
-        if(res.stats.updated==1){
-          wx.navigateBack({
-            
+        if(res.result.stats.updated==1){
+          wx.showModal({
+            title: '提示',
+            content: '收货成功',
+            cancelText:'返回',
+            confirmText:'评价商品',
+            success:function(res){
+              if(res.confirm){
+                wx.redirectTo({
+                  url: '../goodsComment/goodsComment',
+                })
+              }else if(res.cancel){
+                wx.navigateBack({
+                  
+                })
+              }
+            }
           })
         }else{
           app.showToast('收货失败');

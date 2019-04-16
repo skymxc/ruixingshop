@@ -128,6 +128,18 @@ Page({
     var that = this;
     var skip = this.data.categoryList.length;
     var data = this.data;
+   
+    if(this.data.categoryList.length==0){
+      var all = {
+        _id: 'all',
+        name: '全部',
+        sub:[{
+            _id: 'all',
+            name: '全部'
+        }]
+      }
+      this.data.categoryList.push(all);
+    }
     db.collection('category').skip(skip).get()
       .then(res => {
 
@@ -416,14 +428,21 @@ Page({
     var data = this.data;
     data.chooseVisible = false;
     var where = this.data.goodsWhere;
-     where.category={
+    if(data.category._id!='all'){
+      where.category = {
         category_id: data.category._id
       }
+    }else{
+      where.category={}
+    }
+    
     
     if (data.subcategory._id != 'all') {
       where.subcategory = {
         subcategory_id: data.subcategory._id
       }
+    }else{
+      where.subcategory={}
     }
     // if (data.goodsWhere.name) {
     //   where.name = data.goodsWhere.name;
@@ -434,13 +453,19 @@ Page({
     this.loadGoods();
   },
   tapCleanCondition: function() {
+    var where = this.data.goodsWhere;
+    where.category = {};
+    where.subcategory = {};
     this.setData({
       category: {},
       subcategory: {},
       categoryIndex: [0, 0],
-      chooseVisible: false
-    })
-
+      chooseVisible: false,
+      goodsWhere:where
+    });
+    this.loadGoods();
+    
+    
 
   },
   tapCancelCondition: function() {

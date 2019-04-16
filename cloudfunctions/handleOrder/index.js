@@ -55,6 +55,7 @@ exports.main = async (event, context) => {
   var result = {}
 try{
   var order = event.order;
+  console.debug(order);
   var _ = db.command;
   var goodsList = await listGoods(order.goodsList);
   var index= -1;
@@ -83,6 +84,7 @@ try{
       var num = new Number(sotre);
      var handleRes = await handleGoods(goodsList[i],num);
       console.log(handleRes);
+      
      if(handleRes.stats.updated!=1){
        sotreIndex = i;
         break;
