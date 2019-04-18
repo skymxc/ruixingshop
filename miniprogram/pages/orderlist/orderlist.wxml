@@ -1,0 +1,2 @@
+<!--miniprogram/pages/orderlist/orderlist.wxml-->
+<text>{{state}}---{{list.length}}</text>

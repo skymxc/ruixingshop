@@ -2,3 +2,58 @@
   background-color: ghostwhite;
 }
 
+.container-userinfo{
+  width: 100%;
+  height: 200px;
+  background-color: rgba(255, 102, 0, 0.699);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-avatar{
+  width: 80px;
+  height: 80px;
+  border: solid 1px white;
+  border-radius: 40px;
+}
+.text-name{
+  display: inline-block;
+  margin: 5px;
+  font-size: 20px;
+  color: white;
+}
+.container-order{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+.order-title{
+  width: 100%;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-bottom: solid gainsboro 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-type{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+}
+.text-order-type{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-right: solid gainsboro 1px;
+}

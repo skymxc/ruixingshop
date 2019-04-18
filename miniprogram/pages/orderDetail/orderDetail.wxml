@@ -83,7 +83,7 @@ container{
       <text>{{deliveryDateStr}}</text>
     </view>
   </view>
-  <view class='container-operate box' wx:if='{{order._id && order.state!=2}}'>
+  <view class='container-operate box' wx:if='{{order._id && order.state==1}}'>
     <text class='text-confirm-delivery' bindtap='tapConfrim'>确认收货</text>
   </view>
 

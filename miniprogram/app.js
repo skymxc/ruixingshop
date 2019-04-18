@@ -141,7 +141,7 @@ App({
       manager: false,
       nickName:this.globalData.userInfo.nickName
     }
-
+    this.globalData.userInfo = user;
     const db = wx.cloud.database();
     this.showLoadingMask('检索信息');
     return new Promise((resolve, reject) => {
@@ -159,7 +159,7 @@ App({
         }).catch(error=>reject(error));
       } else {
         that.globalData.user_id = data[0]._id;
-        
+        that.globalData.userInfo = data[0];
         db.collection('user').doc(data[0]._id).update({
           data: {
             info: user.info,

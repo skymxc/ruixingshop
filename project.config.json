@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 4,
 			"list": [
 				{
 					"id": 0,
@@ -56,6 +56,12 @@
 					"name": "购物车",
 					"pathName": "pages/shopcar/shopcar",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "个人中心",
+					"pathName": "pages/memberCenter/memberCenter",
 					"scene": null
 				}
 			]

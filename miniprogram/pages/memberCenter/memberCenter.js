@@ -1,4 +1,6 @@
 // miniprogram/pages/memberCenter/memberCenter.js 
+
+
 /**
  * 会员中心
  */
@@ -9,14 +11,33 @@ Page({
    * 页面的初始数据
    */
   data: {
-    manager: true
+    manager: true,
+    userInfo:{}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    //用户登陆
+    //是否已经登陆
+    if (app.globalData.logged) {
+      this.setData({
+        userInfo: app.globalData.userInfo.info,
+        manager:app.globalData.userInfo.manager
+      })
+      
+    }else{
+      var that =this;
+      this.checkUserLogin().then(() => {
+        that.setData({
+          userInfo: app.globalData.userInfo.info,
+          manager: app.globalData.userInfo.manager
+        })
 
+      }).catch(() => this.navigateToAuthorize());
+    }
+   
   },
 
   /**
@@ -69,10 +90,10 @@ Page({
       app.navigateTo('../goodsManager/goodsManager');
       return
     }
-   this.checkUserLogin().then(()=>{
+    this.checkUserLogin().then(() => {
       //跳转管理；
-     app.navigateTo('../goodsManager/goodsManager');
-   }).catch(() => this.navigateToAuthorize());
+      app.navigateTo('../goodsManager/goodsManager');
+    }).catch(() => this.navigateToAuthorize());
   },
   /**
    * 点击订单管理
@@ -86,8 +107,8 @@ Page({
   tapManagerCoupon: function(event) {
 
   },
-  checkUserLogin:function(){
-    return new Promise((resolve,reject)=>{
+  checkUserLogin: function() {
+    return new Promise((resolve, reject) => {
       app.showLoadingMask("检查授权信息");
       app.checkUserPermission().then(res => {
         console.log('It is has userinfo permission? :' + res);
@@ -97,7 +118,7 @@ Page({
             wx.hideLoading();
             //登陆成功 跳转
             resolve();
-          }).catch(error=>app.showErrNoCancel('登陆异常', error.errMsg));
+          }).catch(error => app.showErrNoCancel('登陆异常', error.errMsg));
         } else { //申请权限
           //去权限申请页
           reject();
@@ -111,16 +132,20 @@ Page({
   /**
    * 去申请获取用户信息的权限
    */
-  navigateToAuthorize:function(){
+  navigateToAuthorize: function() {
     app.showLoadingMask('申请授权');
     wx.navigateTo({
       url: '../authorize/authorize',
-      success: function () {
+      success: function() {
         wx.hideLoading();
       },
-      fail: function (error) {
+      fail: function(error) {
         app.showErrNoCancel('授权失败', error.errMsg);
       }
     })
+  },
+  tapOrder:function(event){
+    var state = event.currentTarget.dataset.state;
+    app.navigateTo('../orderlist/orderlist?state='+state)
   }
 })

@@ -28,11 +28,40 @@ container{
 }
 -->
 <view class='container'>
-  <view class='container-userinfo container-interval-vertical box'></view>
-  <view class='container-order  container-interval-vertical box'></view>
-  <view class='container-coupon  container-interval-vertical box'></view>
-  <view class='container-attention  container-interval-vertical box'></view>
-  <view class='container-address  container-interval-vertical box'></view>
+  <view class='container-userinfo  box'>
+    <image class='image-avatar' src='{{userInfo.avatarUrl}}'></image>
+    <text class='text-name'>{{userInfo.nickName}}</text>
+  </view> 
+  <view class='container-order  container-interval-vertical box'>
+    <view class='order-title box'>
+      <text >我的订单</text>
+      <text bindtap='tapOrder' data-state='-2'>全部订单</text>
+    </view>
+    <view class='order-type box'>
+      <text class='text-order-type' data-state='0' bindtap='tapOrder'>待发货</text>
+      <text class='text-order-type' data-state='1' bindtap='tapOrder'>待收货</text>
+      <text class='text-order-type' data-state='2' bindtap='tapOrder'>已完成</text>
+      <text class='text-order-type' data-state='3' bindtap='tapOrder'>退货</text>
+      <!-- <text wx:if='{{manager}}' class='text-order-type' data-state='-1' bindtap='tapOrder'>失败订单</text> -->
+
+
+    </view>
+  </view>
+  <view class='container-coupon  container-interval-vertical box'>
+     <view bindtap='tapMyCoupon' class='container-landscape-white contianer-box-center container-underline'>我的优惠卷</view>
+    <view  bindtap='tapTakeCoupon' class=' contianer-box-center container-landscape-white container-landscape-white'>领取优惠卷</view>
+    
+  </view>
+  <view class='container-attention  container-interval-vertical box'>
+   <view  bindtap='tapMyAttention' class=' contianer-box-center container-landscape-white container-landscape-white'>我的关注</view>
+  </view>
+    <view class='container-evaluate  container-interval-vertical box'>
+   <view  bindtap='tapMyEvaluate' class=' contianer-box-center container-landscape-white container-landscape-white'>我的评价</view>
+  </view>
+  <view class='container-address  container-interval-vertical box'>
+   <view  bindtap='tapManagerAddress' class=' contianer-box-center container-landscape-white container-landscape-white'>收货地址管理</view>
+  </view>
+
   <view wx:if="{{manager}}"  class='container-manager  container-interval-vertical box'>
     <view bindtap='tapManagerGoods' class='container-landscape-white contianer-box-center container-underline'>商品管理</view>
     <view  bindtap='tapManagerOrder' class=' contianer-box-center container-underline container-landscape-white'>订单管理</view>
