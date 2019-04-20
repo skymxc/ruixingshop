@@ -60,6 +60,11 @@ App({
       title: title,
     })
   },
+  loading:function(){
+    wx.showLoading({
+      title: '请稍候',
+    })
+  },
   /**
    * 获取用户的openid
    * 获取成功后，直接赋予 globalData.openid;

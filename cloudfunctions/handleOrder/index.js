@@ -21,7 +21,7 @@ var handleOrder = function(order){
   order.createDate = db.serverDate();
   order.payDate = db.serverDate();
   order.deliveryDate = null;
-
+ 
  return db.collection('order').add({ data: order });
 }
 var  handleGoods =function(goods,storenum){
@@ -55,6 +55,7 @@ exports.main = async (event, context) => {
   var result = {}
 try{
   var order = event.order;
+  order._openid = cloud.getWXContext().OPENID;
   console.debug(order);
   var _ = db.command;
   var goodsList = await listGoods(order.goodsList);

@@ -1,2 +1,72 @@
-<!--miniprogram/pages/orderlist/orderlist.wxml-->
-<text>{{state}}---{{list.length}}</text>
+<!--订单管理
+contianer{
+  state{}
+  orderlist{}
+}
+-->
+
+<view class='container'>
+  <view class='container-state box'>
+    <view class="state-item box {{state==-2?'state-selected':''}}" data-state='-2' bindtap='tapState'>全部</view>
+    <view class="state-item box {{state==0?'state-selected':''}}" data-state='0' bindtap='tapState'>待发货</view>
+    <view class="state-item box {{state==1?'state-selected':''}}" data-state='1' bindtap='tapState'>
+      {{manager? '已发货':'待收货'}}
+    </view>
+    <view class="state-item box {{state==2?'state-selected':''}}" data-state='2' bindtap='tapState'>已完成</view>
+    <view class="state-item box {{state==3?'state-selected':''}}" data-state='3' bindtap='tapState'>
+      {{manager? '被退货':'已退货'}}
+    </view>
+
+
+  </view>
+  <scroll-view class='container-orderlist box' scroll-y bindscrolltolower='loadMoreOrder'>
+    <block wx:for='{{list}}' wx:key='_id' wx:for-index='orderIndex'>
+      <view class='container-order box'>
+        <block wx:for='{{item.goodsList}}' wx:key='goods_id' wx:for-item='goods'>
+          <view class='container-goods box'  bindtap='tapOrder' data-index='{{orderIndex}}'>
+
+            <image class='image-goods' src='{{goods.coverPicture}}'></image>
+
+            <view class='container-goods-content box'>
+
+              <view class='container-goods-name-price box'>
+
+                <view class='container-goods-name'>{{goods.goods_name}}</view>
+
+                <view class='container-goods-price-s box'>
+                  <text>¥{{goods.goods_price}}</text>
+                  <text class='text-goods-num'>x{{goods.goods_num}}</text>
+                </view>
+
+              </view>
+
+
+              <view class='contianer-goods-rule box'>{{goods.rule_value_text}}</view>
+
+            </view>
+
+
+          </view>
+        </block>
+        <view class='contianer-goods-list-total box' bindtap='tapOrder' data-index='{{orderIndex}}'>
+          共{{item.goodsList.length}}件商品 运费：¥{{item.totalPostage}} 实付款：
+          <text class='text-goods-list-total-rpice'>¥{{item.totalPrice + item.totalPostage}}</text>
+        </view>
+
+
+
+        <view class='container-order-operate box'>
+          
+            <view wx:if='{{item.state==1 && !manager}}' class='text-operate box' bindtap='tapConfirmDelivery' data-order='{{item}}' data-index='{{orderIndex}}'>确认收货</view>
+            <view wx:if='{{item.state==0 && manager}}' class='text-operate box' bindtap='tapConfirmPost' data-order='{{item}}' data-index='{{orderIndex}}'>确认发货</view>
+            <view wx:if='{{item.state==1 && !manager}}' class='text-operate box' bindtap='tapReturn' data-order='{{item}}' data-index='{{orderIndex}}'>退货</view>
+      
+          <view wx:if='{{item.state==2 && !item.evaluate &&!manager}}' class='text-operate box' bindtap='tapEvaluate' data-order='{{item}}' data-index='{{orderIndex}}'>评价</view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+
+ 
+
+</view>
