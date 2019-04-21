@@ -64,7 +64,7 @@ container{
 
   <view wx:if="{{manager}}"  class='container-manager  container-interval-vertical box'>
     <view bindtap='tapManagerGoods' class='container-landscape-white contianer-box-center container-underline'>商品管理</view>
-    <view  bindtap='tapManagerOrder' class=' contianer-box-center container-underline container-landscape-white'>订单管理</view>
+    <view  bindtap='tapManagerOrder' class=' contianer-box-center container-underline container-landscape-white' bindtap='tapOrderManager'>订单管理</view>
     <view bindtap='tapManagerCoupon'  class=' contianer-box-center container-landscape-white'>优惠卷管理</view>
   </view>
 </view>

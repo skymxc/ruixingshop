@@ -219,14 +219,16 @@ App({
     var split = src.split('.');
     //时间戳
     var time = new Date().getTime();
+    
     var cloudName = this.globalData.openid + '_' + time + '.' + split[split.length - 1];
+    
     return cloudName;
   },
   /**
    * 上传文件
    */
   uploadFile: function (src,cloudPath) {
-    
+    console.log('uploadFile,',src,cloudPath);
     return new Promise((resolve,reject)=>{
       wx.cloud.uploadFile({
         cloudPath: cloudPath,

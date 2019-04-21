@@ -1,1 +1,126 @@
 /* miniprogram/pages/goodsComment/goodsComment.wxss */
+.container-order-goods{
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.container-goods{
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  
+}
+.image-goods-cover{
+  height: 100px;
+  width: 90px;
+  padding: 0px;
+}
+.container-goods-name{
+  flex: 1;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.text-goods-name-s{
+  flex: 1;
+  overflow: hidden;
+}
+.text-goods-price-s{
+  color: red;
+  
+}
+
+.form-goods-evaluate{
+  width: 100%;
+}
+.container-goods-evaluate{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  padding: 5px 5px 10px 5px;
+  /* border-top: solid gainsboro 1px; */
+}
+.textarea-content{
+  width: 100%;
+  height: 100px;
+  border: solid gainsboro 1px;
+  padding: 5px;
+}
+.container-evaluate-picture{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.container-evaluate-picture-label{
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.image-add{
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+.container-evaluate-pictures{
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.container-evaluate-image{
+  width: 30%;
+  height: 50%;
+  padding: 10px;
+  /* border: solid gainsboro 1px; */
+  position: relative;
+}
+.image-evaluate{
+  width: 100%;
+  height: 100%;
+
+}
+.image-del-evaluate{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  border: solid black 1px;
+  border-radius: 15px;
+}
+.container-logistics{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.container-star,.container-serve,.container-like{
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.image-star{
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+}
+.container-evaluate-operation{
+  width: 100%;
+  height: 50px;
+  text-align: right;
+  padding: 5px;
+}
+.button-submit::after{
+  border: none;
+  
+}

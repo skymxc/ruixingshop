@@ -135,6 +135,7 @@ Page({
     var where = {
       _id:this.data.order._id
     }
+    var that =this;
     var data = {
       state:2,
       stateStr:'已收货'
@@ -158,6 +159,10 @@ Page({
             confirmText:'评价商品',
             success:function(res){
               if(res.confirm){
+                wx.setStorage({
+                  key: 'goodsCommentOrder',
+                  data: that.data.order,
+                })
                 wx.redirectTo({
                   url: '../goodsComment/goodsComment',
                 })

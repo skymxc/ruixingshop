@@ -30,9 +30,12 @@ Page({
     // app.globalData.openid = 'oEaLm5Tep2eHAwEor4Kjo84QyTXc';
     
     console.log(options);
-    this.setData({
-      state: new Number(options.state)
-    })
+    if(options.state){
+      this.setData({
+        state: new Number(options.state)
+      })
+    }
+    
     if (options.manager) {
       this.setData({
         manager: options.manager
@@ -99,7 +102,7 @@ Page({
     var data = {
       state: 2,
       stateStr: '已完成',
-      confirmDate: db.serverDate()
+      confirmDate: new Date().getTime()
     }
     app.loading();
     this.changeState(order, data)
@@ -112,11 +115,11 @@ Page({
   tapConfirmPost: function(event) {
     var index = event.currentTarget.dataset.index;
     var order = this.data.list[index];
-    
+    //这里的时间应该使用 服务器时间，但是，懒得再写一个云函数
     var data = {
       state: 1,
       stateStr: '已发货',
-      deliveryDate: db.serverDate()
+      deliveryDate: new Date().getTime()
     }
     app.loading();
     this.changeState(order, data)
@@ -132,7 +135,7 @@ Page({
     var data = {
       state: 3,
       stateStr: '已退货',
-      confirmDate: db.serverDate()
+      confirmDate: new Date().getTime()
     }
     app.loading();
     this.changeState(order, data)
@@ -175,7 +178,7 @@ Page({
       }
       //
       if (data.state==2 &&!this.data.manager){
-
+        var that =this;
         wx.showModal({
           title: '收货成功',
           content: '前往评价?',
@@ -183,7 +186,8 @@ Page({
           confirmText:'评价',
           success:function(res){
             if(res.confirm){
-              app.navigateTo('../goodsComment/goodsComment?_id=' + order._id);
+              // app.navigateTo('../goodsComment/goodsComment?_id=' + order._id);
+              that.toEvaluate(order);
             }
           }
         })
@@ -212,7 +216,14 @@ Page({
   tapEvaluate:function(event){
     var index = event.currentTarget.dataset.index;
     var order = this.data.list[index];
-    console.log('评价',order);
-    app.navigateTo('../goodsComment/goodsComment?_id='+order._id);
+    this.toEvaluate(order);
+  },
+  toEvaluate:function(order){
+    console.log('评价', order);
+    wx.setStorage({
+      key: 'goodsCommentOrder',
+      data: order,
+    })
+    app.navigateTo('../goodsComment/goodsComment?_id=' + order._id);
   }
 })

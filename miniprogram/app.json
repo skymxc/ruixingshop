@@ -16,7 +16,8 @@
     "pages/orderDetail/orderDetail",
     "pages/shopcar/shopcar",
     "pages/goodsComment/goodsComment",
-    "pages/orderlist/orderlist"
+    "pages/orderlist/orderlist",
+    "pages/myattention/myattention"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",

@@ -39,6 +39,9 @@ Page({
     }
    
   },
+  tapMyAttention:function(){
+    app.navigateTo('../myattention/myattention')
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -147,5 +150,8 @@ Page({
   tapOrder:function(event){
     var state = event.currentTarget.dataset.state;
     app.navigateTo('../orderlist/orderlist?state='+state)
+  },
+  tapOrderManager:function(){
+    app.navigateTo('../orderlist/orderlist?manager=true')
   }
 })

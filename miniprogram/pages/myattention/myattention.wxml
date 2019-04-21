@@ -1,0 +1,24 @@
+<!--miniprogram/pages/myattention/myattention.wxml-->
+<view class='container'>
+  <view class='contianer-title box' wx:if='{{list.length>0}}'>
+    <text>我的关注</text>
+    <text wx:if='{{editEnable}}' class='text-edit box' bindtap='tapComplete'>完成</text>
+    <text wx:else class='text-edit box' bindtap='tapEdit'>编辑</text>
+  </view>
+  <scroll-view scroll-y class='scroll box'>
+    <block wx:for='{{list}}' wx:key='_id'>
+      <view class='container-collect box' >
+      <custom-checkbox wx:if='{{editEnable}}' checked='{{item.checked}}' bindchange='bindCheckChange' value='{{index}}'  class='checkbox-goods'></custom-checkbox>
+      <image class='image-goods-cover' src='{{item.goods.coverPicture}}' bindtap='tapGoods' data-goods='{{item.goods}}'></image>
+      <view class='container-goods box' bindtap='tapGoods' data-goods='{{item.goods}}'>
+        <view class='text-goods-name-s'>{{item.goods.name}}</view>
+        <view class='text-goods-price-s'>¥{{item.goods.price}}</view>
+      </view>
+      </view>
+    </block>
+  </scroll-view>
+  <view class='contianer-operation box' wx:if='{{editEnable &&list.length>0}}'>
+    <custom-checkbox checked='{{checkall}}' bindchange='bindCheckAllChange'  class='checkbox-goods'></custom-checkbox>全选
+    <view class='container-del box'  bindtap='tapDel'>删除</view>
+  </view>
+</view>

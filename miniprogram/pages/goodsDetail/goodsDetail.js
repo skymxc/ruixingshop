@@ -2,6 +2,8 @@
 /**
  * 
  * 在选择规格，点击底部按钮时，需要用户信息
+ * 
+ * 考虑使用缓存，缓存商品信息，可以减少请求次数
  */
 const app = getApp();
 const db = wx.cloud.database();

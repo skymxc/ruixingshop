@@ -1,2 +1,70 @@
 <!--miniprogram/pages/goodsComment/goodsComment.wxml-->
-<text>评价商品</text>
+<view class='container'>
+  <block wx:for='{{order.goodsList}}' wx:for-item='goods' wx:key='_id'>
+    <view class='container-order-goods container-interval-vertical box'>
+      <view class='container-goods box'>
+        <image src='{{goods.coverPicture}}' class='image-goods-cover'></image>
+        <view class='container-goods-name box'>
+          <view class='text-goods-name-s'>{{goods.goods_name}}</view>
+          <view class='text-goods-price-s'>¥{{goods.goods_total}}</view>
+        </view>
+      </view>
+      <form class='form-goods-evaluate box' bindsubmit='sutmitGoodsEvaluate'>
+        <view class='container-goods-evaluate box'>
+          <input name='index' hidden='true' value='{{index}}'></input>
+          <textarea name='content' class='textarea-content box' placeholder='说说你的使用心得' maxlength='100'></textarea>
+          <view class='container-evaluate-picture box'>
+              <view class='container-evaluate-picture-label box'>
+                <text>图片</text>
+                <image src='../../images/add.png'  class='image-add' data-index='{{index}}' bindtap='tapAddImage'></image>
+              </view>
+              <view class='container-evaluate-pictures box' wx:if="{{goods.evaluate.pictures.length>0}}">
+                <block wx:for='{{goods.evaluate.pictures}}' wx:for-item='image' wx:key='local' wx:for-index='imageIndex'>
+                <view class='container-evaluate-image box'>
+                  <image src='{{image.local}}' class='image-evaluate' data-image='{{image}}'></image>
+                  <image src='../../images/delete-2.png' class='image-del-evaluate' data-imageindex='{{imageIndex}}' data-goodsindex='{{index}}' bindtap='tapDelImage'></image>
+                </view>
+                </block>
+              </view>
+          </view>
+          <view class='container-logistics box '>
+            <text>物流服务</text>
+            <view class='container-star box '>
+              <image class='image-star ' src="{{goods.evaluate.logistics>=1?'../../images/star_sel.png':'../../images/star.png'}}" data-num='1'bindtap='tapLogistics' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.logistics>=2?'../../images/star_sel.png':'../../images/star.png'}}" data-num='2'bindtap='tapLogistics' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.logistics>=3?'../../images/star_sel.png':'../../images/star.png'}}" data-num='3'bindtap='tapLogistics' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.logistics>=4?'../../images/star_sel.png':'../../images/star.png'}}" data-num='4'bindtap='tapLogistics' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.logistics>=5?'../../images/star_sel.png':'../../images/star.png'}}" data-num='5'bindtap='tapLogistics' data-index='{{index}}' > </image>
+
+            </view>
+          </view>
+          <view class='container-serve box '>
+            <text>服务态度</text>
+            <view class='container-star box '>
+              <image class='image-star ' src="{{goods.evaluate.serve>=1?'../../images/star_sel.png':'../../images/star.png'}}" data-num='1'bindtap='tapServe' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.serve>=2?'../../images/star_sel.png':'../../images/star.png'}}" data-num='2'bindtap='tapServe' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.serve>=3?'../../images/star_sel.png':'../../images/star.png'}}" data-num='3'bindtap='tapServe' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.serve>=4?'../../images/star_sel.png':'../../images/star.png'}}" data-num='4'bindtap='tapServe' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.serve>=5?'../../images/star_sel.png':'../../images/star.png'}}" data-num='5'bindtap='tapServe' data-index='{{index}}' > </image>
+
+            </view>
+          </view>
+          <view class='container-like box '>
+            <text>描述相符</text>
+            <view class='container-star box '>
+              <image class='image-star ' src="{{goods.evaluate.like>=1?'../../images/star_sel.png':'../../images/star.png'}}" data-num='1'bindtap='tapLike' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.like>=2?'../../images/star_sel.png':'../../images/star.png'}}" data-num='2'bindtap='tapLike' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.like>=3?'../../images/star_sel.png':'../../images/star.png'}}" data-num='3'bindtap='tapLike' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.like>=4?'../../images/star_sel.png':'../../images/star.png'}}" data-num='4'bindtap='tapLike' data-index='{{index}}' > </image>
+              <image class='image-star ' src="{{goods.evaluate.like>=5?'../../images/star_sel.png':'../../images/star.png'}}" data-num='5'bindtap='tapLike' data-index='{{index}}' > </image>
+
+            </view>
+          </view>
+          <view class='container-evaluate-operation box'>
+            <button form-type='submit' class='button-submit'>评价</button>
+          </view>
+        </view>
+      </form>
+    </view>
+  </block>
+</view>
