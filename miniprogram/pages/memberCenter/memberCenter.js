@@ -153,5 +153,8 @@ Page({
   },
   tapOrderManager:function(){
     app.navigateTo('../orderlist/orderlist?manager=true')
+  },
+  tapManagerAddress:function(){
+    app.navigateTo('../addressManager/addressManager');
   }
 })

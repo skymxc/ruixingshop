@@ -1,0 +1,64 @@
+/* miniprogram/pages/addressManager/addressManager.wxss */
+
+.container {
+  height: 100%;
+}
+
+.scroll-vew {
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+}
+
+.container-address {
+  width: 100%;
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-consignee, .container-region-street {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+}
+
+.container-address-item-operate {
+  width: 100%;
+  padding: 5px 0px 0px 0px;
+  border-top: solid gainsboro 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  color: gainsboro;
+}
+.contianer-def-checkbox,.contianer-del{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.text-operate{
+  margin: 5px;
+}
+
+.contaier-new{
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: red;
+  font-weight: bold;
+}
+.custom-checkbox{
+  height: 20px;
+  width: 20px;
+  margin: 5px;
+}

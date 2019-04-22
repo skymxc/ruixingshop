@@ -1,0 +1,48 @@
+<!--
+container{
+  scroll{
+    contianer{
+      container{name,phone}
+      container{detail}
+      container{operation}
+    }
+  }
+  container{
+    new
+  }
+}
+-->
+<view class= 'container'>
+  <scroll-view scroll-y class='scroll-vew'>
+    <block wx:for='{{list}}' wx:key='_id' >
+      <view class='container-address box '>
+        <view class='container-consignee box' bindtap='tapAddress' data-index='{{index}}'>
+          <text>{{item.consignee}}</text>
+          <text>{{item.phone}}</text>
+        </view>
+        <view class='container-region-street box' bindtap='tapAddress' data-index='{{index}}'>
+          {{item.region[0]}}
+           {{item.region[1]}}
+            {{item.region[2]}}
+            {{item.street}}
+        </view>
+        <view class='container-address-item-operate box'>
+          <view class='contianer-def-checkbox box'>
+            <custom-checkbox checked='{{index==defIndex}}' value='{{index}}' bindchange='bindChange' class='custom-checkbox'></custom-checkbox>
+            设置默认
+          </view>
+          <view class='contianer-del box'>
+            <text class='text-address-edit text-operate' bindtap='tapEdit' data-index='{{index}}'>编辑</text>
+            <text class='text-address-del text-operate' bindtap='tapDel' data-index='{{index}}'>删除</text>
+            
+          </view>
+
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <view class='contaier-new box' bindtap='tapNew'>
+    新建地址
+  </view>
+</view>
