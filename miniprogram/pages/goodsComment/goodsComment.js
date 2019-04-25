@@ -6,6 +6,8 @@ Page({
   /**
    * 页面的初始数据
    * 在来之前要确认没有评论过，否则会出现多次评论
+   * TODO
+   * 
    */
   data: {
     order: {},
@@ -244,11 +246,22 @@ Page({
       app.showToast('请评价描述相符');
       return;
     }
+    console.log('goods->',goods);
+    if (!app.checkEnable(evaluate.pictures)){
+      evaluate.pictures =new Array();
+    }else{
+      var array =new Array();
+      for (var i = 0; i < evaluate.pictures.length;i++){
+        var item = evaluate.pictures[i];
+        array.push(item.remote);
+      }
+      evaluate.pictures = array;
+    }
     evaluate.content = content;
     evaluate.order_id = this.data.order._id;
-    evaluate.goods_id= goods._id;
+    evaluate.goods_id = goods.goods_id;
     evaluate.goods = {
-      goods_id:goods._id,
+      goods_id: goods.goods_id,
       goods_name:goods.goods_name,
       goods_price:goods.goods_price,
       goods_num:goods.goods_num,
@@ -267,7 +280,7 @@ Page({
   },
   addEvaluateAfter:function(res,goodsIndex,evaluate,goods){
 
-      wx.hideLoading();
+     
       if(res._id){
         evaluate._id = res._id;
         this.data.order.goodsList.splice(goodsIndex,1);
@@ -278,61 +291,60 @@ Page({
           title: '评论成功'
         })
         if(this.data.order.goodsList.length==0){
+
+         this.writeOrder(evaluate);
+        }else{
+          wx.hideLoading();
+        }
+      }else{
+        wx.hideLoading();
+        app.showToast('评论失败');
+      }
+  },
+
+  writeOrder: function (evaluate){
+    var collection = 'order';
+    var where ={
+      _id:this.data.order._id
+    }
+    var data={
+      evaluate_id: evaluate._id
+    }
+    if(app.checkEnable(this.data.order.evaluate_id)){
+      dta.evaluate_id = this.data.order.evaluate_id+','+data.evaluate_id
+    }
+    wx.cloud.callFunction({
+      name:'update',
+      data:{
+        collection:collection,
+        where:where,
+        data:data
+      }
+    }).then(res=>{
+      wx.hideLoading();
+        console.log('writeOrder-->',res);
+        if(res.result.stats.updated==1){
+          wx.showToast({
+            title: '评价成功',
+          })
+          wx.setStorageSync('evaluatedOrder', evaluate)
           wx.navigateBack({
             
           })
         }
-      }else{
-      
-        app.showToast('评论失败');
-      }
-  },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
+    }).catch(error=>{
+      console.error(error);
+      wx.hideLoading();
+      wx.navigateBack({
+        
+      })
+    });
 
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
     wx.removeStorageSync('goodsCommentOrder');
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
   }
 })

@@ -6,6 +6,7 @@
  */
 const app =getApp();
 const db = wx.cloud.database();
+const dbUtils = require('../../js/DB.js');
 Page({
 
   /**
@@ -30,6 +31,51 @@ Page({
       })
     }
     this.loadList();
+  },
+  onShow:function(){
+    console.log('onShow')
+    var res = wx.getStorageInfoSync();
+    var that = this;
+    console.log(res.keys);
+    if (res.keys.indexOf('addaddress')!=-1){
+      
+     wx.getStorage({
+       key: 'addaddress',
+       success: function(res) {
+         console.log('addaddress->',res);
+         that.data.list.push(res.data);
+         that.setData({
+           list:that.data.list
+         })
+         wx.removeStorage({
+           key: 'addaddress',
+           success: function(res) {},
+         })
+       },
+     })
+    } else if (res.keys.indexOf('updateAddress')!=-1){
+        wx.getStorage({
+          key: 'updateAddress',
+          success: function(res) {
+            var address = res.data;
+            var size = that.data.list.length;
+            for(var i=0;i<size;i++){
+              var item = that.data.list[i];
+              if(item._id==address._id){
+                that.data.list[i] = address;
+                break;
+              }
+            }
+            that.setData({
+              list:that.data.list
+            })
+          wx.removeStorage({
+            key: 'updateAddress',
+            success: function(res) {},
+          })
+          },
+        })
+    }
   },
   loadList:function(){
     this.data.lastTime = new Date().getTime();
@@ -127,13 +173,90 @@ Page({
     var index= event.currentTarget.dataset.index;
     var address = this.data.list[index];
     console.log('编辑->',address);
+    wx.setStorage({
+      key: 'toupdateaddress',
+      data: address,
+      success:function(){
+        app.navigateTo('../createAddress/createAddress')
+      }
+    })
   },
   tapDel:function(event){
     var index = event.currentTarget.dataset.index;
     var address = this.data.list[index];
     console.log('删除->', address);
+    var that =this;
+    wx.showModal({
+      title: '提示',
+      content: '确认删除吗？',
+      success:function(res){
+        if(res.confirm){
+          app.loading();
+          dbUtils.remove('address',address._id)
+          .then(res=>{
+              console.log('删除',res);
+              wx.hideLoading();
+              if(res.stats.removed==1){
+                that.data.list.splice(index,1);
+                that.setData({
+                  list:that.data.list
+                })
+                if(index==that.data.defIndex){
+                  that.removeDefAddress();
+                }
+              }else{
+                app.showToast('删除失败');
+              }
+          }).catch(error=>app.showError(error,'删除失败'));
+        }
+      }
+    })
+  },
+  removeAddressFromRemote:function(address,index){
+    app.loading();
+    db.collection('address').doc(address._id).remove()
+    .then(res=>this.delAddressFromRemoteAfter(res,index))
+    .catch(error=>app.showError(error,'删除失败'));
+  },
+  delAddressFromRemoteAfter:function(res,index){
+    wx.hideLoading();
+    if(res.stats.removed==0){
+      app.showToast('删除失败');
+      return;
+    }
+    this.data.list.splice(index,1);
+    if(this.data.defIndex==index){
+      this.data.defIndex=-1;
+      this.data.defAddress= {}
+    }
+    this.setData({
+      defIndex:this.data.defIndex,
+      defAddress:this.data.defAddress,
+      list:this.data.list
+    })
+  },
+  /**
+   * 移除默认地址
+   */
+  removeDefAddress:function(){
+    wx.removeStorage({
+      key: 'address',
+      success: function (res) { },
+    })
+    this.setData({
+      defIndex: -1,
+      defAddress: {}
+    })
   },
   tapNew:function(){
-    console.log('新建地址')
+   if(this.data.list.length>=20){
+    wx.showModal({
+      title: '提示',
+      content: '地址已达到上限',
+      showCancel:false
+    })
+     return;
+   }
+    app.navigateTo('../createAddress/createAddress')
   }
 })

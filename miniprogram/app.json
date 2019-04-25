@@ -18,7 +18,9 @@
     "pages/goodsComment/goodsComment",
     "pages/orderlist/orderlist",
     "pages/myattention/myattention",
-    "pages/addressManager/addressManager"
+    "pages/addressManager/addressManager",
+    "pages/createAddress/createAddress",
+    "pages/myEvaluate/myEvaluate"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",

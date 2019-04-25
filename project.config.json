@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 8,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -87,9 +87,16 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 8,
 					"name": "收货地址管理",
 					"pathName": "pages/addressManager/addressManager",
+					"query": "choose=true",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的评价",
+					"pathName": "pages/myEvaluate/myEvaluate",
 					"query": "",
 					"scene": null
 				}

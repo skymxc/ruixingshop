@@ -129,7 +129,28 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setAddress();
+    // this.setAddress();
+    // 地址 chooseAddress
+    var that = this;
+    wx.getStorageInfo({
+      success: function(res) {
+        if (res.keys.indexOf('chooseAddress')!=-1){
+          wx.getStorage({
+            key: 'chooseAddress',
+            success: function(res) {
+                that.setData({
+                  address:res.data
+                })
+                wx.removeStorage({
+                  key: 'chooseAddress',
+                  success: function(res) {},
+                })
+            },
+          })
+        }
+      },
+    })
+
   },
   tapMask:function(){
     this.setData({
@@ -170,7 +191,7 @@ Page({
   },
   tapChooseAddress:function(){
     //todo  选择地址
-    console.log('选择地址')
+    app.navigateTo('../addressManager/addressManager?choose=true')
   },
   bindInputComment:function(event){
     // console.log('留言',event);
@@ -259,5 +280,11 @@ Page({
     }else{
       app.showToast('出单异常');
     }
+  },
+  onUnload:function(){
+    wx.removeStorage({
+      key: 'orderlist',
+      success: function(res) {},
+    })
   }
 })

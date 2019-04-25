@@ -15,14 +15,22 @@ Component({
    * 组件的初始数据
    */
   data: {
-      address:{
-        
-      },
     postcode: '102200',
       region:['北京市','北京市','昌平区'],
     
   },
+  lifetimes:{
+    ready(){
+    
+      if (app.checkEnable(this.data.address.region)){
+          this.setData({
+            region:this.data.address.region,
+            postcode:this.data.address.postcode
+          })
 
+      }
+    }
+  },
   /**
    * 组件的方法列表
    */

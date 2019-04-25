@@ -1,0 +1,9 @@
+/* miniprogram/pages/createAddress/createAddress.wxss */
+page{
+
+  background-color: white;
+}
+.form-address{
+  width: 100%;
+  padding: 10px;
+}

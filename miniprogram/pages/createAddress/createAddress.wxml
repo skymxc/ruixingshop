@@ -1,0 +1,4 @@
+<!--miniprogram/pages/createAddress/createAddress.wxml-->
+<view class='container'>
+  <address-form class='form-address box' bindsubmitAddress='submitAddress' address='{{address}}'> </address-form>
+</view>

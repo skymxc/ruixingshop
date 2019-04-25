@@ -11,7 +11,7 @@
      
       <view class='container-input-item box'>
       <text class='text-input-label'>手机号</text>
-      <input class='input-address input-address-phone' name='phone' type='number' placeholder='联系电话'></input>
+      <input class='input-address input-address-phone' name='phone' type='number' placeholder='联系电话' value='{{address.phone}}'></input>
       </view>
     <view class='container-input-item box'>
       <text class='text-input-label'>选择地区</text>
@@ -27,7 +27,7 @@
     <view class='container-input-item box'>
       <text class='text-input-label'>详细地址</text>
 
-      <input class='input-address input-address-street' name='street' placeholder='街道，楼牌号等'></input>
+      <input class='input-address input-address-street' name='street' placeholder='街道，楼牌号等' value='{{address.street}}'></input>
       </view>
 
   <button form-type='submit' class='button-submit-address'>保存地址</button>

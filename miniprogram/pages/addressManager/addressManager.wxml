@@ -26,14 +26,14 @@ container{
             {{item.region[2]}}
             {{item.street}}
         </view>
-        <view class='container-address-item-operate box'>
-          <view class='contianer-def-checkbox box'>
+        <view class='container-address-item-operate box' >
+          <view class='contianer-def-checkbox box' hidden='{{choose}}'>
             <custom-checkbox checked='{{index==defIndex}}' value='{{index}}' bindchange='bindChange' class='custom-checkbox'></custom-checkbox>
             设置默认
           </view>
           <view class='contianer-del box'>
             <text class='text-address-edit text-operate' bindtap='tapEdit' data-index='{{index}}'>编辑</text>
-            <text class='text-address-del text-operate' bindtap='tapDel' data-index='{{index}}'>删除</text>
+            <text class='text-address-del text-operate' bindtap='tapDel' data-index='{{index}}' hidden='{{choose}}'>删除</text>
             
           </view>
 

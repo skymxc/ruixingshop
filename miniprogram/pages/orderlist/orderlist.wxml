@@ -61,7 +61,7 @@ contianer{
             <view wx:if='{{item.state==0 && manager}}' class='text-operate box' bindtap='tapConfirmPost' data-order='{{item}}' data-index='{{orderIndex}}'>确认发货</view>
             <view wx:if='{{item.state==1 && !manager}}' class='text-operate box' bindtap='tapReturn' data-order='{{item}}' data-index='{{orderIndex}}'>退货</view>
       
-          <view wx:if='{{item.state==2 && !item.evaluate &&!manager}}' class='text-operate box' bindtap='tapEvaluate' data-order='{{item}}' data-index='{{orderIndex}}'>评价</view>
+          <view wx:if='{{item.state==2 && !item.evaluate &&!manager && !item.evaluate_id}}' class='text-operate box' bindtap='tapEvaluate' data-order='{{item}}' data-index='{{orderIndex}}'>评价</view>
         </view>
       </view>
     </block>

@@ -156,5 +156,8 @@ Page({
   },
   tapManagerAddress:function(){
     app.navigateTo('../addressManager/addressManager');
+  },
+  tapMyEvaluate:function(){
+    app.navigateTo('../myEvaluate/myEvaluate');
   }
 })

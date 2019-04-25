@@ -27,7 +27,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    // app.globalData.openid = 'oEaLm5Tep2eHAwEor4Kjo84QyTXc';
+    // 
     
     console.log(options);
     if(options.state){
@@ -216,6 +216,52 @@ Page({
   tapEvaluate:function(event){
     var index = event.currentTarget.dataset.index;
     var order = this.data.list[index];
+    //检查是否已经评价过了
+    //只有一个商品，不会存在评价其中一个的情况
+    if (order.goodsList.length==1){
+      this.toEvaluate(order);
+      return;
+    }
+    
+
+    db.collection('evaluate').where({
+      order_id:order._id
+    }).get()
+    .then(res=>this.loadEvaluateAfter(res,order))
+    .catch(error=>app.showError(error,'加载评论失败'));
+
+   
+  },
+  loadEvaluateAfter:function(res,order){
+    console.log('评论',res)
+    if(res.data.length==0){
+      this.toEvaluate(order);
+      return;
+    }
+    var goodsList =new Array();
+    var size = order.goodsList.length;
+    var length = res.data.length;
+    for(var i=0;i<size;i++){
+      var goods = order.goodsList[i];
+      var index = -1;
+      for(var k=0;k<length;k++){
+        var evalute = res.data[k];
+        if (evalute.goods_id == goods.goods_id){
+            index = k;
+            break;
+        }
+      }
+      if(index==-1){
+        // 不在评论里
+        goodsList.push(goods);
+      }
+    }
+    if(goodsList.length==0){
+      app.showToast('无需再次评论了')
+      return;
+    }
+    order.goodsList = goodsList;
+    
     this.toEvaluate(order);
   },
   toEvaluate:function(order){
@@ -223,7 +269,32 @@ Page({
     wx.setStorage({
       key: 'goodsCommentOrder',
       data: order,
+      success:function(){
+        app.navigateTo('../goodsComment/goodsComment?_id=' + order._id);
+      }
     })
-    app.navigateTo('../goodsComment/goodsComment?_id=' + order._id);
+   
+  },
+  onShow:function(){
+    if(this.data.list.length==0) return;
+    var info =wx.getStorageInfoSync();
+    if(info.keys.indexOf('evaluatedOrder')!=-1){
+      var evaluate = wx.getStorageSync('evaluatedOrder');
+      var size = this.data.list.length;
+      for(var i=0;i<size;i++){
+        var order = this.data.list[i];
+        if(order._id ==evaluate.order_id){
+          this.data.list[i].evaluate_id = evaluate._id;
+          break;
+        }
+      }
+      this.setData({
+        list:this.data.list
+      })
+      wx.removeStorage({
+        key: 'evaluatedOrder',
+        success: function(res) {},
+      })
+    }
   }
 })

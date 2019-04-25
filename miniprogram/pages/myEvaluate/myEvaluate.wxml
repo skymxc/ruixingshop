@@ -1,0 +1,30 @@
+<!--miniprogram/pages/myEvaluate/myEvaluate.wxml-->
+<view class='container'>
+  <block wx:for='{{list}}' wx:key='_id'>
+    <view class='container-item box'>
+      <view class='content-evaluate box'>
+        {{item.content}}
+      </view>
+      <view class='container-evaluate-image box' wx:if='{{item.pictures.length>0}}'>
+        <image class='image-evaluate box' src='{{item.pictures[0]}}' data-index='0' data-evaluate='{{item}}' bindtap='tapImage'></image>
+        <image class='image-evaluate box' src='{{item.pictures[1]}}' data-index='1' data-evaluate='{{item}}' wx:if='{{item.pictures.length>1}}'  bindtap='tapImage'></image>
+        <image class='image-evaluate box' src='{{item.pictures[2]}}' data-index='2' data-evaluate='{{item}}' wx:if='{{item.pictures.length>2}}'  bindtap='tapImage'></image>
+        <view class='image-evaluate contianer-more-image box ' data-index='2' data-evaluate='{{item}}' wx:if='{{item.pictures.length>3}}'  bindtap='tapImage'>
+          + {{item.pictures.length-3}}
+        </view>
+      </view>
+      <view class='container-evaluate-goods box'>
+        <image class='image-goods box' src='{{item.goods.coverPicture}}'></image>
+
+        <view class='contianer-goods-name box'>
+          <view class='content-goods-name box'>{{item.goods.goods_name}}</view>
+          <view class='content-goods-total box'>¥{{item.goods.goods_total}}</view>
+        </view>
+
+      </view>
+      <view class='container-del box'>
+        <text class='text-del ' data-index='{{index}}' bindtap='tapDelEvaluate'>删除</text>
+      </view>
+    </view>
+  </block>
+</view>
