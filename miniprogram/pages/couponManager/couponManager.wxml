@@ -1,0 +1,6 @@
+<!--优惠卷管理-->
+<view class='container'>
+  <view bindtap='tapPublish' class='contianer-box-center container-interval-vertical container-landscape-white  box'>发布优惠卷</view>
+  <view bindtap='tapDel' class='contianer-box-center container-landscape-white container-interval-vertical box'>删除优惠卷</view>
+ 
+</view>

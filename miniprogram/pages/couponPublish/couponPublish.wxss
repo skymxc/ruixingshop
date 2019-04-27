@@ -1,0 +1,49 @@
+/* miniprogram/pages/couponPublish/couponPublish.wxss */
+page{
+
+  background-color: white;
+}
+form{
+  width: 100%;
+}
+.container-input-item{
+  width: 100%;
+  min-height: 50px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.vertical{
+  flex-direction: column;
+  align-items: flex-start;
+  
+}
+.text-label{
+  width: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-item{
+  flex: 1;
+  min-height: 40px;
+  padding: 5px;
+  border: solid gainsboro 1px;
+  border-radius: 5px;
+  
+ 
+}
+.input-item-vertical{
+  width: 95%;
+  margin-top: 5px;
+  height: 80px;
+align-self: center;
+}
+button{
+  width: 90%;
+  margin-top: 10px;
+}

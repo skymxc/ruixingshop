@@ -11,7 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    manager: true,
+    manager: false,
     userInfo:{}
   },
 
@@ -26,7 +26,7 @@ Page({
         userInfo: app.globalData.userInfo.info,
         manager:app.globalData.userInfo.manager
       })
-      
+      // console.log('是否是管理员->',this.data.manager)
     }else{
       var that =this;
       this.checkUserLogin().then(() => {
@@ -34,7 +34,7 @@ Page({
           userInfo: app.globalData.userInfo.info,
           manager: app.globalData.userInfo.manager
         })
-
+        // console.log('是否是管理员->', that.data.manager)
       }).catch(() => this.navigateToAuthorize());
     }
    
@@ -108,7 +108,7 @@ Page({
    * 点击优惠卷管理
    */
   tapManagerCoupon: function(event) {
-
+    app.navigateTo('../couponManager/couponManager')
   },
   checkUserLogin: function() {
     return new Promise((resolve, reject) => {

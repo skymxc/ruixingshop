@@ -1,0 +1,107 @@
+/* miniprogram/pages/couponDel/couponDel.wxss */
+.container{
+  height: 100%;
+}
+scroll-view{
+  flex: 1;
+  overflow: hidden;
+}
+.container-operate{
+  width: 100%;
+  height: 60px;
+  border-top: solid gainsboro 1px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  position: fixed;
+  bottom: 0px;
+}
+.container-checkbox{
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.container-edit-button,.button-calc{
+  width: 100px;
+  height: 100%;
+  background-color: red;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  
+}
+.checkbox{
+  align-self: center;
+  margin: 10px;
+  width: 15px;
+  height: 15px;
+}
+
+.container-coupon-item{
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.container-coupon-item-left{
+  min-width: 100px;
+  height: 100%;
+  background-color: #6EB4F9;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.container-denomination{
+  height: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.text-denomination{
+  font-size: 25px;
+}
+.container-threshold{
+  height: 40%;
+  width: 100%;
+  text-align: center;
+}
+.container-coupon-item-right{
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+
+}
+.container-coupon-item-del{
+  
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: white;
+}
+.text-del{
+  display: inline-block;
+  padding: 5px;
+  color: white;
+  background-color: rebeccapurple;
+  border-radius: 5px;
+}

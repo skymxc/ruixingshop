@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 9,
+			"current": 11,
 			"list": [
 				{
 					"id": 0,
@@ -97,6 +97,20 @@
 					"id": -1,
 					"name": "我的评价",
 					"pathName": "pages/myEvaluate/myEvaluate",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "发布优惠卷",
+					"pathName": "pages/couponPublish/couponPublish",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "删除优惠卷",
+					"pathName": "pages/couponDel/couponDel",
 					"query": "",
 					"scene": null
 				}

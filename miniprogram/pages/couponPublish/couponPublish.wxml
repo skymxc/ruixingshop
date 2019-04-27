@@ -1,0 +1,49 @@
+<!-- 
+发布优惠卷
+在 选择范围这里，可以考虑使用 picker-view 这样在加载时就不能再使用 picker了
+ -->
+<form bindsubmit='submit' class='box'>
+  <view class='container box'>
+    <view class='container-input-item box'>
+      <view class='text-label box'>面额(¥):</view>
+      <input class='input-item box' type='number' maxlength='5' name='denomination'></input>
+    </view>
+    <view class='container-input-item box'>
+      <view class='text-label box'>门槛(¥):</view>
+      <input class='input-item box' type='number' maxlength='5' name='threshold'></input>
+    </view>
+    <view class='container-input-item box'>
+      <view class='text-label box'>数量:</view>
+      <input class='input-item box' type='number' maxlength='5' name='num'></input>
+    </view>
+    <view class='container-input-item box'>
+      <view class='text-label box'>使用范围:</view>
+      <picker class='input-item box' mode='multiSelector' range='{{cateArray}}' range-key="{{'name'}}" value='{{categoryIndex}}' bindchange='categoryChange' bindcolumnchange='categorycolumnchange'>
+        <text wx:if="{{category._id=='all'}}">全部
+      </text>
+        <text wx:else>{{category.name}},{{subcategory.name}}
+      </text>
+
+      </picker>
+
+    </view>
+    <view class='container-input-item box'>
+      <view class='text-label box'>使用说明:</view>
+      <input class='input-item box'  name='useDesc'></input>
+    </view>
+    <view class='container-input-item  box'>
+      <view class='text-label box'>领取限制:</view>
+      <input class='input-item box'  name='getLimit'></input>
+      
+    </view>
+    <view class='container-input-item  box'>
+      <view class='text-label box'>失效时间:</view>
+      <picker class='input-item box' bindchange='calidityChange' mode='date' value='{{validity}}' start='{{validityStart}}'>
+        {{validityStr}}
+      </picker>
+      
+    </view>
+    <button form-type='submit'>发布</button>
+    
+  </view>
+</form>

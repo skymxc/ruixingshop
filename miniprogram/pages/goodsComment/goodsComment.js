@@ -165,11 +165,12 @@ Page({
     var evaluate = goods.evaluate;
     var result = app.checkEnable(evaluate);
     if(result){
-          evaluate.logistics = new Number(num);
+    
+          evaluate.logistics = num;
         
     }else{
       evaluate = {
-        logistics :new Number(num)
+        logistics :num
       }
     }
     goods.evaluate =evaluate;
@@ -185,11 +186,11 @@ Page({
     var evaluate = goods.evaluate;
     var result = app.checkEnable(evaluate);
     if (result) {
-      evaluate.serve = new Number(num);
+      evaluate.serve = num;
 
     } else {
       evaluate = {
-        serve: new Number(num)
+        serve: num
       }
     }
     goods.evaluate = evaluate;
@@ -205,11 +206,11 @@ Page({
     var evaluate = goods.evaluate;
     var result = app.checkEnable(evaluate);
     if (result) {
-      evaluate.like = new Number(num);
+      evaluate.like =num;
 
     } else {
       evaluate = {
-        like: new Number(num)
+        like: num
       }
     }
     goods.evaluate = evaluate;

@@ -32,7 +32,7 @@ Page({
     console.log(options);
     if(options.state){
       this.setData({
-        state: new Number(options.state)
+        state: options.state
       })
     }
     
@@ -48,9 +48,9 @@ Page({
     var _ = db.command;
 
     var where = {
-      state: this.data.state
+      state: new Number(this.data.state)
     }
-    if (where.state == '-2') {
+    if (where.state == -2) {
       where.state = _.neq(-1)
     }
     if(!this.data.manager){
@@ -77,9 +77,7 @@ Page({
     var state = event.currentTarget.dataset.state;
     if (state == this.data.state) return;
     this.setData({
-      state: new Number(state)
-    })
-    this.setData({
+      state: state,
       refresh: true
     })
     this.loadOrderList();

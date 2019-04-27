@@ -20,7 +20,10 @@
     "pages/myattention/myattention",
     "pages/addressManager/addressManager",
     "pages/createAddress/createAddress",
-    "pages/myEvaluate/myEvaluate"
+    "pages/myEvaluate/myEvaluate",
+    "pages/couponManager/couponManager",
+    "pages/couponPublish/couponPublish",
+    "pages/couponDel/couponDel"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",
