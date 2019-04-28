@@ -23,7 +23,8 @@
     "pages/myEvaluate/myEvaluate",
     "pages/couponManager/couponManager",
     "pages/couponPublish/couponPublish",
-    "pages/couponDel/couponDel"
+    "pages/couponDel/couponDel",
+    "pages/getCoupon/getCoupon"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",
@@ -65,5 +66,6 @@
   "usingComponents": {
     "address-form": "pages/components/addressForm/AddressForm",
     "custom-checkbox": "pages/components/customcheckbox/customcheckbox"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

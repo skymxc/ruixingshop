@@ -8,7 +8,14 @@ exports.main = async (event, context) => {
   var collection = event.collection;
   var data = event.data;
   var where = event.where;
-  console.log(collection,where,data);
+  var opr = event.opr;
+  if('byId'==opr){
+    var _ = db.command;
+    return db.collection(collection).where({
+      _id:_.in(where._id)
+    }).update({data:data});
+  }
+  // console.log(collection,where,data);
   return db.collection(collection).where(where).update({
     data: data
   });

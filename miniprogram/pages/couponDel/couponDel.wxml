@@ -1,8 +1,8 @@
 <view class='container'>
-  <scroll-view scroll-y class='box'>
+  <scroll-view scroll-y class='box' bindscrolltolower='loadmore'>
     <block wx:for='{{list}}' wx:key='_id'>
       <view class='container-coupon-item box'>
-        <custom-checkbox checked='{{item.checked}}' bindchange='bindCheckAllChange' class='checkbox'></custom-checkbox>
+        <custom-checkbox checked='{{item.checked}}' bindchange='bindChange' class='checkbox' value='{{index}}'></custom-checkbox>
         <view class='container-coupon-item-left box'>
           <view class='container-denomination box'>
             ¥  <text class='text-denomination'>{{item.denomination}}</text>
@@ -14,7 +14,7 @@
         </view>
         <view class='container-coupon-item-right box'>
           <!-- <view class='container-coupon-denomination box'>{{item.denomination}}元代金劵</view> -->
-          <view wx:if='{{item.threshold>0}}' class='container-coupon-thresholdn box'>消费{{item.threshold}}元立减{{item.denomination}}</view>
+          <!-- <view wx:if='{{item.threshold>0}}' class='container-coupon-thresholdn box'>消费{{item.threshold}}元立减{{item.denomination}}</view> -->
           <view class='container-coupon-num box'>剩余 {{item.num}}</view>
           失效时间
  <view class='container-coupon-validity box'>{{item.validityStr}}</view>

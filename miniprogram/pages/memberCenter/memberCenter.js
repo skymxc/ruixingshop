@@ -159,5 +159,8 @@ Page({
   },
   tapMyEvaluate:function(){
     app.navigateTo('../myEvaluate/myEvaluate');
+  },
+  tapTakeCoupon:function(){
+    app.navigateTo('../getCoupon/getCoupon')
   }
 })
