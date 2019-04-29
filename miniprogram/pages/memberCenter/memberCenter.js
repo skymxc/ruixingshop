@@ -162,5 +162,8 @@ Page({
   },
   tapTakeCoupon:function(){
     app.navigateTo('../getCoupon/getCoupon')
+  },
+  tapMyCoupon:function(){
+    app.navigateTo('../mycoupon/mycoupon')
   }
 })

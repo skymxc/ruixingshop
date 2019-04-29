@@ -10,7 +10,8 @@ Page({
   data: {
     list:[],
     refresh:false,
-    ids:[]
+    ids:[],
+    lastTime:0
   },
 
   /**
@@ -71,6 +72,7 @@ Page({
     dbUtils.count('mycoupon',where)
     .then(res=>this.countAfter(res,index,coupon))
     .then(res=>this.updateCoupon(res,index))
+    .then(res=>this.addAfter(res,index))
     .catch(error=>app.showError(error,'领取失败'));
   },
   /**
@@ -86,6 +88,7 @@ Page({
         list:this.data.list,
         ids:this.data.ids
       })
+      app.showToast('已经领取过了哦')
       return;
     }
    return wx.cloud.callFunction({
@@ -99,6 +102,7 @@ Page({
    * 更改 coupon
    */
   updateCoupon:function(res,index){
+    console.log('updateCoupon',res)
     if(!app.checkEnable(res)){
       return;
     }
@@ -117,7 +121,10 @@ Page({
     }
     var mycoupon={
       coupon_id:coupon._id,
-      coupon:coupon
+      coupon:coupon,
+      getDate:db.serverDate(),
+      validity: coupon.validity,
+      used:false
     }
    return db.collection('mycoupon').add({data:mycoupon});
   },
@@ -125,6 +132,7 @@ Page({
    * 是否插入成功
    */
   addAfter:function(res,index){
+    console.log('addAfter',res)
     if (!app.checkEnable(res)) {
       return;
     }

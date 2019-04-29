@@ -24,7 +24,8 @@
     "pages/couponManager/couponManager",
     "pages/couponPublish/couponPublish",
     "pages/couponDel/couponDel",
-    "pages/getCoupon/getCoupon"
+    "pages/getCoupon/getCoupon",
+    "pages/mycoupon/mycoupon"
   ],
   "window": {
     "backgroundColor": "#F8F8FF",
