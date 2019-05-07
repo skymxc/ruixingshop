@@ -15,7 +15,8 @@ Page({
     totalPostage:0,
     writeAddress:false,
     address:{},
-    comment:''
+    comment:'',
+    coupon:{}
   },
 
   /**
@@ -148,6 +149,13 @@ Page({
             },
           })
         }
+         if (res.keys.indexOf('choosecoupon')!=-1){
+          var mycoupon= wx.getStorageSync('choosecoupon');
+          that.setData({
+            coupon:mycoupon
+          })
+          //  wx.removeStorageSync('choosecoupon')
+        }
       },
     })
 
@@ -223,6 +231,11 @@ Page({
       stateStr:'待发货'
       
     }
+
+    if(this.data.coupon._id){
+      order.coupon = this.data.coupon;
+      
+    }
     console.log('生成订单',order);
     app.showLoadingMask('请稍后');
     wx.cloud.callFunction({
@@ -286,5 +299,18 @@ Page({
       key: 'orderlist',
       success: function(res) {},
     })
+  },
+  tapChooseCoupon:function(){
+    wx.setStorage({
+      key: 'choosecoupongoods',
+      data: this.data.goodsList,
+      success:function(res){
+        app.navigateTo('../chooseMyCoupon/chooseMyCoupon')
+      },
+      fail:function(error){
+        app.showError(error,'优惠卷加载失败')
+      }
+    })
+   
   }
 })

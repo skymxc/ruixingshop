@@ -72,10 +72,23 @@
 
   </view>
 
+  <!-- 优惠卷 -->
+  <view class='container-coupon box' wx:if='{{goodsList.length>0}}'>
+    <view class='container-coupon-label box' bindtap='tapChooseCoupon'>
+    <text>优惠卷</text>
+    <text wx:if='{{!coupon._id}}'>不使用</text>
+    <text wx:else>优惠 ¥{{coupon.coupon.denomination}} </text>
+    </view>
+   
+  </view>
+  
+
   <!-- 支付 -->
   <view wx:if='{{goodsList.length>0}}' class='contianer-operate box'>
     需付：
-    <text class='text-goods-list-total-rpice'>¥ {{totalPrice+totalPostage}}</text>
+    <text class='text-goods-list-total-rpice' wx:if='{{coupon._id}}'>¥ {{totalPrice+totalPostage-coupon.coupon.denomination}}</text>
+    <text class='text-goods-list-total-rpice' wx:else>¥ {{totalPrice+totalPostage}}</text>
+
     <view class='pay' bindtap='tapPay'>立即支付</view>
   </view>
   <view class='mask' wx:if='{{writeAddress}}' bindtap='tapMask'></view>

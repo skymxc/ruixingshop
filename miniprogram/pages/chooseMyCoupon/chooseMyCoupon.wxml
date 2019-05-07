@@ -1,0 +1,23 @@
+<!--miniprogram/pages/chooseMyCoupon/chooseMyCoupon.wxml-->
+<view class='container'>
+  <block wx:for='{{couponList}}' wx:key='_id'>
+    <view class='container-coupon-item box' data-coupon='{{item}}' bindtap='tapCoupon'>
+     <view class='container-coupon-item-left box'>
+        <view class='container-denomination box'>
+          ¥
+          <text class='text-denomination'>{{item.coupon.denomination}}</text>
+        </view>
+        <view class='container-threshold box'>
+          <text wx:if='{{item.threshold>0}}'>满{{item.coupon.threshold}}可用</text>
+          <text wx:else>无金额门槛</text>
+        </view>
+      </view>
+      <view class='container-coupon-item-right box'>
+        <view wx:if="{{item.coupon.category._id=='all'}}">{{item.coupon.category.name}}</view>
+        <view wx:else>{{item.coupon.category.name}},{{item.coupon.subcategory.name}}</view>
+        
+        <view class='container-coupon-validity box'>失效时间:{{item.coupon.validityStr}}</view>
+      </view>
+    </view>
+  </block>
+</view>

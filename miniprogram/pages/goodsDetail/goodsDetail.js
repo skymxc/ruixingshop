@@ -425,7 +425,9 @@ Page({
       rule_value_text: rule_value_text,
       postage: goods.postage,
       goods_total: new Number(price) * new Number(this.data.chooseNum),
-      coverPicture: goods.coverPicture
+      coverPicture: goods.coverPicture,
+      category:goods.category,
+      subcategory:goods.subcategory
     }
     result.code = 0;
     result.item = shopcar;

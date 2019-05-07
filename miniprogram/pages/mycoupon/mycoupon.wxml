@@ -1,7 +1,9 @@
 <!--miniprogram/pages/mycoupon/mycoupon.wxml-->
 <view class='container'>
 <view class='container-state box'>
-
+  <view class="container-state-item box {{state=='0'?'selected':''}}" data-state='0' bindtap='tapState'>未使用</view>
+  <view class="container-state-item box {{state=='1'?'selected':''}}" data-state='1' bindtap='tapState'>已使用</view>
+  <view class="container-state-item box {{state=='2'?'selected':''}}" data-state='2' bindtap='tapState'>已失效</view>
 </view>
 <scroll-view scroll-y class='box' bindscrolltolower='loadmore'>
 <block wx:for='{{list}}' wx:key='_id'>

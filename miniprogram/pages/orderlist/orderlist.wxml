@@ -42,6 +42,7 @@ contianer{
 
 
               <view class='contianer-goods-rule box'>{{goods.rule_value_text}}</view>
+              <view class='contianer-goods-rule box' wx:if='{{item.coupon}}'>优惠卷：¥{{item.coupon.coupon.denomination}}</view>
 
             </view>
 
@@ -50,7 +51,9 @@ contianer{
         </block>
         <view class='contianer-goods-list-total box' bindtap='tapOrder' data-index='{{orderIndex}}'>
           共{{item.goodsList.length}}件商品 运费：¥{{item.totalPostage}} 实付款：
-          <text class='text-goods-list-total-rpice'>¥{{item.totalPrice + item.totalPostage}}</text>
+          <text class='text-goods-list-total-rpice' wx:if='{{item.coupon}}'>¥{{item.totalPrice + item.totalPostage-item.coupon.coupon.denomination}}</text>
+          <text class='text-goods-list-total-rpice' wx:else>¥{{item.totalPrice + item.totalPostage}}</text>
+
         </view>
 
 

@@ -164,3 +164,21 @@ align-items:center;
   color: #cdcdcd;
   font-size: 15px;
 }
+
+.container-coupon{
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.container-coupon-label{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+

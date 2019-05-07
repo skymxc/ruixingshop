@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 13,
+			"current": 15,
 			"list": [
 				{
 					"id": 0,
@@ -128,6 +128,20 @@
 					"id": -1,
 					"name": "我的优惠卷",
 					"pathName": "pages/mycoupon/mycoupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "确认订单",
+					"pathName": "pages/settlement/settlement",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "选择优惠卷",
+					"pathName": "pages/chooseMyCoupon/chooseMyCoupon",
 					"scene": null
 				}
 			]

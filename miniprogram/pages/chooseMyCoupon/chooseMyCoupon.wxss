@@ -1,11 +1,4 @@
-/* miniprogram/pages/mycoupon/mycoupon.wxss */
-.container{
-  height: 100%;
-}
-scroll-view{
-  flex: 1;
-  overflow: hidden;
-}
+/* miniprogram/pages/chooseMyCoupon/chooseMyCoupon.wxss */
 .container-coupon-item{
   width: 100%;
   height: 80px;
@@ -52,28 +45,4 @@ scroll-view{
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 
-}
-
-.container-state{
-  width: 100%;
-  height: 50px;
-  background-color: white;
-  padding: 0px 10px 0px 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.container-state-item{
-  flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.selected{
-  color: red;
-  border-bottom: solid red 2px;
 }

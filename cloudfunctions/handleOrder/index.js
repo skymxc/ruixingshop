@@ -33,11 +33,21 @@ var  handleGoods =function(goods,storenum){
     }
   });
 }
+var handleCoupon = function(order){
+  var mycoupon = order.coupon;
+  return db.collection('mycoupon').doc(mycoupon._id).update({
+    data:{
+      used:true,
+      order:order._id
+    }
+  });
+}
 var invalidOrder =function(order){
   return db.collection('order').doc(order._id).update({
     state:-1
   })
 }
+
 // 检查 商品是否有库存 这里没有那么严谨，，没有针对每个属性规格做库存判断，只对总库存做检查
 /**
  * result.code = 0 购买成功 result.order 是订单信息
@@ -58,7 +68,8 @@ try{
   order._openid = cloud.getWXContext().OPENID;
   console.debug(order);
   var _ = db.command;
-  var goodsList = await listGoods(order.goodsList);
+  var goodsListRes = await listGoods(order.goodsList);
+  var goodsList = goodsListRes.data;
   var index= -1;
   for(var i=0;i<goodsList.length;i++){
       var goods = goodsList[i];
@@ -82,8 +93,8 @@ try{
     var sotreIndex= -1;
     for(var i=0;i<goodsList.length;i++){
       var store = order.goodsList[i].goods_num;
-      var num = new Number(sotre);
-     var handleRes = await handleGoods(goodsList[i],num);
+      // var num = new Number(store);
+      var handleRes = await handleGoods(goodsList[i], store);
       console.log(handleRes);
       
      if(handleRes.stats.updated!=1){
@@ -92,10 +103,26 @@ try{
      }
     }
     if(sotreIndex==-1){
-      //成功了
+     
       order._id = res._id;
-      result.code = 0;
-      result.order = order;
+      //处理 优惠卷
+      if(order.coupon){
+        var handleRes = await handleCoupon(order);
+        if(handleRes.stats.updated!=1){
+          //优惠卷使用失败
+          //出单失败 将刚才的订单废了吧
+          var invalidRes = await invalidOrder(roder);
+          console.log('作废订单', order, invalidRes);
+          result.code = -3;
+          result.msg = '优惠卷使用失败';
+        }else{
+           //成功了
+          result.code = 0;
+          result.order = order;
+        }
+      }
+      
+      
     }else{
       //出单失败 将刚才的订单废了吧
       var invalidRes = await invalidOrder(roder);

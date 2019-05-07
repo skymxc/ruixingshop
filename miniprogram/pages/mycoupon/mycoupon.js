@@ -22,7 +22,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    app.globalData.openid = 'oEaLm5Tep2eHAwEor4Kjo84QyTXc';
+    // app.globalData.openid = 'oEaLm5Tep2eHAwEor4Kjo84QyTXc';
     this.listCoupon();
   },
 
@@ -34,7 +34,7 @@ Page({
     if (current - this.data.lastTime < 5 * 1000) {
       return;
     }
-   
+   this.listCoupon();
   },
   listCoupon: function() {
     this.data.lastTime = new Date().getTime();
@@ -63,6 +63,7 @@ Page({
     }
     var _ = db.command;
     app.loading();
+    console.log('listcoupon->',where)
     db.collection('mycoupon').skip(skip)
       .where(where)
       .orderBy(order, 'desc').get()
@@ -84,24 +85,33 @@ Page({
       key = 'lose'
     }
     app.loading();
+    //将现在显示的放入缓存
+    if(this.data.list.length>0){
+      wx.setStorageSync(this.data.key, this.data.list);
+    }
+   
    var res= wx.getStorageInfoSync();
+   console.log('res-->',res);
    if(res.keys.indexOf(key)!=-1){
      //有缓存
      var list = wx.getStorageSync(key);
-     wx.setStorageSync(this.data.key, this.data.list);
+    
      this.setData({
        list:list,
-       key:key
+       key:key,
+       state:state
      });
      wx.hideLoading();
    }else{
      //无缓存
       this.setData({
         key:key,
-        list:[]
+        list: [],
+        state: state
       })
       this.listCoupon();
    }
+   
 
   },
   onUnload:function(){
