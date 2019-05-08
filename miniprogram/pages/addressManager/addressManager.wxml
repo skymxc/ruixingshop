@@ -18,6 +18,7 @@ container{
       <view class='container-address box '>
         <view class='container-consignee box' bindtap='tapAddress' data-index='{{index}}'>
           <text>{{item.consignee}}</text>
+          -
           <text>{{item.phone}}</text>
         </view>
         <view class='container-region-street box' bindtap='tapAddress' data-index='{{index}}'>

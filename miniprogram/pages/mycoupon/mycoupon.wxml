@@ -20,7 +20,9 @@
         </view>
       </view>
       <view class='container-coupon-item-right box'>
-
+        <view wx:if="{{item.coupon.category._id=='all'}}">{{item.coupon.category.name}}</view>
+        <view wx:else>{{item.coupon.category.name}},{{item.coupon.subcategory.name}}</view>
+        
         失效时间
         <view class='container-coupon-validity box'>{{item.coupon.validityStr}}</view>
       </view>

@@ -164,6 +164,9 @@ Page({
       }
 
     }
+    if(sum==0){
+      sum=0;
+    }
 
     this.setData({
       selectedTotal: sum

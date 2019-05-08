@@ -24,7 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    app.globalData.openid = 'oEaLm5Tep2eHAwEor4Kjo84QyTXc';
+    // app.globalData.openid = 'oEaLm5Tep2eHAwEor4Kjo84QyTXc';
     if(options.choose){
       this.setData({
         choose:true
@@ -53,11 +53,13 @@ Page({
          })
        },
      })
-    } else if (res.keys.indexOf('updateAddress')!=-1){
+    } 
+    
+     if (res.keys.indexOf('updateAddress')!=-1){
         wx.getStorage({
           key: 'updateAddress',
-          success: function(res) {
-            var address = res.data;
+          success: function(response) {
+            var address = response.data;
             var size = that.data.list.length;
             for(var i=0;i<size;i++){
               var item = that.data.list[i];
@@ -69,10 +71,22 @@ Page({
             that.setData({
               list:that.data.list
             })
+            
           wx.removeStorage({
             key: 'updateAddress',
             success: function(res) {},
           })
+          //如果修改的是默认地址 就重新放置
+          if(res.keys.indexOf('address')!=-1){
+             var def= wx.getStorageSync('address');
+             console.log('def->',def);
+             if(def._id==address._id){
+              wx.setStorage({
+                key: 'address',
+                data: address,
+              })
+             }
+          }
           },
         })
     }

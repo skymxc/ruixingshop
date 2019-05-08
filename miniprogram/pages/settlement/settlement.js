@@ -154,7 +154,7 @@ Page({
           that.setData({
             coupon:mycoupon
           })
-          //  wx.removeStorageSync('choosecoupon')
+           wx.removeStorageSync('choosecoupon')
         }
       },
     })

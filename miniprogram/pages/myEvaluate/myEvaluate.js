@@ -107,12 +107,12 @@ Page({
      }
     }).then(res=>{
       console.log('更改订单',res);
-      if (res.result.stats.updated == 1){
+      // if (res.result.stats.updated == 1){
           that.delEvaluate(index,evaluate);
-      }else{
-        wx.hideLoading();
-        app.showToast('删除失败');
-      }
+      // }else{
+        // wx.hideLoading();
+        // app.showToast('删除失败');
+      // }
     })
     .catch(error=>app.showError(error,'删除失败'));
   },
