@@ -10,7 +10,7 @@ container{
 <view class='container'>
   <view bindtap='tapAddGoods' class='contianer-box-center container-interval-vertical container-landscape-white  box'>添加商品</view>
   <!-- <view bindtap='tapLockGoods' class='contianer-box-center container-landscape-white container-interval-vertical box'>下架商品</view> -->
-  <view bindtap='tapAllGoods' class='contianer-box-center container-landscape-white container-interval-vertical box'>全部商品</view>
+  <!-- <view bindtap='tapAllGoods' class='contianer-box-center container-landscape-white container-interval-vertical box'>全部商品</view> -->
   <view bindtap='tapCategoryManager' class='contianer-box-center container-landscape-white box'>分类管理</view>
 
 </view>

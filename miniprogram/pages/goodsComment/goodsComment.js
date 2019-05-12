@@ -267,10 +267,16 @@ Page({
       goods_price:goods.goods_price,
       goods_num:goods.goods_num,
       goods_total:goods.goods_total,
-      coverPicture:goods.coverPicture
+      coverPicture:goods.coverPicture,
+      rule_value_text: goods.rule_value_text
     };
  
     evaluate.createDate =db.serverDate()
+    evaluate.createDateStr = app.formatDate('yyyy-MM-dd',new Date());
+    evaluate.user ={
+      nickName: app.globalData.userInfo.info.nickName,
+      avatarUrl: app.globalData.userInfo.info.avatarUrl
+    }
     app.loading();
     console.log('添加评价',evaluate);
     db.collection('evaluate').add({

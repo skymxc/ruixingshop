@@ -476,6 +476,8 @@ Page({
       return;
     }
     this.handleBuy(result.item);
+  },
+  tapEvaluate:function(event){
+    app.navigateTo('../goodsEvaluate/goodsEvaluate?goods_id='+this.data.goods._id);
   }
-  
 })

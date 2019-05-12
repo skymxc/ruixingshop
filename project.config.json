@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 15,
+			"current": 16,
 			"list": [
 				{
 					"id": 0,
@@ -142,6 +142,14 @@
 					"id": -1,
 					"name": "选择优惠卷",
 					"pathName": "pages/chooseMyCoupon/chooseMyCoupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 16,
+					"name": "商品评论",
+					"pathName": "pages/goodsEvaluate/goodsEvaluate",
+					"query": "goods_id=XKdLs8DR1TiNTvid",
 					"scene": null
 				}
 			]

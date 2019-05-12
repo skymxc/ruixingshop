@@ -56,7 +56,8 @@
         <view wx:if='{{goods.params && goods.params.length>0 }}' class="container-detial-title box padding-left-right {{detailVisible ? 'selected':''}}" bindtap='tapDetailChange'>详情</view>
         <view wx:if='{{goods.params && goods.params.length>0 }}' class="container-detial-title box padding-left-right {{detailVisible ?'':'selected'}}" bindtap='tapDetailChange'>参数</view>
 
-        <text wx:if='{{!goods.params ||goods.params.length==0}}'>商品详情</text>
+        <view class="container-detial-title box padding-left-right " wx:if='{{!goods.params ||goods.params.length==0}}'>商品详情</view>
+        <view class="container-detial-title box padding-left-right" bindtap='tapEvaluate'>全部评论</view>
       </view>
       <!-- 详情图片 -->
       <view wx:if='{{detailVisible}}' class='container-detail-picture'>
