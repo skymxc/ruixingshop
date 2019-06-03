@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 16,
+			"current": 17,
 			"list": [
 				{
 					"id": 0,
@@ -150,6 +150,13 @@
 					"name": "商品评论",
 					"pathName": "pages/goodsEvaluate/goodsEvaluate",
 					"query": "goods_id=XKdLs8DR1TiNTvid",
+					"scene": null
+				},
+				{
+					"id": 17,
+					"name": "选择地址",
+					"pathName": "pages/addressManager/addressManager",
+					"query": "choose=true",
 					"scene": null
 				}
 			]

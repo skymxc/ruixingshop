@@ -124,7 +124,9 @@ Page({
       coupon:coupon,
       getDate:db.serverDate(),
       validity: coupon.validity,
-      used:false
+      used:false,
+      threshold: coupon.threshold,
+      category_id:coupon.category._id
     }
    return db.collection('mycoupon').add({data:mycoupon});
   },

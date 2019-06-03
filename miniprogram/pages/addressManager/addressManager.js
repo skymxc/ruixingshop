@@ -93,9 +93,11 @@ Page({
   },
   loadList:function(){
     this.data.lastTime = new Date().getTime();
+    console.log('globalData',app.globalData)
     var where={
       _openid:app.globalData.openid
     }
+    console.log('where',where)
     app.loading();
     db.collection('address').where(where).skip(this.data.list.length).get()
     .then(res=>this.loadListAfter(res))
